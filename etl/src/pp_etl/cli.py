@@ -7,7 +7,7 @@ import logging
 
 import typer
 
-app = typer.Typer(no_args_is_help=True, help="Parcel Potential pipeline")
+app = typer.Typer(no_args_is_help=True, help="Spielraum pipeline")
 rules_app = typer.Typer(no_args_is_help=True, help="Rulebooks: validate, verify, extract")
 app.add_typer(rules_app, name="rules")
 

@@ -221,7 +221,7 @@ function exportParcels(p: MuniProps): void {
       r.binding_constraint, r.allowed_today ?? "", r.exceedances.join(" "), r.confidence, r.flags.join(" "),
       round(s?.gf_allowed_m2), round(s?.headroom_gf_m2)].map(csvCell).join(";");
   });
-  const head = `# ${p.territory.name} – Parzellenpotenzial. Unverbindliche Schätzung; Quellen: Kanton Aargau (AGIS), swisstopo, BFS (GWR). Stand ${p.territory.built_at}`;
+  const head = `# ${p.territory.name} – Spielraum. Unverbindliche Schätzung; Quellen: Kanton Aargau (AGIS), swisstopo, BFS (GWR). Stand ${p.territory.built_at}`;
   download(`${p.scope}-parzellen.csv`, [head, cols.join(";"), ...rows].join("\n"), "text/csv;charset=utf-8");
 }
 

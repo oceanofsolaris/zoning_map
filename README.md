@@ -1,4 +1,6 @@
-# Parcel Potential (Parzellenpotenzial)
+# Spielraum
+
+*Wie viel Spielraum lässt die Bauordnung?*
 
 How much floor area do the current zoning rules allow on each parcel, how much is
 built, and which rule is the binding one? A transparent, parcel-by-parcel estimate

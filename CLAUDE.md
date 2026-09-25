@@ -1,6 +1,6 @@
-# Parcel Potential – notes for coding agents
+# Spielraum – notes for coding agents
 
-Per-parcel zoning capacity for Swiss municipalities (prototype: Brugg + Windisch AG). Spec: `docs/SPEC.md`.
+Spielraum (formerly "Parcel Potential"): per-parcel zoning capacity for Swiss municipalities (prototype: Brugg + Windisch AG). Spec: `docs/SPEC.md`.
 
 - **Read first:** `docs/decisions.md` (why things are the way they are, verified data identifiers),
   `docs/playbook-new-municipality.md` (how to add a municipality; data quirks; QA checks),

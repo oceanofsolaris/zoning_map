@@ -1,4 +1,4 @@
-# Parcel Potential – top-level commands (spec §9). TERRITORY defaults to Brugg.
+# Spielraum – top-level commands (spec §9). TERRITORY defaults to Brugg.
 TERRITORY ?= AG-4095-brugg
 UV := cd etl && uv run
 

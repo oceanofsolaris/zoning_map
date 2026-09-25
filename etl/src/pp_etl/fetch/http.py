@@ -17,7 +17,7 @@ import httpx
 
 from ..paths import MANIFEST_PATH, REPO_DIR
 
-USER_AGENT = "parcel-potential/0.1 (+https://github.com/oceanofsolaris/upzone_me)"
+USER_AGENT = "spielraum/0.1 (+https://github.com/oceanofsolaris/upzone_me)"
 
 
 def _client() -> httpx.Client:

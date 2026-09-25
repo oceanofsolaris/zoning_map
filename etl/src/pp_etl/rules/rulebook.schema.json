@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/oceanofsolaris/upzone_me/rulebook.schema.json",
-  "title": "Parcel Potential rulebook (one planning perimeter)",
+  "title": "Spielraum rulebook (one planning perimeter)",
   "type": "object",
   "required": ["rulebook_id", "territory", "perimeter", "municipality", "version", "compiled_at", "sources", "zone_match_field", "zones"],
   "properties": {

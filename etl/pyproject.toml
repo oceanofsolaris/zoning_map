@@ -1,7 +1,7 @@
 [project]
 name = "pp-etl"
 version = "0.1.0"
-description = "Parcel Potential: ETL, rulebooks and capacity engine"
+description = "Spielraum: ETL, rulebooks and capacity engine"
 authors = [{ name = "Stephan Burkhardt" }]
 requires-python = ">=3.12"
 dependencies = [
