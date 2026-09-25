@@ -144,3 +144,20 @@ Newest first within each section. Date: 2026-09-25 unless noted.
     "Hinweise zur Schätzung" keeps only notes on the estimate itself (verification, missing data, slope, …).
     The **Gewässerraum** (NPL 5231/5239) is now a no-build area like the forest distance (GSchV Art. 41c;
     config `gewaesserraum_no_build`). Party-wall stretches are shown as a modelled constraint with their length.
+30. **Villnachern (perimeter of Brugg), added following the playbook.** BNO from the ÖREB extract
+    (oereblex 7812, "Exemplar für die Genehmigung", Gemeindeversammlung 13.03.2019; approval date illegible).
+    It differs from Brugg/Windisch: conditional AZ (0.3/0.4, 0.4/0.5, 0.6/0.7 depending on dwelling units),
+    `*` = Richtwert, Fassadenhöhe, no closed construction in E2/E2a, Arealüberbauung bonus of up to +15% AZ
+    and +1 storey. New pipeline feature: zone-level `geschlossene_bauweise` override. Dorfkernzone D and
+    Dorfzone D2 are treated as discretionary (Richtwerte, Ortsbild). Result: 352 computable parcels, reserve
+    ≈ 64k m²; Brugg calibration now 0.825 (22 samples).
+31. **Map: uncovered perimeters are no longer shaded** (feedback). They look like any municipality without
+    data; the panel text still names them.
+32. **Terrain numbers and official links in the inspector (feedback).** "Hanglage" is shown as a constraint
+    with the mean slope of the parcel and of the buildable area, the height difference across the buildable
+    area (P98−P2 of swissALTI3D) and the share steeper than 30 % (`steep_slope_pct`). The slope flag threshold
+    stays 10 %. Per-parcel links to the ÖREB extract (PDF), AG Online Karten and map.geo.admin.ch (slope
+    ≥ 30° and road noise layers) come from URL templates in the canton config. The AG viewer link format
+    (`center`, `z`) was checked by URL round-trip only (hidden tab renders no map).
+33. **Playbook and helper commands** (`pp boundaries`, `pp zones`, `pp qa`, `pp oereb-docs`) codify the manual
+    steps; `docs/playbook-new-municipality.md` records data quirks and the checks that caught real bugs.

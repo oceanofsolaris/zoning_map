@@ -4,7 +4,7 @@ import type { EngineConfig, ParcelFacts, RuleSet } from "../engine/capacity";
 
 export interface TerritoryIndexEntry { territory_id: string; name: string; bfs: number; canton: string; path: string; bbox: number[] }
 export interface ParcelRecord {
-  id: number; egrid: string; territory_id?: string; nr: string; perimeter: string | null; covered: boolean;
+  id: number; egrid: string; territory_id?: string; lv95?: [number, number]; nr: string; perimeter: string | null; covered: boolean;
   addresses: string[]; egids: number[]; gklas_main: number | null; year_built: number | null; period_built: number | null;
   dwellings: number | null; gf_existing_alt_m2: number | null; footprint_existing_m2: number | null;
   existing_from_dwellings?: boolean; slope_pct?: number | null;
@@ -31,6 +31,7 @@ export interface Territory {
   engine_config: EngineConfig; pipeline_config: Record<string, unknown>;
   rules: RuleSet; rulebooks: Record<string, Rulebook>; qa: Record<string, any>;
   attribution: { id: string; text: string; licence: string }[];
+  links?: { id: string; label: string; hint?: string; url: string }[];
   /** Set on a merged dataset: the individual territories it combines. */
   members?: Territory[];
 }

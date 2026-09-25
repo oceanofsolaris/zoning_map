@@ -1,9 +1,12 @@
 // Catalog of parcel-specific constraints shown under "Regeln" in the inspector.
 // Add a constraint type here (and have the pipeline emit {id, share?, labels?, length_m?}) to show it.
 import type { Rulebook, Territory } from "../data/source";
-import { esc, fmt0, pct } from "./format";
+import { esc, fmt0, fmt1, pct } from "./format";
 
-export interface ConstraintDetail { id: string; share?: number; labels?: string[]; length_m?: number }
+export interface ConstraintDetail {
+  id: string; share?: number; labels?: string[]; length_m?: number;
+  slope_pct?: number; slope_build_pct?: number; drop_build_m?: number; steep_share?: number | null;
+}
 /** modelled: shapes the envelope/capacity; flag: shown but not calculated; info: context only */
 export type Effect = "modelled" | "flag" | "info";
 interface Ctx { member: Territory; rulebook: Rulebook | null }
@@ -45,6 +48,18 @@ export const CONSTRAINTS: Record<string, Entry> = {
       const d = rulebook?.definitions?.geschlossene_bauweise_zulaessig;
       return d ? { label: `${d.section} BNO`, quote: d.quote ?? undefined } : null;
     },
+  },
+  hanglage: {
+    title: "Hanglage", effect: "flag",
+    text: (c) => {
+      const s = c.slope_build_pct ?? c.slope_pct ?? 0;
+      const cls = s < 15 ? "leicht geneigt" : s < 25 ? "mässig steil" : s < 35 ? "steil" : "sehr steil";
+      const parts = [`Mittlere Neigung ${fmt0(c.slope_pct)} %`];
+      if (c.slope_build_pct !== undefined) parts.push(`im bebaubaren Bereich ${fmt0(c.slope_build_pct)} % (${cls}), dort ${fmt1(c.drop_build_m)} m Höhenunterschied`);
+      if (c.steep_share) parts.push(`${pct(c.steep_share)} der Parzelle steiler als 30 %`);
+      return `${parts.join("; ")}. Höhen werden hier nicht ab massgebendem Terrain gemessen; am Hang sind Stützmauern, Terrassierung oder Untergeschosse wahrscheinlich – die Hülle ist entsprechend ungenau.`;
+    },
+    basis: () => ({ label: "swissALTI3D (2 m)", url: "https://www.swisstopo.admin.ch/de/hoehenmodell-swissalti3d" }),
   },
   infrastructure: {
     title: "Verkehrs- oder Gewässerfläche", effect: "modelled",
@@ -115,4 +130,4 @@ export function renderConstraints(details: ConstraintDetail[] | undefined, ctx: 
 }
 
 /** Flags already explained as constraints (or in the project section); the "Hinweise" list skips them. */
-export const FLAGS_SHOWN_ELSEWHERE = new Set([...Object.keys(CONSTRAINTS), "im_bau", "bewilligt", "projektiert"]);
+export const FLAGS_SHOWN_ELSEWHERE = new Set([...Object.keys(CONSTRAINTS), "slope", "im_bau", "bewilligt", "projektiert"]);

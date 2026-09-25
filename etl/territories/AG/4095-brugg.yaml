@@ -32,7 +32,7 @@ planning_perimeters:
   - id: villnachern
     label: Ortsteil Villnachern
     boundary_feature: "4095"                # adds Villnachern (merged 1 Jan 2026)
-    rulebook: null
+    rulebook: AG/4095-villnachern.yaml
 
 qa_locations:
   - { id: altstadt, label: Altstadt, lon: 8.2076, lat: 47.4812 }

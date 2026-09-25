@@ -54,6 +54,8 @@ pipeline:
   sdr_overlap_share: 0.10
   # Slope flag (§5 #9)
   slope_flag_pct: 10.0
+  # Share of the parcel steeper than this is reported (terracing/retaining walls typically needed above ~30%)
+  steep_slope_pct: 30.0
   # Calibration of existing_to_agf (§7.3)
   calibration:
     min_year: 2019

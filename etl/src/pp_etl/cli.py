@@ -39,6 +39,48 @@ def fetch(territory: str = typer.Argument("AG-4095-brugg"), refresh: bool = Fals
     fetch_all(territory, refresh=refresh)
 
 
+@app.command()
+def boundaries(name: str) -> None:
+    """List swissBOUNDARIES3D versions of a municipality (area changes mark mergers)."""
+    from .inspect import boundary_versions
+
+    typer.echo(boundary_versions(name).to_string(index=False))
+
+
+@app.command()
+def zones(territory: str) -> None:
+    """Zoning codes per planning perimeter and the rulebook zone each maps to (empty = unmapped)."""
+    import pandas as pd
+
+    from .inspect import zone_codes
+
+    pd.set_option("display.width", 200)
+    df = zone_codes(territory)
+    typer.echo(df.to_string(index=False))
+    missing = df[df.building_zone & (df.rulebook_zone == "") & df.perimeter.isin(df[df.rulebook_zone != ""].perimeter)]
+    if len(missing):
+        typer.echo(f"\nUNMAPPED building-zone codes in covered perimeters: {missing[['perimeter', 'code', 'label']].values.tolist()}")
+
+
+@app.command()
+def qa(territory: str) -> None:
+    """Plausibility checks on a built territory (rules of thumb; always inspect WARN rows)."""
+    from .inspect import qa as run_qa
+
+    for r in run_qa(territory):
+        typer.echo(f"{r['status']:4}  {r['check']}: {r['value']}" + (f"\n      → {r['hint']}" if r["status"] != "ok" else ""))
+
+
+@app.command("oereb-docs")
+def oereb_docs(territory: str, perimeter: str = typer.Option(None, help="planning perimeter id"),
+               egrid: str = typer.Option(None, help="use this parcel instead of picking one")) -> None:
+    """List the legal documents (BNO, plans, laws) linked in a parcel's ÖREB extract."""
+    from .inspect import oereb_documents
+
+    for title, url in oereb_documents(territory, perimeter, egrid):
+        typer.echo(f"{title} | {url}")
+
+
 @rules_app.command("validate")
 def rules_validate(path: str = typer.Argument(None)) -> None:
     """Validate rulebooks against the JSON schema (all when no path given)."""

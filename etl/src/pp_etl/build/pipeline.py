@@ -297,7 +297,7 @@ def geometry_facts(b: Build) -> None:
     parts["area_m2"] = parts.area
     parts["agsf_m2"] = parts.area_m2  # §7.1 step 2 default
     # buildable footprint per setback: parcel minus a band along boundaries that need a setback, ∩ zone part
-    setback_lines = _setback_lines(b)
+    setback_lines = _setback_lines(b, parts)
     pg = par.set_index("id").geometry.loc[parts.id].values
     sl = setback_lines.loc[parts.id].values
     steps = ecfg["setback_steps_m"]
@@ -371,7 +371,9 @@ def geometry_facts(b: Build) -> None:
     for i, st in par.loc[par.project_status.notna(), ["id", "project_status"]].itertuples(index=False):
         flags[i].append(st)
     # slope: mean terrain slope within the parcel (swissALTI3D)
-    par["slope_pct"] = _parcel_slope(b, par)
+    terrain = _terrain_stats(b, par, parts)
+    for col in terrain.columns:
+        par[col] = terrain[col]
     for i in par.id[par.slope_pct > pcfg["slope_flag_pct"]]:
         flags[i].append("slope")
     # Per-parcel constraint details for the inspector: {id, share?, labels?, length_m?}
@@ -390,6 +392,12 @@ def geometry_facts(b: Build) -> None:
             for i in hit:
                 flags[i].append("bestand_im_waldabstand")
                 cons[i].append({"id": "bestand_im_waldabstand"})
+    for r in par[par.slope_pct > pcfg["slope_flag_pct"]].itertuples():
+        d = {"id": "hanglage", "slope_pct": round(float(r.slope_pct), 1), "steep_share": round(float(r.steep_share), 2)
+             if r.steep_share == r.steep_share else None}
+        if r.slope_build_pct == r.slope_build_pct:
+            d.update(slope_build_pct=round(float(r.slope_build_pct), 1), drop_build_m=round(float(r.drop_build_m), 1))
+        cons[r.id].append(d)
     if b.party_wall_m is not None:
         for i, m in b.party_wall_m.items():
             if m >= 1.0:
@@ -510,21 +518,43 @@ def _forest_band(b: Build, z_all: gpd.GeoDataFrame):
     return shapely.make_valid(band)
 
 
-def _parcel_slope(b: Build, par: gpd.GeoDataFrame) -> pd.Series:
+def _terrain_stats(b: Build, par: gpd.GeoDataFrame, parts: gpd.GeoDataFrame) -> pd.DataFrame:
+    """Terrain per parcel from swissALTI3D (2 m): how hard is the plot to build on?
+
+    - slope_pct: mean slope of the parcel (eroded by 2 m so boundary embankments do not dominate)
+    - slope_build_pct: mean slope of the buildable area (ghost-envelope footprint at the small setback)
+    - drop_build_m: height difference across the buildable area (P98 − P2, robust to walls)
+    - steep_share: share of the parcel steeper than `pipeline.steep_slope_pct`
+    """
     from rasterio import features
 
     to_wgs = Transformer.from_crs(2056, 4326, always_xy=True)
     x0, y0, x1, y1 = par.total_bounds
-    slope, transform = alti.slope_raster((*to_wgs.transform(x0, y0), *to_wgs.transform(x1, y1)))
-    # erode by 2 m so embankments and retaining walls along boundaries do not dominate
-    geoms = [g.buffer(-2.0) if g.buffer(-2.0).area > 20 else g for g in par.geometry]
-    ids = features.rasterize(((g, i + 1) for g, i in zip(geoms, par.id)), out_shape=slope.shape,
-                             transform=transform, fill=0, dtype="int32", all_touched=False)
+    slope, dem, transform = alti.slope_raster((*to_wgs.transform(x0, y0), *to_wgs.transform(x1, y1)))
+    steep = b.cfg["pipeline"]["steep_slope_pct"]
+
+    def burn(geoms_ids):
+        return features.rasterize(geoms_ids, out_shape=slope.shape, transform=transform, fill=0, dtype="int32")
+
+    eroded = [g.buffer(-2.0) if g.buffer(-2.0).area > 20 else g for g in par.geometry]
+    ids = burn((g, i + 1) for g, i in zip(eroded, par.id))
+    env = parts[["id", "envelope_geom"]].dropna()
+    env = env[~shapely.is_empty(env.envelope_geom.values)]
+    env_by_id = env.groupby("id").envelope_geom.agg(lambda g: shapely.union_all(g.values))
+    ids_b = burn((g, i + 1) for i, g in env_by_id.items() if g is not None and not g.is_empty) if len(env_by_id) else np.zeros_like(ids)
+
+    out = pd.DataFrame(index=par.id.values)
     ok = (ids > 0) & np.isfinite(slope)
-    n = np.bincount(ids[ok], minlength=len(par) + 1)
-    s = np.bincount(ids[ok], weights=slope[ok], minlength=len(par) + 1)
-    mean = np.where(n > 0, s / np.maximum(n, 1), np.nan)[1:]
-    return pd.Series(mean[par.id.values], index=par.index)
+    df = pd.DataFrame({"id": ids[ok] - 1, "slope": slope[ok]})
+    g = df.groupby("id").slope
+    out["slope_pct"] = g.mean()
+    out["steep_share"] = df.assign(st=df.slope > steep).groupby("id").st.mean()
+    okb = (ids_b > 0) & np.isfinite(slope) & np.isfinite(dem)
+    dfb = pd.DataFrame({"id": ids_b[okb] - 1, "slope": slope[okb], "z": dem[okb]})
+    gb = dfb.groupby("id")
+    out["slope_build_pct"] = gb.slope.mean()
+    out["drop_build_m"] = gb.z.quantile(0.98) - gb.z.quantile(0.02)
+    return out.reindex(par.id.values).set_axis(par.index)
 
 
 def _inner(parcel_geoms, setback_lines, dist):
@@ -537,7 +567,7 @@ def _inner(parcel_geoms, setback_lines, dist):
     return np.where(shapely.is_missing(band), parcel_geoms, out)
 
 
-def _setback_lines(b: Build) -> pd.Series:
+def _setback_lines(b: Build, parts: gpd.GeoDataFrame) -> pd.Series:
     """Per parcel: boundary lines that need a boundary distance.
 
     Where the rulebook allows closed construction (geschlossene Bauweise) and a
@@ -547,13 +577,19 @@ def _setback_lines(b: Build) -> pd.Series:
     par, bl = b.parcels, b.buildings
     gap = b.cfg["pipeline"]["party_wall_gap_m"]
     boundary = pd.Series(shapely.boundary(par.geometry.values), index=par.id.values)
-    closed_ok = {pid for pid, rb in b.rulebooks.items()
-                 if (rb.get("definitions") or {}).get("geschlossene_bauweise_zulaessig", {}).get("value")}
-    pieces = gpd.overlay(bl[["bid", "geometry"]], par[["id", "perimeter", "geometry"]] if "perimeter" in par
-                         else par[["id", "geometry"]], how="intersection", keep_geom_type=True)
-    pieces = pieces[pieces.area >= 2.0].reset_index(drop=True)
-    if "perimeter" in pieces:
-        pieces = pieces[pieces.perimeter.isin(closed_ok)].reset_index(drop=True)
+    # Closed construction: rulebook-wide definition, overridable per zone (`geschlossene_bauweise` on the zone,
+    # e.g. Villnachern excludes E2/E2a). Decided by the parcel's dominant zone.
+    closed_zones = set()
+    for pid, rb in b.rulebooks.items():
+        default = bool((rb.get("definitions") or {}).get("geschlossene_bauweise_zulaessig", {}).get("value"))
+        for z in rb["zones"]:
+            v = z.get("geschlossene_bauweise")
+            if (v.get("value") if isinstance(v, dict) else default if v is None else v):
+                closed_zones.add(f"{pid}/{z['code']}")
+    dom = parts.sort_values("area_m2").groupby("id").zone.last()
+    closed_parcels = set(dom[dom.isin(closed_zones)].index)
+    pieces = gpd.overlay(bl[["bid", "geometry"]], par[["id", "geometry"]], how="intersection", keep_geom_type=True)
+    pieces = pieces[(pieces.area >= 2.0) & pieces.id.isin(closed_parcels)].reset_index(drop=True)
     left = pieces[["id", "geometry"]]
     pairs = gpd.sjoin(left, left, how="inner", predicate="dwithin", distance=gap)
     pairs = pairs[pairs.id_left != pairs.id_right]

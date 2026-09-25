@@ -2,8 +2,8 @@
 
 How much floor area do the current zoning rules allow on each parcel, how much is
 built, and which rule is the binding one? A transparent, parcel-by-parcel estimate
-from open Swiss data. The prototype covers **Brugg AG** (Ortsteile Brugg, Umiken
-and Lauffohr) and **Windisch AG**. It is built to extend to all of Aargau and,
+from open Swiss data. The prototype covers **Brugg AG** (Ortsteile Brugg, Umiken,
+Lauffohr and Villnachern; Schinznach-Bad still missing) and **Windisch AG**. It is built to extend to all of Aargau and,
 through the national data models, to other cantons.
 
 ![Overview](docs/screenshots/m4-overview-headroom.jpg)
@@ -45,6 +45,8 @@ web/  Vite + TypeScript + MapLibre. The browser recomputes every parcel live for
 ```
 
 ### Adding a municipality
+
+Follow [`docs/playbook-new-municipality.md`](docs/playbook-new-municipality.md). In short:
 
 1. Add `etl/territories/<canton>/<bfs>-<name>.yaml`. It holds the boundary feature id and
    the planning perimeters; after a merger, historical swissBOUNDARIES3D ids delimit the old BNO areas.

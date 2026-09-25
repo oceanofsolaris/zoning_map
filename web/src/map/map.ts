@@ -35,17 +35,6 @@ function projectImage(): ImageData {
   return g.getImageData(0, 0, s, s);
 }
 
-function uncoveredImage(): ImageData {
-  const s = 10, c = document.createElement("canvas");
-  c.width = c.height = s;
-  const g = c.getContext("2d")!;
-  g.fillStyle = "rgba(90,90,90,0.12)";
-  g.fillRect(0, 0, s, s);
-  g.strokeStyle = "rgba(90,90,90,0.35)";
-  g.lineWidth = 1;
-  g.beginPath(); g.moveTo(0, 0); g.lineTo(s, s); g.stroke();
-  return g.getImageData(0, 0, s, s);
-}
 
 export class ParcelMap {
   map: MLMap;
@@ -86,7 +75,6 @@ export class ParcelMap {
   private addLayers(): void {
     const m = this.map, d = this.data;
     m.addImage("hatch", hatchImage(), { pixelRatio: 2 });
-    m.addImage("uncovered", uncoveredImage(), { pixelRatio: 2 });
     m.addImage("project", projectImage(), { pixelRatio: 2 });
     // Put our layers below the basemap labels
     const firstSymbol = m.getStyle().layers.find((l) => l.type === "symbol")?.id;
@@ -128,10 +116,7 @@ export class ParcelMap {
       id: "parcels-project", type: "fill", source: "parcels",
       paint: { "fill-pattern": "project", "fill-opacity": ["case", ["==", ["feature-state", "pj"], 1], 1, 0] as never },
     }, firstSymbol);
-    m.addLayer({
-      id: "perimeters-uncovered", type: "fill", source: "perimeters", filter: ["==", ["get", "covered"], false],
-      paint: { "fill-pattern": "uncovered" },
-    }, firstSymbol);
+    // Uncovered planning perimeters are not shaded: they look like any other municipality without data.
     m.addLayer({
       id: "parcels-line", type: "line", source: "parcels",
       paint: {

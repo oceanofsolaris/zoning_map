@@ -1,0 +1,695 @@
+# Rulebook: Brugg, planning perimeter Villnachern (former municipality, merged 1 Jan 2026).
+# Every value carries provenance (source, PDF page, section, verbatim quote).
+# `verified: true` may only be set by `pp rules verify` after human review.
+rulebook_id: AG-4095-villnachern
+territory: AG-4095-brugg
+perimeter: villnachern
+municipality:
+  bfs: 4095
+  name: Brugg (Ortsteil Villnachern)
+  canton: AG
+scope_de: Ortsteil Villnachern (bis 2025 Gemeinde Villnachern, BFS 4122)
+version: 0.1.0
+compiled_at: '2026-09-25'
+compiled_by: LLM-assisted extraction (Claude, in-session); every value awaits human verification via `pp rules verify`
+zone_match_field: typ_kommunal_code
+sources:
+- id: bno_villnachern
+  title: Bau- und Nutzungsordnung Gemeinde Villnachern, Exemplar für die Genehmigung (Gemeindeversammlung 13.03.2019)
+  url: https://oereblex.ag.ch/api/attachments/7812
+  local_path: data/raw/documents/AG-4095/bno_villnachern.pdf
+  note: Via ÖREB-Auszug verlinktes, rechtskräftiges Dokument. Genehmigungsvermerk des Regierungsrats im Scan nicht lesbar (verify date). Bleibt
+    nach der Fusion mit Brugg (1.1.2026) in Kraft.
+- id: bauv_ag
+  title: Bauverordnung Kanton Aargau (BauV), SAR 713.121
+  url: https://gesetzessammlungen.ag.ch/data/713.121/de
+definitions:
+  az_counts_attika_dg:
+    value: false
+    source: bno_villnachern
+    page: 20
+    section: § 30 Abs. 1
+    quote: Dach-, Attika- und Untergeschosse werden bei der Ausnützungsziffer nicht angerechnet.
+    verified: false
+  geschlossene_bauweise_zulaessig:
+    value: true
+    source: bno_villnachern
+    page: 6
+    section: § 7 Abs. 3
+    quote: Soweit in den nachfolgenden Zonenvorschriften nichts Abweichendes geregelt ist, ist in allen Bauzonen die offene und, mit Ausnahme
+      der E2 und E2a, geschlossene Bauweise zulässig.
+    verified: false
+    note: E2/E2a per Zonen-Override ausgenommen.
+flags_from_text:
+- id: einliegerwohnung_bonus
+  source: bno_villnachern
+  page: 20
+  section: § 31 Abs. 1
+  quote: Für Einliegerwohnungen wird ein Nutzungsbonus gewährt. Er darf maximal 5 % der aGF betragen und ist auf 60 m2 pro Wohneinheit zu begrenzen.
+  note: Nicht modelliert (klein, an Wohnungstyp gebunden).
+zones:
+- code: E2
+  label_de: Einfamilienhauszone E2
+  match:
+    typ_kommunal_code:
+    - '112101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2 E2 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4m 8m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    az_max:
+      value: 0.3
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2 E2 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4m 8m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Grundwert; 0.4 nur unter Bedingungen (§ 7 Abs. 5), siehe Bonus 'mehrere_wohneinheiten'
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: Dach-/Attikageschoss kantonal zulässig (IVHB/BauV AG); § 30 BNO nimmt sie von der AZ aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: 7.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2 E2 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4m 8m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Nicht von der Engine verwendet (nur Vollgeschosse und Gesamthöhe)
+    gesamthoehe_max_m:
+      value: 8.5
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2 E2 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4m 8m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2 E2 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4m 8m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2 E2 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4m 8m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Tabelle nennt Gebäudebreite '-'
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2 E2 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4m 8m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+  bonuses:
+  - id: mehrere_wohneinheiten
+    label_de: Höhere AZ (0.4) bei mindestens zwei gleichwertigen Wohneinheiten
+    az_delta: 0.1
+    discretionary: false
+    default_on: false
+    source: bno_villnachern
+    page: 7
+    section: § 7 Abs. 5
+    quote: Die mit ' bezeichneten Ausnützungsziffern dürfen nur erreicht werden, wenn - in den Wohnzonen E2 und E2a Häuser mit mindestens zwei
+      gleichwertigen Wohneinheiten erstellt werden; - in den Wohnzonen W2 und W2a Mehrfamilien- oder Reihenhäuser mit mindestens drei gleichwertigen
+      Wohneinheiten erstellt werden; - in der Mehrfamilienhauszone MF3 ein viergeschossiger Ersatzneubau gemäss § 10 Abs. 3 erstellt wird.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: bis +15 % AZ und ein zusätzliches Geschoss'
+    az_delta: 0.045
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_villnachern
+    page: 21
+    section: § 34 Abs. 2
+    quote: Der Gemeinderat legt im Rahmen der Voranfrage nach den Kriterien gemäss § 39 Abs. 2 BauV den Ausnützungszuschlag (bis max. 15%) fest
+      und kann ein zusätzliches Geschoss zulassen. Fassaden- und Gesamthöhe werden dabei um 1 Vollgeschoss erhöht.
+    verified: false
+    note: Zuschlag 'bis max. 15 %' – hier voll angesetzt, bezogen auf die Grund-AZ
+  notes: []
+  geschlossene_bauweise:
+    value: false
+    source: bno_villnachern
+    page: 6
+    section: § 7 Abs. 3
+    quote: Soweit in den nachfolgenden Zonenvorschriften nichts Abweichendes geregelt ist, ist in allen Bauzonen die offene und, mit Ausnahme
+      der E2 und E2a, geschlossene Bauweise zulässig.
+    verified: false
+- code: E2a
+  label_de: Einfamilienhauszone E2a
+  match:
+    typ_kommunal_code:
+    - '112102'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2a E2a 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4 m 8 m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    az_max:
+      value: 0.3
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2a E2a 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4 m 8 m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Grundwert; 0.4 nur unter Bedingungen (§ 7 Abs. 5), siehe Bonus 'mehrere_wohneinheiten'
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: Dach-/Attikageschoss kantonal zulässig (IVHB/BauV AG); § 30 BNO nimmt sie von der AZ aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: 7.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2a E2a 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4 m 8 m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Nicht von der Engine verwendet (nur Vollgeschosse und Gesamthöhe)
+    gesamthoehe_max_m:
+      value: 8.5
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2a E2a 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4 m 8 m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2a E2a 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4 m 8 m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2a E2a 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4 m 8 m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Tabelle nennt Gebäudebreite '-'
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Einfamilienhauszone E2a E2a 2 AZ 0.3 AZ 0.4 ** 7.00 m 8.50 m - 4 m 8 m II § 8  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung
+        | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+  bonuses:
+  - id: mehrere_wohneinheiten
+    label_de: Höhere AZ (0.4) bei mindestens zwei gleichwertigen Wohneinheiten
+    az_delta: 0.1
+    discretionary: false
+    default_on: false
+    source: bno_villnachern
+    page: 7
+    section: § 7 Abs. 5
+    quote: Die mit ' bezeichneten Ausnützungsziffern dürfen nur erreicht werden, wenn - in den Wohnzonen E2 und E2a Häuser mit mindestens zwei
+      gleichwertigen Wohneinheiten erstellt werden; - in den Wohnzonen W2 und W2a Mehrfamilien- oder Reihenhäuser mit mindestens drei gleichwertigen
+      Wohneinheiten erstellt werden; - in der Mehrfamilienhauszone MF3 ein viergeschossiger Ersatzneubau gemäss § 10 Abs. 3 erstellt wird.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: bis +15 % AZ und ein zusätzliches Geschoss'
+    az_delta: 0.045
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_villnachern
+    page: 21
+    section: § 34 Abs. 2
+    quote: Der Gemeinderat legt im Rahmen der Voranfrage nach den Kriterien gemäss § 39 Abs. 2 BauV den Ausnützungszuschlag (bis max. 15%) fest
+      und kann ein zusätzliches Geschoss zulassen. Fassaden- und Gesamthöhe werden dabei um 1 Vollgeschoss erhöht.
+    verified: false
+    note: Zuschlag 'bis max. 15 %' – hier voll angesetzt, bezogen auf die Grund-AZ
+  notes: []
+  geschlossene_bauweise:
+    value: false
+    source: bno_villnachern
+    page: 6
+    section: § 7 Abs. 3
+    quote: Soweit in den nachfolgenden Zonenvorschriften nichts Abweichendes geregelt ist, ist in allen Bauzonen die offene und, mit Ausnahme
+      der E2 und E2a, geschlossene Bauweise zulässig.
+    verified: false
+- code: W2
+  label_de: Wohnzone W2
+  match:
+    typ_kommunal_code:
+    - '112103'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2 W2 2 AZ 0.4 AZ 0.5 ** 7.00 m 10.00 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    az_max:
+      value: 0.4
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2 W2 2 AZ 0.4 AZ 0.5 ** 7.00 m 10.00 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Grundwert; 0.5 nur unter Bedingungen (§ 7 Abs. 5), siehe Bonus 'mehrere_wohneinheiten'
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: Dach-/Attikageschoss kantonal zulässig (IVHB/BauV AG); § 30 BNO nimmt sie von der AZ aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: 7.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2 W2 2 AZ 0.4 AZ 0.5 ** 7.00 m 10.00 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Nicht von der Engine verwendet (nur Vollgeschosse und Gesamthöhe)
+    gesamthoehe_max_m:
+      value: 10.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2 W2 2 AZ 0.4 AZ 0.5 ** 7.00 m 10.00 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2 W2 2 AZ 0.4 AZ 0.5 ** 7.00 m 10.00 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2 W2 2 AZ 0.4 AZ 0.5 ** 7.00 m 10.00 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Tabelle nennt Gebäudebreite '-'
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2 W2 2 AZ 0.4 AZ 0.5 ** 7.00 m 10.00 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+  bonuses:
+  - id: mehrere_wohneinheiten
+    label_de: Höhere AZ (0.5) bei Mehrfamilien- oder Reihenhäusern mit mindestens drei Wohneinheiten
+    az_delta: 0.1
+    discretionary: false
+    default_on: false
+    source: bno_villnachern
+    page: 7
+    section: § 7 Abs. 5
+    quote: Die mit ' bezeichneten Ausnützungsziffern dürfen nur erreicht werden, wenn - in den Wohnzonen E2 und E2a Häuser mit mindestens zwei
+      gleichwertigen Wohneinheiten erstellt werden; - in den Wohnzonen W2 und W2a Mehrfamilien- oder Reihenhäuser mit mindestens drei gleichwertigen
+      Wohneinheiten erstellt werden; - in der Mehrfamilienhauszone MF3 ein viergeschossiger Ersatzneubau gemäss § 10 Abs. 3 erstellt wird.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: bis +15 % AZ und ein zusätzliches Geschoss'
+    az_delta: 0.06
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_villnachern
+    page: 21
+    section: § 34 Abs. 2
+    quote: Der Gemeinderat legt im Rahmen der Voranfrage nach den Kriterien gemäss § 39 Abs. 2 BauV den Ausnützungszuschlag (bis max. 15%) fest
+      und kann ein zusätzliches Geschoss zulassen. Fassaden- und Gesamthöhe werden dabei um 1 Vollgeschoss erhöht.
+    verified: false
+    note: Zuschlag 'bis max. 15 %' – hier voll angesetzt, bezogen auf die Grund-AZ
+  notes: []
+- code: W2a
+  label_de: Wohnzone W2a
+  match:
+    typ_kommunal_code:
+    - '112104'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2a W2a 2 AZ 0.4 AZ 0.5 ** 7.00 m 8.50 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    az_max:
+      value: 0.4
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2a W2a 2 AZ 0.4 AZ 0.5 ** 7.00 m 8.50 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Grundwert; 0.5 nur unter Bedingungen (§ 7 Abs. 5), siehe Bonus 'mehrere_wohneinheiten'
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: Dach-/Attikageschoss kantonal zulässig (IVHB/BauV AG); § 30 BNO nimmt sie von der AZ aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: 7.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2a W2a 2 AZ 0.4 AZ 0.5 ** 7.00 m 8.50 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Nicht von der Engine verwendet (nur Vollgeschosse und Gesamthöhe)
+    gesamthoehe_max_m:
+      value: 8.5
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2a W2a 2 AZ 0.4 AZ 0.5 ** 7.00 m 8.50 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2a W2a 2 AZ 0.4 AZ 0.5 ** 7.00 m 8.50 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2a W2a 2 AZ 0.4 AZ 0.5 ** 7.00 m 8.50 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Tabelle nennt Gebäudebreite '-'
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Wohnzone 2a W2a 2 AZ 0.4 AZ 0.5 ** 7.00 m 8.50 m - 4 m 8 m II § 9  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+        | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+  bonuses:
+  - id: mehrere_wohneinheiten
+    label_de: Höhere AZ (0.5) bei Mehrfamilien- oder Reihenhäusern mit mindestens drei Wohneinheiten
+    az_delta: 0.1
+    discretionary: false
+    default_on: false
+    source: bno_villnachern
+    page: 7
+    section: § 7 Abs. 5
+    quote: Die mit ' bezeichneten Ausnützungsziffern dürfen nur erreicht werden, wenn - in den Wohnzonen E2 und E2a Häuser mit mindestens zwei
+      gleichwertigen Wohneinheiten erstellt werden; - in den Wohnzonen W2 und W2a Mehrfamilien- oder Reihenhäuser mit mindestens drei gleichwertigen
+      Wohneinheiten erstellt werden; - in der Mehrfamilienhauszone MF3 ein viergeschossiger Ersatzneubau gemäss § 10 Abs. 3 erstellt wird.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: bis +15 % AZ und ein zusätzliches Geschoss'
+    az_delta: 0.06
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_villnachern
+    page: 21
+    section: § 34 Abs. 2
+    quote: Der Gemeinderat legt im Rahmen der Voranfrage nach den Kriterien gemäss § 39 Abs. 2 BauV den Ausnützungszuschlag (bis max. 15%) fest
+      und kann ein zusätzliches Geschoss zulassen. Fassaden- und Gesamthöhe werden dabei um 1 Vollgeschoss erhöht.
+    verified: false
+    note: Zuschlag 'bis max. 15 %' – hier voll angesetzt, bezogen auf die Grund-AZ
+  notes: []
+- code: MF3
+  label_de: Mehrfamilienhauszone MF3
+  match:
+    typ_kommunal_code:
+    - '113101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 3
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Mehrfamilienhauszone 3 MF3 3 AZ 0.6 AZ 0.7 ** 10.00 m 13.50 m - 5 m 10 m II § 10  [Spalten: Bauzonen | Kürzel | Vollgeschosse |
+        Ausnützung | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    az_max:
+      value: 0.6
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Mehrfamilienhauszone 3 MF3 3 AZ 0.6 AZ 0.7 ** 10.00 m 13.50 m - 5 m 10 m II § 10  [Spalten: Bauzonen | Kürzel | Vollgeschosse |
+        Ausnützung | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Grundwert; 0.7 nur unter Bedingungen (§ 7 Abs. 5), siehe Bonus 'mehrere_wohneinheiten'
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: Dach-/Attikageschoss kantonal zulässig (IVHB/BauV AG); § 30 BNO nimmt sie von der AZ aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: 10.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Mehrfamilienhauszone 3 MF3 3 AZ 0.6 AZ 0.7 ** 10.00 m 13.50 m - 5 m 10 m II § 10  [Spalten: Bauzonen | Kürzel | Vollgeschosse |
+        Ausnützung | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+      note: Nicht von der Engine verwendet (nur Vollgeschosse und Gesamthöhe)
+    gesamthoehe_max_m:
+      value: 13.5
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Mehrfamilienhauszone 3 MF3 3 AZ 0.6 AZ 0.7 ** 10.00 m 13.50 m - 5 m 10 m II § 10  [Spalten: Bauzonen | Kürzel | Vollgeschosse |
+        Ausnützung | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 5.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Mehrfamilienhauszone 3 MF3 3 AZ 0.6 AZ 0.7 ** 10.00 m 13.50 m - 5 m 10 m II § 10  [Spalten: Bauzonen | Kürzel | Vollgeschosse |
+        Ausnützung | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 10.0
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Mehrfamilienhauszone 3 MF3 3 AZ 0.6 AZ 0.7 ** 10.00 m 13.50 m - 5 m 10 m II § 10  [Spalten: Bauzonen | Kürzel | Vollgeschosse |
+        Ausnützung | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Tabelle nennt Gebäudebreite '-'
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_villnachern
+      page: 6
+      section: § 7 Abs. 1
+      quote: 'Mehrfamilienhauszone 3 MF3 3 AZ 0.6 AZ 0.7 ** 10.00 m 13.50 m - 5 m 10 m II § 10  [Spalten: Bauzonen | Kürzel | Vollgeschosse |
+        Ausnützung | Fassadenhöhe | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+      verified: false
+  bonuses:
+  - id: mehrere_wohneinheiten
+    label_de: Höhere AZ (0.7) bei viergeschossigem Ersatzneubau (§ 10 Abs. 3)
+    az_delta: 0.1
+    discretionary: false
+    default_on: false
+    source: bno_villnachern
+    page: 7
+    section: § 7 Abs. 5
+    quote: Die mit ' bezeichneten Ausnützungsziffern dürfen nur erreicht werden, wenn - in den Wohnzonen E2 und E2a Häuser mit mindestens zwei
+      gleichwertigen Wohneinheiten erstellt werden; - in den Wohnzonen W2 und W2a Mehrfamilien- oder Reihenhäuser mit mindestens drei gleichwertigen
+      Wohneinheiten erstellt werden; - in der Mehrfamilienhauszone MF3 ein viergeschossiger Ersatzneubau gemäss § 10 Abs. 3 erstellt wird.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: bis +15 % AZ und ein zusätzliches Geschoss'
+    az_delta: 0.09
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_villnachern
+    page: 21
+    section: § 34 Abs. 2
+    quote: Der Gemeinderat legt im Rahmen der Voranfrage nach den Kriterien gemäss § 39 Abs. 2 BauV den Ausnützungszuschlag (bis max. 15%) fest
+      und kann ein zusätzliches Geschoss zulassen. Fassaden- und Gesamthöhe werden dabei um 1 Vollgeschoss erhöht.
+    verified: false
+    note: Zuschlag 'bis max. 15 %' – hier voll angesetzt, bezogen auf die Grund-AZ
+  notes: []
+- code: D
+  label_de: Dorfkernzone D
+  match:
+    typ_kommunal_code:
+    - '141101'
+  category: core
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_villnachern
+    page: 6
+    section: § 7 Abs. 1, 4; § 11
+    quote: 'Dorfkernzone D 2* - . 7.00 m * - 11 m * 4 m * - III § 11  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe
+      | Gesamthöhe | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+    verified: false
+  bonuses: []
+  notes:
+  - Masse sind Richtwerte (*, § 7 Abs. 4); Stellung, Abstände und Höhen legt der Gemeinderat fest (§ 11 Abs. 11); Abbruch nur ausnahmsweise (§
+    11 Abs. 2).
+- code: D2
+  label_de: Dorfzone 2
+  match:
+    typ_kommunal_code:
+    - '141102'
+  category: core
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_villnachern
+    page: 6
+    section: § 7 Abs. 1, 4; § 12
+    quote: 'Dorfzone 2 D2 - - 7.00 m * - 11 m * 4 m * - III § 12  [Spalten: Bauzonen | Kürzel | Vollgeschosse | Ausnützung | Fassadenhöhe | Gesamthöhe
+      | Gebäudebreite | Grenzabstand klein | gross | ES | Zonenvorschriften]'
+    verified: false
+  bonuses: []
+  notes:
+  - Keine Vollgeschoss- oder AZ-Vorgabe; Fassaden- und Gesamthöhe sind Richtwerte (*). Als Einzelfall behandelt.
+- code: AI
+  label_de: Arbeitszone I
+  match:
+    typ_kommunal_code:
+    - '121101'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Festlegung durch Gemeinderat (Gestaltungsplan), § 13.
+- code: OE
+  label_de: Zone für öffentliche Bauten und Anlagen
+  match:
+    typ_kommunal_code:
+    - '151101'
+    - '151102'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Festlegung durch Gemeinderat, § 14.

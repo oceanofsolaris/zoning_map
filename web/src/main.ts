@@ -102,7 +102,7 @@ async function main() {
   const legend = document.getElementById("legend")!;
   const renderLegend = (v: View) => {
     viewsEl.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === v)));
-    const none = `<li><i style="background:${NEUTRAL}"></i>${t("legend.none")}</li><li><i class="sw-uncovered"></i>${t("legend.not_covered")}</li>`;
+    const none = `<li><i style="background:${NEUTRAL}"></i>${t("legend.none")}</li>`;
     const hatch = `<li><i class="sw-hatch"></i>${t("legend.hatch")}</li><li><i class="sw-project"></i>${t("legend.project")}</li>`;
     const ramp = (stops: [number, string][], lo: string, hi: string) =>
       `<div class="ramp" style="background:${cssGradient(stops)}"></div><div class="ramp-labels num"><span>${lo}</span><span>${hi}</span></div>`;

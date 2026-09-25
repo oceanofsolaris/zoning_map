@@ -75,6 +75,7 @@
           "additionalProperties": false
         },
         "basis": {"$ref": "#/$defs/value_nullable"},
+        "geschlossene_bauweise": {"$ref": "#/$defs/value", "description": "Zone-level override of definitions.geschlossene_bauweise_zulaessig"},
         "bonuses": {"type": "array", "items": {"type": "object", "required": ["id", "discretionary", "default_on"]}},
         "confidence_cap": {"type": "object", "required": ["value"], "properties": {"value": {"enum": ["low", "medium", "high"]}}},
         "notes": {"type": "array", "items": {"type": "string"}}

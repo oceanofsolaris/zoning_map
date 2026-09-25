@@ -35,7 +35,7 @@ def latest_tiles(bbox_wgs84) -> dict[str, str]:
 
 
 def slope_raster(bbox_wgs84):
-    """Mosaic the 2 m DEM over the bbox and return (slope_percent, transform)."""
+    """Mosaic the 2 m DEM over the bbox and return (slope_percent, dem, transform)."""
     paths = []
     for _, href in latest_tiles(bbox_wgs84).items():
         dest = RAW_DIR / "swissalti3d" / href.rsplit("/", 1)[1]
@@ -51,4 +51,4 @@ def slope_raster(bbox_wgs84):
     z[z < -1000] = np.nan
     res = transform.a
     gy, gx = np.gradient(z, res)
-    return np.hypot(gx, gy) * 100.0, transform
+    return np.hypot(gx, gy) * 100.0, z, transform

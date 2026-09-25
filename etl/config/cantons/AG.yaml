@@ -11,3 +11,23 @@ pipeline:
     # Forest geometry: static forest boundaries (in force since 2019, next to building zones),
     # forest zones of the zoning plan, and AV land cover "geschlossener_Wald".
     av_landcover: [geschlossener_Wald]
+
+# ÖREB cadastre (legally binding restrictions per parcel). The JSON extract links the valid BNO documents.
+oereb:
+  extract_json: "https://api.geo.ag.ch/v2/oereb/extract/json/?EGRID={egrid}"
+  extract_pdf: "https://api.geo.ag.ch/v2/oereb/extract/pdf/?EGRID={egrid}"
+
+# External links per parcel ({egrid}, {e}, {n} = LV95 coordinates). Shown in the inspector.
+links:
+  - id: oereb
+    label: ÖREB-Auszug (PDF)
+    hint: Amtliche Auskunft über öffentlich-rechtliche Eigentumsbeschränkungen dieser Parzelle
+    url: "https://api.geo.ag.ch/v2/oereb/extract/pdf/?EGRID={egrid}"
+  - id: agis
+    label: Online Karten Kanton Aargau
+    hint: Kantonaler Kartenviewer mit allen AGIS-Themen
+    url: "https://www.ag.ch/geoportal/apps/onlinekarten/?center={e},{n}&z=11"
+  - id: geoadmin
+    label: map.geo.admin.ch
+    hint: Bundeskarte mit Hangneigung und Strassenlärm
+    url: "https://map.geo.admin.ch/#/map?lang=de&center={e},{n}&z=11&bgLayer=ch.swisstopo.pixelkarte-grau&layers=ch.swisstopo.hangneigung-ueber_30;ch.bafu.laerm-strassenlaerm_tag"

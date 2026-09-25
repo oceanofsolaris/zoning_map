@@ -99,9 +99,10 @@ def write_all(b, inputs: list[dict[str, Any]], results: list[dict[str, Any]], ou
     # ---------- web: parcels
     _write_geojson(par[["id", "egrid", "geometry"]], web / "parcels.geojson")
     records = []
-    for r, inp, rs in zip(par.itertuples(), inputs, results):
+    rep_pt = par.geometry.representative_point()
+    for (r, inp, rs), pt in zip(zip(par.itertuples(), inputs, results), rep_pt):
         records.append({
-            "id": int(r.id), "egrid": r.egrid, "nr": r.parcel_no, "perimeter": r.perimeter, "covered": bool(r.covered),
+            "id": int(r.id), "egrid": r.egrid, "nr": r.parcel_no, "lv95": [round(pt.x, 1), round(pt.y, 1)], "perimeter": r.perimeter, "covered": bool(r.covered),
             "addresses": list(r.addresses) if isinstance(r.addresses, list) else [],
             "egids": list(r.egids) if isinstance(r.egids, list) else [],
             "gklas_main": _none(r.gklas_main), "year_built": _none(r.year_built), "period_built": _none(r.period_built),
@@ -171,6 +172,7 @@ def write_all(b, inputs: list[dict[str, Any]], results: list[dict[str, Any]], ou
         "rulebooks": rulebooks,
         "qa": b.qa,
         "attribution": ATTRIBUTION,
+        "links": b.cfg.get("links", {}),
         "files": ["parcels.geojson", "parcels.json", "buildings.geojson", "envelopes.geojson", "zones.geojson",
                   "overlays.geojson", "perimeters.geojson", "boundary.geojson"],
     }
