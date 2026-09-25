@@ -4,8 +4,9 @@ Hard-won knowledge from Brugg (incl. merged Ortsteile) and Windisch. Follow it, 
 each step are the point: every rule of thumb here was derived from two Aargau municipalities and can fail
 elsewhere. When a check fails, investigate; do not tune thresholds until it passes.
 
-Time budget observed: Windisch ≈ 1 h (twin BNO of Brugg); Villnachern ≈ 1.5 h (different BNO style, document
-hunt); a municipality with an unusual BNO takes longer.
+Effort observed (agent wall-clock is not tracked; relative only): Windisch was quick (twin BNO of Brugg);
+Villnachern took noticeably longer because of the document hunt and a differently structured BNO. The slow
+parts are finding the valid BNO and reading its table legend, not the pipeline.
 
 ## 0. Before you start
 
@@ -144,7 +145,7 @@ Also do a spot check with local knowledge where possible; Stephan knows parts of
 ## 7. External links
 
 Per-parcel links (ÖREB extract PDF, cantonal map viewer, map.geo.admin.ch) are URL templates in
-`etl/config/cantons/<XX>.yaml` (`links`, placeholders `{egrid}`, `{e}`, `{n}` in LV95). For a new canton,
+`etl/config/cantons/<XX>.yaml` (`links`, placeholders `{egrid}`, `{e}`/`{n}` in LV95, `{lat}`/`{lng}` in WGS84). For a new canton,
 find its ÖREB service (cadastre.ch lists cantonal endpoints) and its viewer's URL format (open the viewer,
 use its share button, read the URL). AG Online Karten: `?center=<E>,<N>&z=<zoom>`.
 

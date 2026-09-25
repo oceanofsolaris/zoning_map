@@ -17,7 +17,7 @@ oereb:
   extract_json: "https://api.geo.ag.ch/v2/oereb/extract/json/?EGRID={egrid}"
   extract_pdf: "https://api.geo.ag.ch/v2/oereb/extract/pdf/?EGRID={egrid}"
 
-# External links per parcel ({egrid}, {e}, {n} = LV95 coordinates). Shown in the inspector.
+# External links per parcel ({egrid}; {e}, {n} = LV95; {lat}, {lng} = WGS84). Shown in the inspector.
 links:
   - id: oereb
     label: ÖREB-Auszug (PDF)
@@ -31,3 +31,7 @@ links:
     label: map.geo.admin.ch
     hint: Bundeskarte mit Hangneigung und Strassenlärm
     url: "https://map.geo.admin.ch/#/map?lang=de&center={e},{n}&z=11&bgLayer=ch.swisstopo.pixelkarte-grau&layers=ch.swisstopo.hangneigung-ueber_30;ch.bafu.laerm-strassenlaerm_tag"
+  - id: google
+    label: Google Maps (Satellit)
+    hint: Luftbild zur Orientierung, auf die Parzelle zentriert (ohne Umriss)
+    url: "https://www.google.com/maps/@?api=1&map_action=map&center={lat},{lng}&zoom=20&basemap=satellite"

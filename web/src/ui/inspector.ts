@@ -145,7 +145,8 @@ export function renderInspector(el: HTMLElement, territory: Territory, p: Parcel
   // Official sources for this parcel (templates per canton: {egrid}, {e}, {n})
   const links = (member.links ?? []).map((l) => {
     const url = l.url.replaceAll("{egrid}", encodeURIComponent(p.egrid))
-      .replaceAll("{e}", String(Math.round(p.lv95?.[0] ?? 0))).replaceAll("{n}", String(Math.round(p.lv95?.[1] ?? 0)));
+      .replaceAll("{e}", String(Math.round(p.lv95?.[0] ?? 0))).replaceAll("{n}", String(Math.round(p.lv95?.[1] ?? 0)))
+      .replaceAll("{lat}", String(p.wgs84?.[1] ?? 0)).replaceAll("{lng}", String(p.wgs84?.[0] ?? 0));
     return `<li><a href="${esc(url)}" target="_blank" rel="noopener">${esc(l.label)}</a>${l.hint ? ` <span class="small muted">– ${esc(l.hint)}</span>` : ""}</li>`;
   });
   if (links.length) html += `<section><h3>Amtliche Quellen</h3><ul class="links">${links.join("")}</ul></section>`;
