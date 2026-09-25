@@ -115,6 +115,12 @@ export async function loadTerritories(entries: TerritoryIndexEntry[]): Promise<T
         if (name === "parcels" || name === "envelopes") {
           for (const f of fc.features) f.properties = { ...f.properties, id: (f.properties!.id as number) + offsets[i] };
         }
+        if (name === "buildings") {
+          for (const f of fc.features) {
+            const pid = f.properties?.pid;
+            f.properties = { ...f.properties, pid: pid === null || pid === undefined ? -1 : (pid as number) + offsets[i] };
+          }
+        }
         if (name === "perimeters" || name === "boundary") {
           for (const f of fc.features) f.properties = { ...f.properties, territory_id: l.territory.territory_id };
         }

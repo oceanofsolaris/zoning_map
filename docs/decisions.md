@@ -169,3 +169,6 @@ Newest first within each section. Date: 2026-09-25 unless noted.
     *buildable* part (golden case 27; before, a large green-zone part made the parcel read "Kein Bauland"),
     (b) parts without a rulebook zone carry their zoning label. Windisch rulebook gains a GR (Grünzone) entry
     quoting § 31.
+35. **Translucent buildings on the selected parcel** (feedback): buildings carry the id of the parcel holding the
+    largest share of their footprint (`pid`); a second 3D layer draws them at 35 % opacity so the ghost envelope
+    and its outline stay visible.

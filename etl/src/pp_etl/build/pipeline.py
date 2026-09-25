@@ -319,6 +319,8 @@ def geometry_facts(b: Build) -> None:
     pieces["piece_m2"] = pieces.area
     pieces = pieces[pieces.piece_m2 >= pcfg["min_building_overlap_m2"]]
     pieces = pieces.merge(bl.drop(columns="geometry"), on="bid")
+    # each building's parcel (largest share of its footprint), for map highlighting
+    b.buildings["pid"] = b.buildings.bid.map(pieces.sort_values("piece_m2").groupby("bid").id.last())
     share = pieces.piece_m2 / pieces.footprint_m2
     pieces["gf_m2"] = np.where(pieces.counts & ~pieces.use_alt, pieces.piece_m2 * pieces.storeys.astype(float), 0.0)
     pieces["gf_fixed_m2"] = np.where(pieces.counts & pieces.use_alt, pieces.gf_alt_m2 * share, 0.0)

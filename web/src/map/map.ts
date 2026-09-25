@@ -152,6 +152,15 @@ export class ParcelMap {
         "fill-extrusion-vertical-gradient": true,
       },
     });
+    // Buildings on the selected parcel: translucent, so the ghost envelope and its outline stay visible
+    m.addLayer({
+      id: "buildings-3d-selected", type: "fill-extrusion", source: "buildings", minzoom: 14.5, filter: ["==", ["get", "pid"], -2],
+      paint: {
+        "fill-extrusion-color": "#8d8a83",
+        "fill-extrusion-height": ["get", "h"] as never,
+        "fill-extrusion-opacity": 0.35,
+      },
+    });
     m.addLayer({
       id: "ghost-3d", type: "fill-extrusion", source: "ghost",
       paint: {
@@ -194,6 +203,8 @@ export class ParcelMap {
   select(id: number | null, ghost: GeoJSON.FeatureCollection | null, fly = true): void {
     this.selected = id;
     this.map.setFilter("parcel-selected", ["==", ["id"], id ?? -1]);
+    this.map.setFilter("buildings-3d", ["!=", ["get", "pid"], id ?? -2]);
+    this.map.setFilter("buildings-3d-selected", ["==", ["get", "pid"], id ?? -2]);
     (this.map.getSource("ghost") as GeoJSONSource).setData(ghost ?? { type: "FeatureCollection", features: [] });
     if (id !== null && ghost && fly) {
       const b = bboxOf(ghost);
