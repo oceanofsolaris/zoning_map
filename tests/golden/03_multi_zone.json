@@ -1,0 +1,58 @@
+{
+  "name": "03_multi_zone",
+  "description": "700 m² W2 + 300 m² W3. W2: AZ 350 < env 684 → 350·1.3=455. W3: AZ 180 < env 324 → 180·1.2=216. Total 671. Dominant part W2 → binding az. Conservative: W2 fp 120 → 216·1.3=280.8; W3 fp 20 → 54·1.2=64.8; 345.6.",
+  "parcel": {
+    "area_m2": 1000,
+    "flags": [
+      "multi_zone"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 700,
+        "agsf_m2": 700,
+        "fp": [
+          700,
+          520,
+          450,
+          380,
+          300,
+          230,
+          120
+        ]
+      },
+      {
+        "zone": "W3",
+        "area_m2": 300,
+        "agsf_m2": 300,
+        "fp": [
+          300,
+          200,
+          160,
+          120,
+          90,
+          60,
+          20
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 200,
+      "storeys_max": 2,
+      "height_max_m": 8.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 671,
+    "gf_allowed_con_m2": 345.6,
+    "binding_constraint": "az",
+    "headroom_gf_m2": 471,
+    "headroom_units": 4,
+    "headroom_residents": 8.563636,
+    "utilisation": 0.298063,
+    "allowed_today": true,
+    "confidence": "medium"
+  }
+}

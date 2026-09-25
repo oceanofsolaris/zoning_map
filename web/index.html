@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Parzellenpotenzial</title>
+  <meta name="description" content="Wie viel Geschossfläche erlauben die Bauregeln – und wie viel ist gebaut? Parzellengenaue Schätzung auf Basis öffentlicher Daten." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='10' width='24' height='18' fill='none' stroke='%23d7263d' stroke-width='2.5' stroke-dasharray='4 2'/%3E%3Crect x='8' y='18' width='10' height='10' fill='%23555'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div class="brand-text"><strong data-i18n="app.title"></strong><span id="territory-name"></span></div>
+      </div>
+      <form class="search" id="search-form" role="search">
+        <input id="search" type="search" autocomplete="off" data-i18n-placeholder="search.placeholder" aria-label="Adresse suchen" />
+        <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+      </form>
+      <nav class="views" id="views" aria-label="Kartenebene"></nav>
+      <button class="link-btn" id="open-methodology" type="button" data-i18n="nav.methodology"></button>
+    </header>
+    <main class="stage">
+      <div id="map" aria-label="Karte"></div>
+      <div id="legend" class="legend"></div>
+      <div id="loading" class="loading" data-i18n="app.loading"></div>
+    </main>
+    <aside class="panel" id="panel">
+      <div class="panel-grip" id="panel-grip" aria-hidden="true"></div>
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-parcel" data-tab="parcel" data-i18n="tabs.parcel"></button>
+        <button role="tab" id="tab-muni" data-tab="muni" data-i18n="tabs.muni"></button>
+      </div>
+      <section class="tabpanel" id="pane-parcel" role="tabpanel"></section>
+      <section class="tabpanel" id="pane-muni" role="tabpanel"></section>
+    </aside>
+    <footer class="footer">
+      <span data-i18n="footer.disclaimer"></span>
+      <span class="attribution" id="attribution"></span>
+    </footer>
+  </div>
+  <dialog id="methodology" class="modal"></dialog>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

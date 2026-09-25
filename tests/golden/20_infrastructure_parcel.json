@@ -1,0 +1,39 @@
+{
+  "name": "20_infrastructure_parcel",
+  "description": "Road parcel inside a W2 zone (flag infrastructure): no capacity, not judged.",
+  "parcel": {
+    "area_m2": 800,
+    "flags": [
+      "infrastructure"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 0,
+      "storeys_max": null,
+      "height_max_m": null,
+      "n_buildings": 0
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": null,
+    "binding_constraint": "none",
+    "headroom_gf_m2": null,
+    "allowed_today": null
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "18_bonus_arealueberbauung",
+  "description": "W2 with the Arealüberbauung bonus (+1 storey, height +3 m): AZ 400 < env 1188 → 400·1.2=480. Conservative 486 > 400 → 480.",
+  "parcel": {
+    "area_m2": 800,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 150,
+      "storeys_max": 2,
+      "height_max_m": 7.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": {
+    "bonuses": {
+      "arealueberbauung": true
+    }
+  },
+  "expected": {
+    "gf_allowed_m2": 480,
+    "gf_allowed_con_m2": 480,
+    "headroom_gf_m2": 330,
+    "headroom_units": 3,
+    "utilisation": 0.3125
+  }
+}

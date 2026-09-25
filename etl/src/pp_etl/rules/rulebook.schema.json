@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/oceanofsolaris/upzone_me/rulebook.schema.json",
+  "title": "Parcel Potential rulebook (one planning perimeter)",
+  "type": "object",
+  "required": ["rulebook_id", "territory", "perimeter", "municipality", "version", "compiled_at", "sources", "zone_match_field", "zones"],
+  "properties": {
+    "rulebook_id": {"type": "string"},
+    "territory": {"type": "string"},
+    "perimeter": {"type": "string"},
+    "municipality": {
+      "type": "object", "required": ["bfs", "name", "canton"],
+      "properties": {"bfs": {"type": "integer"}, "name": {"type": "string"}, "canton": {"type": "string", "pattern": "^[A-Z]{2}$"}}
+    },
+    "scope_de": {"type": "string"},
+    "version": {"type": "string"},
+    "compiled_at": {"type": "string"},
+    "compiled_by": {"type": "string"},
+    "zone_match_field": {"enum": ["typ_kommunal_code", "typ_kommunal_bezeichnung"]},
+    "sources": {
+      "type": "array",
+      "items": {"type": "object", "required": ["id", "title"], "properties": {
+        "id": {"type": "string"}, "title": {"type": "string"}, "url": {"type": "string"},
+        "effective_from": {"type": "string"}, "local_path": {"type": "string"}, "note": {"type": "string"}}}
+    },
+    "definitions": {"type": "object", "additionalProperties": {"$ref": "#/$defs/value"}},
+    "flags_from_text": {"type": "array"},
+    "zones": {"type": "array", "items": {"$ref": "#/$defs/zone"}}
+  },
+  "$defs": {
+    "value": {
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": {},
+        "source": {"type": "string"},
+        "page": {"type": ["integer", "null"]},
+        "section": {"type": ["string", "null"]},
+        "quote": {"type": ["string", "null"]},
+        "verified": {"type": "boolean"},
+        "verified_by": {"type": "string"},
+        "verified_at": {"type": "string"},
+        "note": {"type": "string"}
+      },
+      "if": {"properties": {"value": {"not": {"type": "null"}}}},
+      "then": {"required": ["value", "source", "verified"]}
+    },
+    "zone": {
+      "type": "object",
+      "required": ["code", "label_de", "match", "category", "residential", "discretionary", "params"],
+      "properties": {
+        "code": {"type": "string"},
+        "label_de": {"type": "string"},
+        "match": {"type": "object", "minProperties": 1,
+                  "additionalProperties": {"type": "array", "items": {"type": "string"}, "minItems": 1}},
+        "category": {"enum": ["residential", "mixed", "centre", "core", "oldtown", "renewal", "special", "work", "public"]},
+        "residential": {"type": "boolean"},
+        "discretionary": {"type": "boolean"},
+        "params": {
+          "type": "object",
+          "properties": {
+            "az_max": {"$ref": "#/$defs/value"},
+            "ueberbauungsziffer_max": {"$ref": "#/$defs/value"},
+            "gruenflaechenziffer_min": {"$ref": "#/$defs/value"},
+            "vollgeschosse_max": {"$ref": "#/$defs/value"},
+            "attika_or_dg_allowed": {"$ref": "#/$defs/value"},
+            "attika_factor": {"$ref": "#/$defs/value"},
+            "fassadenhoehe_max_m": {"$ref": "#/$defs/value"},
+            "gesamthoehe_max_m": {"$ref": "#/$defs/value"},
+            "grenzabstand_klein_m": {"$ref": "#/$defs/value"},
+            "grenzabstand_gross_m": {"$ref": "#/$defs/value"},
+            "gebaeudelaenge_max_m": {"$ref": "#/$defs/value"},
+            "empfindlichkeitsstufe": {"$ref": "#/$defs/value"}
+          },
+          "additionalProperties": false
+        },
+        "basis": {"$ref": "#/$defs/value_nullable"},
+        "bonuses": {"type": "array", "items": {"type": "object", "required": ["id", "discretionary", "default_on"]}},
+        "confidence_cap": {"type": "object", "required": ["value"], "properties": {"value": {"enum": ["low", "medium", "high"]}}},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      },
+      "allOf": [
+        {"if": {"properties": {"residential": {"const": true}, "discretionary": {"const": false}}},
+         "then": {"properties": {"params": {"required": ["vollgeschosse_max", "az_max", "gesamthoehe_max_m", "grenzabstand_klein_m"]}}}}
+      ]
+    },
+    "value_nullable": {"type": "object", "properties": {"value": {}, "source": {"type": "string"}, "verified": {"type": "boolean"}}}
+  }
+}

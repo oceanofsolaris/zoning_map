@@ -1,0 +1,42 @@
+{
+  "name": "21_existing_fixed_part",
+  "description": "Case 01 geometry with existing_to_agf 0.8: 150 m² footprint-method (→120) plus 200 m² fixed aGF (from GWR dwelling areas, unscaled) = 320. Allowed 520 → headroom 200, utilisation 0.615385.",
+  "cfg": {
+    "existing_to_agf": 0.8
+  },
+  "parcel": {
+    "area_m2": 800,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 150,
+      "gf_fixed_m2": 200,
+      "storeys_max": 2,
+      "height_max_m": 7.0,
+      "n_buildings": 2
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "agf_existing_m2": 320,
+    "headroom_gf_m2": 200,
+    "headroom_units": 2,
+    "utilisation": 0.615385,
+    "allowed_today": true
+  }
+}

@@ -1,0 +1,59 @@
+# Engine and pipeline defaults (spec §13). Every value here is listed on the
+# methodology page. Override per territory in territories/<canton>/<file>.yaml
+# under `config:`.
+
+engine:
+  gf_per_dwelling_m2: 100        # D3: gross floor area per new dwelling
+  gf_per_resident_m2: 55         # D4: ~46 m² net living area per person × 1.2
+  storey_height_m: 3.0           # D5
+  attika_factor: 0.6             # D5: fraction of a full storey for an attic/Attika where the BNO is silent
+  envelope_to_agf: 0.9           # D6: share of the gross envelope that counts as aGF
+  net_to_gross: 1.25             # D6: GWR net dwelling area → gross floor area
+  existing_to_agf: 1.0           # D7: footprint × storeys → aGF; replaced by calibration (§7.3)
+  tol_gf: 0.10                   # D8
+  tol_height_m: 1.0              # D8
+  setback_mode: optimistic       # D9: optimistic = small boundary distance on all sides
+  setback_steps_m: [0, 2, 3, 4, 5, 6, 8]
+  # Used when a zone has no small boundary distance in the rulebook (assumption, see methodology).
+  default_grenzabstand_m: 4.0
+  # Scenario: a +1 full storey lever also raises the total height by one storey height.
+  # Otherwise a storey increase is often cancelled by the unchanged Gesamthöhe.
+  scenario_storey_raises_height: true
+  # Confidence rules (§7.6)
+  small_parcel_m2: 150
+  setback_range_medium_threshold: 0.30
+
+pipeline:
+  # §7.1 step 2: subtract parts of the parcel that lie in non-building zones
+  # (forest, water, traffic) from aGSF. The zone-part intersection already does
+  # this for base zoning; this switch additionally subtracts overlay areas.
+  agsf_subtract_overlays: false
+  # A building footprint must overlap a parcel by at least this share to be
+  # allocated to it (pieces below are dropped as slivers).
+  min_building_overlap_m2: 1.0
+  # Existing floor area counts only main buildings. Garages (GKLAS 1242) and
+  # other small structures (1274) are Nebennutzflächen and do not count as aGF.
+  existing_exclude_gklas: [1242, 1274]
+  existing_min_footprint_m2: 10.0
+  # AV footprints without a GWR building (no EGID) count only from this size up.
+  existing_min_footprint_no_egid_m2: 50.0
+  # Use GWR dwelling area × net_to_gross instead of footprint × storeys for residential buildings
+  # where the latter is more than this factor larger (terraced houses, podiums, farmhouses with barns).
+  existing_alt_ratio_max: 2.0
+  # Zone parts smaller than this (m²) are treated as slivers from digitising
+  # differences between the zoning and cadastral datasets.
+  min_zone_part_m2: 5.0
+  min_zone_part_share: 0.02
+  # Parcels whose AV land cover is mostly road/rail/water carry no capacity (flag `infrastructure`).
+  infrastructure_share: 0.5
+  # Party walls: buildings on both sides of a boundary closer than this count as built together.
+  party_wall_gap_m: 0.6
+  # SDR overlap flag threshold (share of parcel area covered by a Baurecht)
+  sdr_overlap_share: 0.10
+  # Slope flag (§5 #9)
+  slope_flag_pct: 10.0
+  # Calibration of existing_to_agf (§7.3)
+  calibration:
+    min_year: 2019
+    target_median_utilisation: 0.95
+    min_samples: 8

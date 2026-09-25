@@ -1,0 +1,38 @@
+{
+  "name": "13_small_parcel",
+  "description": "W2, 120 m²: fp@4=5 → env 9 < AZ 60 → 9·1.3=11.7. Small parcel → low.",
+  "parcel": {
+    "area_m2": 120,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 120,
+        "agsf_m2": 120,
+        "fp": [
+          120,
+          40,
+          20,
+          5,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 0,
+      "storeys_max": null,
+      "height_max_m": null,
+      "n_buildings": 0
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 11.7,
+    "binding_constraint": "envelope",
+    "headroom_units": 0,
+    "headroom_residents": 0.212727,
+    "confidence": "low"
+  }
+}

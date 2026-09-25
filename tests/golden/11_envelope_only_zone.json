@@ -1,0 +1,42 @@
+{
+  "name": "11_envelope_only_zone",
+  "description": "Zentrumszone without AZ: fp@4=280 · (4+0.6) · 0.9 = 1159.2, binding envelope. Large distance undefined → conservative uses small one. Zone caps confidence at medium.",
+  "parcel": {
+    "area_m2": 500,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "Z",
+        "area_m2": 500,
+        "agsf_m2": 500,
+        "fp": [
+          500,
+          380,
+          330,
+          280,
+          230,
+          180,
+          100
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 600,
+      "storeys_max": 4,
+      "height_max_m": 15.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 1159.2,
+    "gf_allowed_con_m2": 1159.2,
+    "binding_constraint": "envelope",
+    "envelope_height_m": 13.8,
+    "headroom_gf_m2": 559.2,
+    "headroom_units": 5,
+    "utilisation": 0.517598,
+    "allowed_today": true,
+    "confidence": "medium"
+  }
+}

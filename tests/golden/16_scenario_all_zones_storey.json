@@ -1,0 +1,61 @@
+{
+  "name": "16_scenario_all_zones_storey",
+  "description": "Case 03 with +1 storey everywhere. AZ still binds, so the same aGF spreads over more storeys and the attic share shrinks: W2 350·(1+0.6/3)=420, W3 180·(1+0.6/4)=207 → 627. Conservative: W2 324·1.2=388.8; W3 20·4·0.9=72 → 72·1.15=82.8 → 471.6.",
+  "parcel": {
+    "area_m2": 1000,
+    "flags": [
+      "multi_zone"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 700,
+        "agsf_m2": 700,
+        "fp": [
+          700,
+          520,
+          450,
+          380,
+          300,
+          230,
+          120
+        ]
+      },
+      {
+        "zone": "W3",
+        "area_m2": 300,
+        "agsf_m2": 300,
+        "fp": [
+          300,
+          200,
+          160,
+          120,
+          90,
+          60,
+          20
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 200,
+      "storeys_max": 2,
+      "height_max_m": 8.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": {
+    "zones": {
+      "*": {
+        "d_vg": 1
+      }
+    }
+  },
+  "expected": {
+    "gf_allowed_m2": 627,
+    "gf_allowed_con_m2": 471.6,
+    "headroom_gf_m2": 427,
+    "headroom_units": 4,
+    "utilisation": 0.318979,
+    "confidence": "medium"
+  }
+}

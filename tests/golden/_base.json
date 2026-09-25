@@ -1,0 +1,19 @@
+{
+  "description": "Shared config and rules for all golden cases. Cases may override `cfg` keys and add `rules`.",
+  "cfg": {
+    "gf_per_dwelling_m2": 100, "gf_per_resident_m2": 55, "storey_height_m": 3.0, "attika_factor": 0.6,
+    "envelope_to_agf": 0.9, "net_to_gross": 1.25, "existing_to_agf": 1.0, "tol_gf": 0.10, "tol_height_m": 1.0,
+    "setback_mode": "optimistic", "setback_steps_m": [0, 2, 3, 4, 5, 6, 8], "default_grenzabstand_m": 4.0,
+    "scenario_storey_raises_height": true, "small_parcel_m2": 150, "setback_range_medium_threshold": 0.30
+  },
+  "rules": {
+    "W2":  {"code": "W2", "residential": true, "discretionary": false, "az_max": 0.5, "uez_max": null, "vg_max": 2, "attika_allowed": true, "attika_factor": null, "gh_max_m": 11.0, "ga_klein_m": 4.0, "ga_gross_m": 8.0, "az_counts_attika": false, "bonuses": [{"id": "arealueberbauung", "az_delta": 0.0, "vg_delta": 1}], "confidence_cap": null},
+    "W3":  {"code": "W3", "residential": true, "discretionary": false, "az_max": 0.6, "uez_max": null, "vg_max": 3, "attika_allowed": true, "attika_factor": null, "gh_max_m": 14.0, "ga_klein_m": 4.0, "ga_gross_m": 10.0, "az_counts_attika": false, "bonuses": [], "confidence_cap": null},
+    "WA3": {"code": "WA3", "residential": true, "discretionary": false, "az_max": 0.6, "uez_max": null, "vg_max": 3, "attika_allowed": true, "attika_factor": null, "gh_max_m": 14.0, "ga_klein_m": 4.0, "ga_gross_m": 10.0, "az_counts_attika": false, "bonuses": [{"id": "eg_publikumsorientiert", "az_delta": 0.1, "vg_delta": 0}], "confidence_cap": null},
+    "W2C": {"code": "W2C", "residential": true, "discretionary": false, "az_max": 0.5, "uez_max": null, "vg_max": 2, "attika_allowed": true, "attika_factor": null, "gh_max_m": 11.0, "ga_klein_m": 4.0, "ga_gross_m": 8.0, "az_counts_attika": true, "bonuses": [], "confidence_cap": null},
+    "UZ":  {"code": "UZ", "residential": true, "discretionary": false, "az_max": null, "uez_max": 0.25, "vg_max": 2, "attika_allowed": false, "attika_factor": null, "gh_max_m": 8.0, "ga_klein_m": 4.0, "ga_gross_m": 4.0, "az_counts_attika": true, "bonuses": [], "confidence_cap": null},
+    "Z":   {"code": "Z", "residential": true, "discretionary": false, "az_max": null, "uez_max": null, "vg_max": 4, "attika_allowed": true, "attika_factor": null, "gh_max_m": 17.0, "ga_klein_m": 4.0, "ga_gross_m": null, "az_counts_attika": false, "bonuses": [], "confidence_cap": "medium"},
+    "K":   {"code": "K", "residential": true, "discretionary": true, "az_max": null, "uez_max": null, "vg_max": null, "attika_allowed": false, "attika_factor": null, "gh_max_m": null, "ga_klein_m": null, "ga_gross_m": null, "az_counts_attika": false, "bonuses": [], "confidence_cap": null},
+    "AI":  {"code": "AI", "residential": false, "discretionary": false, "az_max": null, "uez_max": null, "vg_max": null, "attika_allowed": false, "attika_factor": null, "gh_max_m": null, "ga_klein_m": null, "ga_gross_m": null, "az_counts_attika": false, "bonuses": [], "confidence_cap": null}
+  }
+}

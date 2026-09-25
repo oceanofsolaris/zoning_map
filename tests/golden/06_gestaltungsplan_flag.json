@@ -1,0 +1,41 @@
+{
+  "name": "06_gestaltungsplan_flag",
+  "description": "Same as case 01 but inside a Gestaltungsplan perimeter: numbers unchanged (flag only), confidence low.",
+  "parcel": {
+    "area_m2": 800,
+    "flags": [
+      "gestaltungsplan"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 150,
+      "storeys_max": 2,
+      "height_max_m": 7.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 520,
+    "headroom_gf_m2": 370,
+    "confidence": "low",
+    "flags": [
+      "gestaltungsplan"
+    ]
+  }
+}

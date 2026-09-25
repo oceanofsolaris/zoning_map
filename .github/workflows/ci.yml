@@ -1,0 +1,20 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: cd etl && uv sync --group dev
+      - run: cd etl && uv run pp rules validate
+      - run: cd etl && uv run --group dev pytest -q
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: cd web && npm ci
+      - run: cd web && npx tsc --noEmit
+      - run: cd web && npx vitest run   # parity test skips when data is not built

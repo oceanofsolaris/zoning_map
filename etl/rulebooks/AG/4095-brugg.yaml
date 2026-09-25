@@ -1,0 +1,1198 @@
+# Rulebook: Brugg, planning perimeter Brugg/Umiken (incl. Lauffohr).
+# Every value carries provenance (source, PDF page, section, verbatim quote).
+# `verified: true` may only be set by `pp rules verify` after human review.
+rulebook_id: AG-4095-brugg-umiken
+territory: AG-4095-brugg
+perimeter: brugg-umiken
+municipality:
+  bfs: 4095
+  name: Brugg
+  canton: AG
+scope_de: Ortsteile Brugg (inkl. Lauffohr) und Umiken
+version: 0.1.0
+compiled_at: '2026-09-25'
+compiled_by: LLM-assisted extraction (Claude, in-session); every value awaits human verification via `pp rules verify`
+zone_match_field: typ_kommunal_code
+sources:
+- id: bno_2024
+  title: Bau- und Nutzungsordnung Ortsteile Brugg und Umiken, nachgeführte Fassung, Stand 10. Januar 2024
+  url: https://www.brugg.ch/public/upload/assets/9062/01%20Bau-%20und%20Nutzungsordnung%20der%20Stadt%20Brugg%20(in%20Kraft%20seit%2010.%20Januar%202024).pdf?fp=2
+  effective_from: '2024-01-10'
+  local_path: data/raw/documents/AG-4095/bno_2024.pdf
+  note: Vom Einwohnerrat beschlossen am 22.11.2019; vom Regierungsrat genehmigt am 24.03.2021 und 15.09.2021. Nicht rechtsverbindliche Reproduktion;
+    enthält die Teiländerungen bis 10.01.2024.
+- id: teil1_2022
+  title: Teiländerung BNO, Rückweisungsänderungen 1. Teil (Einwohnerrat 21.01.2022)
+  url: https://oereblex.ag.ch/api/attachments/8877
+  note: In bno_2024 eingearbeitet (§ 7, § 16 Abs. 5, § 85 Abs. 2).
+- id: teil2_2023
+  title: Teiländerung BNO, Rückweisungsänderungen 2. Teil (Einwohnerrat 01.09.2023)
+  url: https://oereblex.ag.ch/api/attachments/10420
+  note: In bno_2024 eingearbeitet (§ 23, § 58, § 59, § 74, Anhang III).
+- id: teilgenehmigung
+  title: Teilgenehmigung Zentrums-/Altstadtzone und kommunal geschützte Bauten
+  url: https://oereblex.ag.ch/api/attachments/8536
+- id: uebergang_2024
+  title: Übergangsbestimmungen BNO Brugg und Umiken aufgrund Rückweisungen Teil 3 (Stand 10.01.2024)
+  url: https://www.brugg.ch/public/upload/assets/9071/05%20%C3%9Cbergangsbestimmungen%20BNO%20Brugg%20und%20Umiken%20aufgrund%20R%C3%BCckweisungen%20Teil%203%20(Stand%2010.%20Januar%202024).pdf?fp=2
+  note: 'Arbeitszone II: weiterhin § 25 BNO 2003 (§ 24 von der Genehmigung ausgenommen).'
+- id: bauv_ag
+  title: Bauverordnung Kanton Aargau (BauV), SAR 713.121 (verify)
+  url: https://gesetzessammlungen.ag.ch/
+definitions:
+  az_counts_attika_dg:
+    value: false
+    source: bno_2024
+    page: 32
+    section: § 74
+    quote: Dach-, Attika- und Untergeschosse werden bei der Ausnützungsziffer nicht angerechnet.
+    verified: false
+  geschlossene_bauweise_zulaessig:
+    value: true
+    source: bno_2024
+    page: 11
+    section: § 13 Abs. 5
+    quote: Wo die BNO nichts anderes bestimmt, sind sowohl die offene wie auch die geschlossene Bauweise zulässig.
+    verified: false
+    note: Engine setzt an Grenzen mit beidseitig angebauten Gebäuden (Brandmauer) keinen Grenzabstand an.
+  az_bonus_scope:
+    value: WA zones
+    source: bno_2024
+    page: 11
+    section: § 13 Abs. 4
+    quote: Der Stadtrat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1 zulassen.
+    verified: false
+flags_from_text:
+- id: nachverdichtungsgebiet
+  source: bno_2024
+  page: 7
+  section: § 6 Abs. 2
+  quote: Der Stadtrat kann in diesen Gebieten maximal drei Vollgeschosse, die geschlossene Bauweise und eine Ausnützungsziffer von 0.6 bewilligen.
+  note: Overlay im Bauzonenplan; als Flag geführt, nicht modelliert.
+- id: hochhausstandort
+  source: bno_2024
+  page: 8
+  section: § 7 Abs. 2
+  quote: In den im Bauzonenplan speziell bezeichneten Gebieten sind Hochhäuser auf der Grundlage eines rechtskräftigen Gestaltungsplans zulässig.
+  note: Flag only.
+zones:
+- code: W2
+  label_de: Wohnzone 2
+  match:
+    typ_kommunal_code:
+    - '112101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.5
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 11.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: W3
+  label_de: Wohnzone 3
+  match:
+    typ_kommunal_code:
+    - '113101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 3
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.6
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 14.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 10.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: W4
+  label_de: Wohnzone 4
+  match:
+    typ_kommunal_code:
+    - '114101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.8
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.3
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 17.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 10.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 20  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: WA2
+  label_de: Wohn- und Arbeitszone 2
+  match:
+    typ_kommunal_code:
+    - '132101'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 2 2 0.5 0.3 11 m 4 m 8 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.5
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 2 2 0.5 0.3 11 m 4 m 8 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.3
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 2 2 0.5 0.3 11 m 4 m 8 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 11.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 2 2 0.5 0.3 11 m 4 m 8 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 2 2 0.5 0.3 11 m 4 m 8 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 2 2 0.5 0.3 11 m 4 m 8 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 2 2 0.5 0.3 11 m 4 m 8 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 11
+    section: § 13 Abs. 4
+    quote: Der Stadtrat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1 zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: WA3
+  label_de: Wohn- und Arbeitszone 3
+  match:
+    typ_kommunal_code:
+    - '133101'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 3
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 3 3 0.6 0.3 14 m 4 m 10 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer |
+        Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.6
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 3 3 0.6 0.3 14 m 4 m 10 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer |
+        Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.3
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 3 3 0.6 0.3 14 m 4 m 10 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer |
+        Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 14.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 3 3 0.6 0.3 14 m 4 m 10 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer |
+        Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 3 3 0.6 0.3 14 m 4 m 10 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer |
+        Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 10.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 3 3 0.6 0.3 14 m 4 m 10 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer |
+        Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 3 3 0.6 0.3 14 m 4 m 10 m III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer |
+        Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 11
+    section: § 13 Abs. 4
+    quote: Der Stadtrat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1 zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: WA4
+  label_de: Wohn- und Arbeitszone 4
+  match:
+    typ_kommunal_code:
+    - '134101'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 4 4 1.1 0.2 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 1.1
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 4 4 1.1 0.2 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.2
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 4 4 1.1 0.2 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 17.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 4 4 1.1 0.2 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 4 4 1.1 0.2 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: null
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 4 4 1.1 0.2 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Mit "*" bezeichnete Masse legt der Stadtrat im Einzelfall fest (§ 13 Abs. 2); Engine nutzt den kleinen Grenzabstand
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 4 4 1.1 0.2 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 11
+    section: § 13 Abs. 4
+    quote: Der Stadtrat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1 zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: WAZ4
+  label_de: Wohn- und Arbeitszone Zentrum 4
+  match:
+    typ_kommunal_code:
+    - '134102'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone Zentrum 4 4 1.4 - 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer
+        | Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 1.4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone Zentrum 4 4 1.4 - 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer
+        | Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone Zentrum 4 4 1.4 - 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer
+        | Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: '"-": keine Nutzungsziffern einzuhalten (§ 13 Abs. 3)'
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 17.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone Zentrum 4 4 1.4 - 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer
+        | Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone Zentrum 4 4 1.4 - 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer
+        | Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: null
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone Zentrum 4 4 1.4 - 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer
+        | Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Mit "*" bezeichnete Masse legt der Stadtrat im Einzelfall fest (§ 13 Abs. 2); Engine nutzt den kleinen Grenzabstand
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone Zentrum 4 4 1.4 - 17 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer
+        | Gesamthöhe | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 11
+    section: § 13 Abs. 4
+    quote: Der Stadtrat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1 zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: WA5
+  label_de: Wohn- und Arbeitszone 5
+  match:
+    typ_kommunal_code:
+    - '135101'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 5
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 5 5 1.4 0.2 20 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 1.4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 5 5 1.4 0.2 20 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.2
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 5 5 1.4 0.2 20 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 20.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 5 5 1.4 0.2 20 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 5 5 1.4 0.2 20 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: null
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 5 5 1.4 0.2 20 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Mit "*" bezeichnete Masse legt der Stadtrat im Einzelfall fest (§ 13 Abs. 2); Engine nutzt den kleinen Grenzabstand
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Ar- beitszone 5 5 1.4 0.2 20 m 4 m * III 19  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 11
+    section: § 13 Abs. 4
+    quote: Der Stadtrat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1 zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2024
+    page: 33
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify); in bezeichneten Gebieten ausgeschlossen (§ 20 Abs. 3)
+  notes: []
+- code: Z
+  label_de: Zentrumszone
+  match:
+    typ_kommunal_code:
+    - '144101'
+  category: centre
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 4
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone 4 - - 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: null
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone 4 - - 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+      note: '"-": keine Nutzungsziffern einzuhalten (§ 13 Abs. 3)'
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone 4 - - 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+      note: '"-": keine Nutzungsziffern einzuhalten (§ 13 Abs. 3)'
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Brugg regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 17.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone 4 - - 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone 4 - - 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: null
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone 4 - - 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+      note: Mit "*" bezeichnete Masse legt der Stadtrat im Einzelfall fest (§ 13 Abs. 2); Engine nutzt den kleinen Grenzabstand
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2024
+      page: 10
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone 4 - - 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnützung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+  bonuses: []
+  notes:
+  - 'Keine Ausnützungsziffer ("-"): nur die Hülle (Geschosse, Höhe, Abstände) begrenzt.'
+  - '§ 17 Abs. 3: Für Neuüberbauungen, die das Quartierbild wesentlich verändern, sind Gestaltungspläne erforderlich.'
+  confidence_cap:
+    value: medium
+    reason: Gestaltungsplanpflicht für grössere Neuüberbauungen (§ 17 Abs. 3)
+- code: K
+  label_de: Kernzone
+  match:
+    typ_kommunal_code:
+    - '141101'
+  category: core
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2024
+    page: 10
+    section: § 13 Abs. 1–2
+    quote: Kernzone * - - * * * III 18
+    verified: false
+  bonuses: []
+  notes:
+  - Alle Masse legt der Stadtrat im Einzelfall fest ("*").
+- code: A
+  label_de: Altstadtzone
+  match:
+    typ_kommunal_code:
+    - '141201'
+  category: oldtown
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2024
+    page: 10
+    section: § 13 Abs. 1; § 14
+    quote: Altstadt Festlegung mittels Altstadtreglement III 14
+    verified: false
+  bonuses: []
+  notes:
+  - Masse gemäss Altstadtreglement; Ersatz- und Anbauten nur in Ausnahmefällen (§ 14 Abs. 3 lit. c).
+- code: C
+  label_de: Cityzone
+  match:
+    typ_kommunal_code:
+    - '143101'
+  category: centre
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2024
+    page: 10
+    section: § 13 Abs. 1; § 15
+    quote: Cityzonen Festlegung mittels Reglement Sondernutzungsvorschriften "City 1" und "City 2" III 15
+    verified: false
+  bonuses: []
+  notes:
+  - Grössere Um- und Neubauten nur mit Gestaltungsplan (§ 15 Abs. 3).
+- code: ZC
+  label_de: Zone Campus
+  match:
+    typ_kommunal_code:
+    - '148101'
+  category: special
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2024
+    page: 10
+    section: § 13 Abs. 1; § 16
+    quote: Zone Campus Festlegung mittels Reglement Sondernutzungsvorschriften III 16
+    verified: false
+  bonuses: []
+  notes:
+  - Hochhausstandort im schraffierten Bereich (§ 16 Abs. 6); Gestaltungspläne erforderlich (§ 16 Abs. 4).
+- code: E
+  label_de: Erneuerungszone
+  match:
+    typ_kommunal_code:
+    - '117101'
+    - '118101'
+  category: renewal
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2024
+    page: 10
+    section: § 13 Abs. 1; § 21
+    quote: Erneuerungs- zone Baumasse der bestehenden Bauten als Richtwerte II 21
+    verified: false
+  bonuses: []
+  notes:
+  - Baumasse der bestehenden Bauten gelten als Richtwerte; Erneuerung über Gestaltungsplan (§ 21 Abs. 3).
+- code: AI
+  label_de: Arbeitszone I
+  match:
+    typ_kommunal_code:
+    - '121101'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Wohnungen nur für Betriebsinhaber und standortgebundenes Personal (vgl. § 23 Abs. 2); nicht als Wohnkapazität gezählt.
+- code: AII
+  label_de: Arbeitszone II
+  match:
+    typ_kommunal_code:
+    - '122199'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Wohnungen nur für Betriebsinhaber und standortgebundenes Personal (vgl. § 23 Abs. 2); nicht als Wohnkapazität gezählt.
+- code: AR
+  label_de: Arbeitszone Rütene
+  match:
+    typ_kommunal_code:
+    - '122102'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Wohnungen nur für Betriebsinhaber und standortgebundenes Personal (vgl. § 23 Abs. 2); nicht als Wohnkapazität gezählt.
+- code: AK
+  label_de: Arbeitszone Kabelwerke
+  match:
+    typ_kommunal_code:
+    - '122101'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Wohnungen nur für Betriebsinhaber und standortgebundenes Personal (vgl. § 23 Abs. 2); nicht als Wohnkapazität gezählt.
+- code: OeBA
+  label_de: Zone für öffentliche Bauten und Anlagen
+  match:
+    typ_kommunal_code:
+    - '151101'
+    - '151102'
+    - '151199'
+    - '151201'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []
+- code: WP
+  label_de: Zone Waffenplatz
+  match:
+    typ_kommunal_code:
+    - '152101'
+    - '152199'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []
+- code: UV
+  label_de: Zone unter Viadukt
+  match:
+    typ_kommunal_code:
+    - '163101'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []
+- code: FZ
+  label_de: Freizeitzone
+  match:
+    typ_kommunal_code:
+    - '171101'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []

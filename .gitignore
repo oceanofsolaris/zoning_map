@@ -1,0 +1,14 @@
+# data
+data/raw/
+data/processed/
+web/public/data/**/*.geojson
+web/public/data/**/*.json
+!web/public/data/fixtures/**
+web/dist/
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+etl/.cache/

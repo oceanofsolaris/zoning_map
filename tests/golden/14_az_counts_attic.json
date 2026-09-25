@@ -1,0 +1,39 @@
+{
+  "name": "14_az_counts_attic",
+  "description": "Rulebook where the AZ also counts the attic: min(AZ 400, 440·2.6·0.9=1029.6) = 400.",
+  "parcel": {
+    "area_m2": 800,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "W2C",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 150,
+      "storeys_max": 2,
+      "height_max_m": 7.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 400,
+    "gf_allowed_con_m2": 400,
+    "binding_constraint": "az",
+    "headroom_gf_m2": 250,
+    "headroom_units": 2,
+    "utilisation": 0.375
+  }
+}

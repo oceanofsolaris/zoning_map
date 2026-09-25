@@ -1,0 +1,42 @@
+# A territory = one current political municipality (BFS number).
+# It can contain several planning perimeters with their own rulebook
+# (typical after municipal mergers, until the zoning is harmonised).
+territory_id: AG-4095-brugg
+bfs: 4095
+name: Brugg
+canton: AG
+
+boundary:
+  source: swissboundaries3d
+  feature_id: "4095"            # current boundary (2026, after the Villnachern merger)
+
+sources:
+  av:  { provider: geodienste, topic: av, canton: AG }
+  npl: { provider: geodienste, topic: npl_nutzungsplanung, canton: AG }
+  gwr: { provider: bfs_madd, canton: ag }
+  buildings3d: { provider: swisstopo_stac, collection: ch.swisstopo.swissbuildings3d_3_0 }
+  alti: { provider: swisstopo_stac, collection: ch.swisstopo.swissalti3d }
+
+# Perimeters are evaluated in order; each is clipped to what is left after the
+# ones before it. `boundary_feature` refers to swissBOUNDARIES3D feature ids
+# (<bfs>-<year>), so historical municipal boundaries define the old planning areas.
+planning_perimeters:
+  - id: brugg-umiken
+    label: Brugg (mit Umiken und Lauffohr)
+    boundary_feature: "4095-2019"          # Brugg before the 2020 merger with Schinznach-Bad
+    rulebook: AG/4095-brugg.yaml
+  - id: schinznach-bad
+    label: Ortsteil Schinznach-Bad
+    boundary_feature: "4095-2025"          # adds Schinznach-Bad (merged 2020)
+    rulebook: null                          # P1
+  - id: villnachern
+    label: Ortsteil Villnachern
+    boundary_feature: "4095"                # adds Villnachern (merged 1 Jan 2026)
+    rulebook: null
+
+qa_locations:
+  - { id: altstadt, label: Altstadt, lon: 8.2076, lat: 47.4812 }
+  - { id: bruggerberg, label: "Bruggerberg (EFH-Hang)", lon: 8.2003, lat: 47.4885 }
+  - { id: campus, label: Zone Campus, lon: 8.2115, lat: 47.4808 }
+
+config: {}

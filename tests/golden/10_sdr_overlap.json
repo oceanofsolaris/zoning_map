@@ -1,0 +1,37 @@
+{
+  "name": "10_sdr_overlap",
+  "description": "Case 01 with a building-right (SDR) overlap: numbers unchanged, confidence low.",
+  "parcel": {
+    "area_m2": 800,
+    "flags": [
+      "sdr_overlap"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 150,
+      "storeys_max": 2,
+      "height_max_m": 7.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 520,
+    "confidence": "low"
+  }
+}

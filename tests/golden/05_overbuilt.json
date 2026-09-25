@@ -1,0 +1,46 @@
+{
+  "name": "05_overbuilt",
+  "description": "W2, 600 m². Allowed: fp@4=330 → env 594 > AZ 300 → 300·1.3=390. Existing 700 m² > 390·1.1; 4 storeys > 2+1; 13 m > 11+1 → not allowed today. Conservative 110 → 198·1.3=257.4 → range 34% → medium.",
+  "parcel": {
+    "area_m2": 600,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 600,
+        "agsf_m2": 600,
+        "fp": [
+          600,
+          450,
+          390,
+          330,
+          270,
+          210,
+          110
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 700,
+      "storeys_max": 4,
+      "height_max_m": 13.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 390,
+    "gf_allowed_con_m2": 257.4,
+    "utilisation": 1.794872,
+    "headroom_gf_m2": 0,
+    "headroom_units": 0,
+    "headroom_residents": 0,
+    "allowed_today": false,
+    "exceedances": [
+      "gf",
+      "storeys",
+      "height"
+    ],
+    "confidence": "medium"
+  }
+}

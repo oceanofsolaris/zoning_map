@@ -1,0 +1,43 @@
+{
+  "name": "04_discretionary",
+  "description": "Kernzone: all measures set case by case → no allowed floor area, binding discretionary, flag added, confidence medium.",
+  "parcel": {
+    "area_m2": 500,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "K",
+        "area_m2": 500,
+        "agsf_m2": 500,
+        "fp": [
+          500,
+          380,
+          330,
+          280,
+          230,
+          180,
+          100
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 300,
+      "storeys_max": 3,
+      "height_max_m": 10.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": null,
+    "binding_constraint": "discretionary",
+    "utilisation": null,
+    "headroom_gf_m2": null,
+    "headroom_units": null,
+    "allowed_today": null,
+    "flags": [
+      "discretionary"
+    ],
+    "confidence": "medium"
+  }
+}

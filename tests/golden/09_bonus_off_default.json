@@ -1,0 +1,35 @@
+{
+  "name": "09_bonus_off_default",
+  "description": "Same parcel as case 08 without scenario: AZ 600 → 600·1.2=720.",
+  "parcel": {
+    "area_m2": 1000,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "WA3",
+        "area_m2": 1000,
+        "agsf_m2": 1000,
+        "fp": [
+          1000,
+          800,
+          720,
+          640,
+          560,
+          480,
+          340
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 0,
+      "storeys_max": null,
+      "height_max_m": null,
+      "n_buildings": 0
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 720,
+    "headroom_units": 7
+  }
+}

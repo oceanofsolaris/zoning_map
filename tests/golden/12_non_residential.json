@@ -1,0 +1,38 @@
+{
+  "name": "12_non_residential",
+  "description": "Work zone: no residential capacity.",
+  "parcel": {
+    "area_m2": 2000,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "AI",
+        "area_m2": 2000,
+        "agsf_m2": 2000,
+        "fp": [
+          2000,
+          1700,
+          1550,
+          1400,
+          1260,
+          1120,
+          860
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 1500,
+      "storeys_max": 2,
+      "height_max_m": 9.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": null,
+    "binding_constraint": "non_residential",
+    "headroom_gf_m2": null,
+    "allowed_today": null,
+    "confidence": "high"
+  }
+}

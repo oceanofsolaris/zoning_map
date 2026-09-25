@@ -1,0 +1,43 @@
+{
+  "name": "02_envelope_bound_w3",
+  "description": "W3, 400 m² narrow parcel, unbuilt. fp@4=80 → 80·3·0.9=216 < AZ 0.6·400=240 → envelope binds; 216·(1+0.6/3)=259.2. Conservative (10 m, clamped to 8 m) fp=0 → range 100% → medium.",
+  "parcel": {
+    "area_m2": 400,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "W3",
+        "area_m2": 400,
+        "agsf_m2": 400,
+        "fp": [
+          400,
+          220,
+          150,
+          80,
+          50,
+          20,
+          0
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 0,
+      "storeys_max": null,
+      "height_max_m": null,
+      "n_buildings": 0
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 259.2,
+    "gf_allowed_con_m2": 0,
+    "binding_constraint": "envelope",
+    "envelope_height_m": 10.8,
+    "utilisation": 0,
+    "headroom_gf_m2": 259.2,
+    "headroom_units": 2,
+    "headroom_residents": 4.712727,
+    "allowed_today": null,
+    "confidence": "medium"
+  }
+}

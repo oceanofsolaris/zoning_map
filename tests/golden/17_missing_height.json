@@ -1,0 +1,39 @@
+{
+  "name": "17_missing_height",
+  "description": "Case 01 without storeys and height: only the floor-area check runs; flag caps at medium.",
+  "parcel": {
+    "area_m2": 800,
+    "flags": [
+      "missing_height"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 150,
+      "storeys_max": null,
+      "height_max_m": null,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": 520,
+    "allowed_today": true,
+    "exceedances": [],
+    "confidence": "medium"
+  }
+}

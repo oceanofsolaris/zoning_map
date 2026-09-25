@@ -1,0 +1,41 @@
+{
+  "name": "22_overbuilt_on_slope",
+  "description": "Case 05 on a slope-flagged parcel: floor area and storeys are still checked, the 13 m height is not (terrain not modelled).",
+  "parcel": {
+    "area_m2": 600,
+    "flags": [
+      "slope"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 600,
+        "agsf_m2": 600,
+        "fp": [
+          600,
+          450,
+          390,
+          330,
+          270,
+          210,
+          110
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 700,
+      "storeys_max": 4,
+      "height_max_m": 13.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "allowed_today": false,
+    "exceedances": [
+      "gf",
+      "storeys"
+    ],
+    "confidence": "medium"
+  }
+}

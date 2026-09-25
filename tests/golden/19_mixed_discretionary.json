@@ -1,0 +1,54 @@
+{
+  "name": "19_mixed_discretionary",
+  "description": "600 m² W2 + 300 m² Kernzone: the Kernzone part is set case by case, so the parcel total is unknown (null), not the W2 part alone.",
+  "parcel": {
+    "area_m2": 900,
+    "flags": [
+      "multi_zone"
+    ],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 600,
+        "agsf_m2": 600,
+        "fp": [
+          600,
+          450,
+          390,
+          330,
+          270,
+          210,
+          110
+        ]
+      },
+      {
+        "zone": "K",
+        "area_m2": 300,
+        "agsf_m2": 300,
+        "fp": [
+          300,
+          200,
+          160,
+          120,
+          90,
+          60,
+          20
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 400,
+      "storeys_max": 2,
+      "height_max_m": 8.0,
+      "n_buildings": 1
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "gf_allowed_m2": null,
+    "binding_constraint": "az",
+    "utilisation": null,
+    "headroom_gf_m2": null,
+    "confidence": "medium"
+  }
+}

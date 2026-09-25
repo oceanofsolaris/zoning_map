@@ -1,0 +1,706 @@
+{
+  "files": {
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1254/swissalti3d_2021_2652-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:42+00:00",
+      "sha256": "72b20c3e5f034e58a5fd0bd4250ee9528c74fe1b81edab0c1944e859d0f4dc1c",
+      "bytes": 1173384,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1255/swissalti3d_2021_2652-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:43+00:00",
+      "sha256": "efd5221d4d2660f0e563bb15791420b62f9093823338fe9211f261e88fc63326",
+      "bytes": 1229226,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1256/swissalti3d_2021_2652-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:43+00:00",
+      "sha256": "401bd990a094b36cf6381bda1edcc19e81434290e752187e3a05ca8157de4b78",
+      "bytes": 1215833,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1257/swissalti3d_2021_2652-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:44+00:00",
+      "sha256": "6ce4192773b747847d194adca5888c29d6634318b86baaa12ae8ab86548b6d69",
+      "bytes": 1185048,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1258/swissalti3d_2021_2652-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:44+00:00",
+      "sha256": "6f09bc36e6f846d656e8d5817a9c163e346ad95195758c8de85c39a018889193",
+      "bytes": 1072801,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1259/swissalti3d_2021_2652-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:44+00:00",
+      "sha256": "74d537506b5ebe1904a37d9c77ef88f4604f884ba6450dfdbe2e06045bbd386c",
+      "bytes": 1062552,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1260/swissalti3d_2021_2652-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:45+00:00",
+      "sha256": "f73d7d622c49df4b445e028bbec741536c68e1c8eecdec89857205625678d095",
+      "bytes": 1056112,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1261/swissalti3d_2021_2652-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:45+00:00",
+      "sha256": "012c3639a489cbef850933cc639d56b6547597ee560a3c83b3cf4e796060a8c2",
+      "bytes": 1104591,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2652-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2652-1262/swissalti3d_2021_2652-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:46+00:00",
+      "sha256": "eb75148c9d57adaad0d69f80a5136eca4e25ef0a5eae242063d9595d5029c91c",
+      "bytes": 1165363,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1254/swissalti3d_2021_2653-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:46+00:00",
+      "sha256": "0e13c7bb283abbc7836b387b748e2693fb4119def86ec9397e482b66d26b18d4",
+      "bytes": 1117607,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1255/swissalti3d_2021_2653-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:46+00:00",
+      "sha256": "a8abe9e7b2535226876ab49f47fd695219a4b84625cf54b05104f06fe5ecf3c2",
+      "bytes": 1098781,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1256/swissalti3d_2021_2653-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:47+00:00",
+      "sha256": "72019e53f8cbfc63b9f3896d68a1b13747fb7fec1ad45330a778a0fab96a6e27",
+      "bytes": 1173238,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1257/swissalti3d_2021_2653-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:47+00:00",
+      "sha256": "3ae31ded324d8ae6667a12894e408c1dbd0656c9a543947db0e9e3e72d51bb37",
+      "bytes": 1233948,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1258/swissalti3d_2021_2653-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:48+00:00",
+      "sha256": "9b013170e1f50398fbc53dd51fc6ba1386aa9b733742fdf3175b27f6a2596f78",
+      "bytes": 1221055,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1259/swissalti3d_2021_2653-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:48+00:00",
+      "sha256": "f9579a87265a09640333144d679e04f9d23202415ef7cd3e27a46be2a3a22081",
+      "bytes": 1104557,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1260/swissalti3d_2021_2653-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:48+00:00",
+      "sha256": "2ce2da331ec7022de005bd1c7236c1085da70eb63a866a69ec9702a32dd2d938",
+      "bytes": 1094046,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1261/swissalti3d_2021_2653-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:49+00:00",
+      "sha256": "9d7aa9bd4a40b6577e0e37af49a690dd1a3c373abdc0eb209c5a7a9ceca4bb28",
+      "bytes": 1163159,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2653-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2653-1262/swissalti3d_2021_2653-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:49+00:00",
+      "sha256": "4c9de6c6016275aeac130dd6e33c1fd7b63fbfd77cdb090e39677011065113bf",
+      "bytes": 1200403,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1254/swissalti3d_2021_2654-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:50+00:00",
+      "sha256": "05236968a94a060c6462ad4de0679d6390a5f6b718c751102e6f727419d7c3aa",
+      "bytes": 1004424,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1255/swissalti3d_2021_2654-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:50+00:00",
+      "sha256": "0accd1e8c121e68bd261e177eb4d6910d58d923c69cbfc1a8b60106e89b98cff",
+      "bytes": 1007479,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1256/swissalti3d_2021_2654-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:50+00:00",
+      "sha256": "24ef20322d5c3900dd66d4482542fbc60918e7b2d0ccb36c2da9363df7408dd5",
+      "bytes": 1043405,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1257/swissalti3d_2021_2654-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:51+00:00",
+      "sha256": "fdca1aeac1c44b1ea26116ef6bffd89b5c8f3423db0313627ac7667177b3f524",
+      "bytes": 1086873,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1258/swissalti3d_2021_2654-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:51+00:00",
+      "sha256": "9b17cb3e40617e68b94b23e33108793b41754a1319c4070c9288091992d7e34d",
+      "bytes": 1172244,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1259/swissalti3d_2021_2654-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:52+00:00",
+      "sha256": "2ea98c60afa998d836f04f58175ab19461d11780b88b0125c0f45dbf489babde",
+      "bytes": 1129392,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1260/swissalti3d_2021_2654-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:52+00:00",
+      "sha256": "3829e22bab367a8df296e9efd0481ba28dadba66d076fe57dcf9c25dfa5d66be",
+      "bytes": 1166672,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1261/swissalti3d_2021_2654-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:52+00:00",
+      "sha256": "fb06503e689410aef7b15c198e26503044fe26e3c914a6982e665c28a1aedc01",
+      "bytes": 1111209,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2654-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2654-1262/swissalti3d_2021_2654-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:53+00:00",
+      "sha256": "4e8847ec39bb75fcae4f1f2bb4e05c1e0d47fc5728751a2dd371ac06d163546a",
+      "bytes": 1188609,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1254/swissalti3d_2021_2655-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:53+00:00",
+      "sha256": "2396518b9df66afa190c2b61b9159bd8780a54776fbe9ff7090f8313f2a70f77",
+      "bytes": 1222930,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1255/swissalti3d_2021_2655-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:53+00:00",
+      "sha256": "7ac0567ad942008adfb50bfa81d94ec08c79f44e36091f2c83ad0243f6e5cb1f",
+      "bytes": 1177015,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1256/swissalti3d_2021_2655-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:54+00:00",
+      "sha256": "bfe1649cd7e8ecbdd4816c683405c7569924444e37920d647bccf7402ff15119",
+      "bytes": 1131277,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1257/swissalti3d_2021_2655-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:54+00:00",
+      "sha256": "00386b045deb221ea5d1df184fdb99dcba024a300055b243d89b75767da5ccce",
+      "bytes": 1076835,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1258/swissalti3d_2021_2655-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:54+00:00",
+      "sha256": "037e0b900fb67d5231ce543b06cd6e856d043ae0ba6863195684d727b4362eaa",
+      "bytes": 1077027,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1259/swissalti3d_2021_2655-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:55+00:00",
+      "sha256": "cd75e1f42e1d34695b759a522400d28300b3ece84d6fc4427ee2348f542e228c",
+      "bytes": 1193894,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1260/swissalti3d_2021_2655-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:55+00:00",
+      "sha256": "9f236be92b68f76e9a5d44c3e3cb96ad7d0131c133710fe6350b57e638986001",
+      "bytes": 1199174,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1261/swissalti3d_2021_2655-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:56+00:00",
+      "sha256": "96ad6d9569e1a3180dae0750a80c05244acc973837af74debcf09a9b05cb2693",
+      "bytes": 1197057,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2655-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2655-1262/swissalti3d_2021_2655-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:56+00:00",
+      "sha256": "2d1a97c68d9e27f5b6ee64fd0359bae71a3919fa1be0d2ad124d145531b5558f",
+      "bytes": 1162303,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1254/swissalti3d_2021_2656-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:56+00:00",
+      "sha256": "9aab0b2fc734eb90fd5763482b58641f8f6b39a467f806ebfaf52e397cf7d383",
+      "bytes": 1163975,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1255/swissalti3d_2021_2656-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:57+00:00",
+      "sha256": "473c7ad1659f0074e17926b77b1df2c37ba565bc07e249511aaacdeb6a67bcfd",
+      "bytes": 1110142,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1256/swissalti3d_2021_2656-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:57+00:00",
+      "sha256": "1382fe6b91492b5a15cadd1f049206a8873e129a485621f1a98f138c0be96ccc",
+      "bytes": 1083229,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1257/swissalti3d_2021_2656-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:57+00:00",
+      "sha256": "95b7d53c81442f2a0553826465352ff9c1af00d1c05f6794a2dcc69430e01b16",
+      "bytes": 1129496,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1258/swissalti3d_2021_2656-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:58+00:00",
+      "sha256": "042f738342368afd7b4b2d4f9cae66a417a1a163a341fd63d7ed3bc887657f29",
+      "bytes": 975569,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1259/swissalti3d_2021_2656-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:58+00:00",
+      "sha256": "808f2d491a9ea864e81d35d1309fb9a5d10a8fb867bc94e57f3f8a284012b229",
+      "bytes": 1154999,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1260/swissalti3d_2021_2656-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:58+00:00",
+      "sha256": "0d712746f71e366d1577f1f4504cf821781de653b4c8cf6e3ad28556f09b5ef1",
+      "bytes": 1142865,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1261/swissalti3d_2021_2656-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:59+00:00",
+      "sha256": "f93c474cbc2c07931fb082ac677535730dc6625f2ed61649fc7ace9992383729",
+      "bytes": 1150652,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2656-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2656-1262/swissalti3d_2021_2656-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:16:59+00:00",
+      "sha256": "579564adb6b6ea40be1bc5116f3b507eccd829fbea6c9bd427052066830765c0",
+      "bytes": 1128018,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1254/swissalti3d_2021_2657-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:00+00:00",
+      "sha256": "3b1cc2d8266456991ae61b339afa946deb3dfedcd340b6d3399bfaf4af92829a",
+      "bytes": 1088078,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1255/swissalti3d_2021_2657-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:00+00:00",
+      "sha256": "d2ca1edd63083b7f16a5c3e1ddecb21835506da50b81bf4f4ea3fa1728c0d8c0",
+      "bytes": 1023975,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1256/swissalti3d_2021_2657-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:00+00:00",
+      "sha256": "6380347999a4fd3517214dfb6de5e0f2505b5ee8781fa0492264f9fff561fe4e",
+      "bytes": 1162762,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1257/swissalti3d_2021_2657-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:01+00:00",
+      "sha256": "2fa05b6775f4b3db6e246ab26af36c99926e36cf6c1e5db1132f9d67c77fd9f5",
+      "bytes": 1192321,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1258/swissalti3d_2021_2657-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:01+00:00",
+      "sha256": "bf5f6321f402d80c8f05b3999a176df0d56f30b5235e6b459f2873d6cda79c69",
+      "bytes": 1061066,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1259/swissalti3d_2021_2657-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:01+00:00",
+      "sha256": "d7250e6f728dc7d099515279e0c3a915621e4cb9d04fdca527a9947228bcfcb7",
+      "bytes": 1076302,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1260/swissalti3d_2021_2657-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:02+00:00",
+      "sha256": "ce5576424d74a07747ae3ebcd5f609f333bcd8fceb2bd49e8e8a492b1e741dfd",
+      "bytes": 1170455,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1261/swissalti3d_2021_2657-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:02+00:00",
+      "sha256": "b165105ab1b4c09efc8ff5a02eac5532c8f0ab211b3a3c6d154027f28d761dd9",
+      "bytes": 1087102,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2657-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2657-1262/swissalti3d_2021_2657-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:02+00:00",
+      "sha256": "4c3510cc6986b166fadfccceb8e862dcac27c83c5947432274435f3183aa8e9d",
+      "bytes": 1054846,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1254/swissalti3d_2021_2658-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:03+00:00",
+      "sha256": "a7c1ec7dfe29a28fafc9e68ea36318541c42cde6db19b66e8d4e27af2de5c50c",
+      "bytes": 974681,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1255/swissalti3d_2021_2658-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:03+00:00",
+      "sha256": "0168b9ba8f389ed37ba1756f94288a2236fe98fdb79f301cdbbc06c200a3dc1c",
+      "bytes": 975574,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1256/swissalti3d_2021_2658-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:03+00:00",
+      "sha256": "5e8ac52ab52c8858166ae8d160668a9c25c8b8e92e29fd2a4ba492855613f7f0",
+      "bytes": 1141207,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1257/swissalti3d_2021_2658-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:04+00:00",
+      "sha256": "659aef6756a68df526db64be32b92d124206550e3bc3b7c4c28f9e01f432eb04",
+      "bytes": 1154609,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1258/swissalti3d_2021_2658-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:04+00:00",
+      "sha256": "eb6df9efc03b70d59a8fc7b1fcd672bea2fcdb52330265ab7a5a8e5fd82debb1",
+      "bytes": 1071048,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1259/swissalti3d_2021_2658-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:05+00:00",
+      "sha256": "85ff18866c61bbf95ea7616f6bb38ba18a3b1330073b83497720c17e1bd82703",
+      "bytes": 1001306,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1260/swissalti3d_2021_2658-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:05+00:00",
+      "sha256": "b9f12d7e7b259645755454db8d72a5608419154692d993b02ffddac06c9501f5",
+      "bytes": 1165788,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1261/swissalti3d_2021_2658-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:05+00:00",
+      "sha256": "1d29ff223ef080bd4aab49b09e708a8673b692d27e8b2e087f7469894a172e9c",
+      "bytes": 1195864,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2658-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2658-1262/swissalti3d_2021_2658-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:06+00:00",
+      "sha256": "9d8afee8479c74eb8a0df156088ecba2ceeed8d76b7c61d42f317e8df0f0f6d3",
+      "bytes": 1025923,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1254/swissalti3d_2021_2659-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:06+00:00",
+      "sha256": "4bd150f11a3c2bd6cf844da13d24ea2171aad6d454e7b4eba7f1976503383ee4",
+      "bytes": 945863,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1255/swissalti3d_2021_2659-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:06+00:00",
+      "sha256": "fa351c2543250cac6eb5e37554ae28b2213019a8ccfbfb89552154c94d9af741",
+      "bytes": 961400,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1256/swissalti3d_2021_2659-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:07+00:00",
+      "sha256": "0777a335d42a6fc68566737e901e9ad14732123ecd3d35ceb4655b0f2d34cb79",
+      "bytes": 1179951,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1257/swissalti3d_2021_2659-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:07+00:00",
+      "sha256": "a8bd51db32bd528ae9cad8af60b5d3ffc895597aca810cffb624573b3dc9efa5",
+      "bytes": 1151968,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1258/swissalti3d_2021_2659-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:07+00:00",
+      "sha256": "f2fdb3987495f18212d69900b5395529c9a83a7876157276358fa6e0e5f48887",
+      "bytes": 1094843,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1259/swissalti3d_2021_2659-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:08+00:00",
+      "sha256": "d121d11b4adaecd6c95baffa19e901ab69babb25884f9fabc91185cf9914db39",
+      "bytes": 1009627,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1260/swissalti3d_2021_2659-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:08+00:00",
+      "sha256": "73a62f65f9566b679fd837eedfe9aa60476737f6ab3cea3331b67517b0e6bf19",
+      "bytes": 987586,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1261/swissalti3d_2021_2659-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:08+00:00",
+      "sha256": "38e9a69813f5f61c243144a350ee0bbd2f3995a1334ceb7cee8594990be0bf4f",
+      "bytes": 1166081,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2659-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2659-1262/swissalti3d_2021_2659-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:09+00:00",
+      "sha256": "1986a63d5099fa54f1baee716940627e7064b4c5c63d75af6ad4e6ec30e64d78",
+      "bytes": 1051918,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1254_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1254/swissalti3d_2021_2660-1254_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:09+00:00",
+      "sha256": "5f721a840c78eb5c45df71cbd05fc651f70c24830698283e90c0d73a834180d1",
+      "bytes": 1025124,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1255_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1255/swissalti3d_2021_2660-1255_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:10+00:00",
+      "sha256": "c8b7613fd110b5a2d6551ff0cef2fae8a492cc0e1c4fdeaf132146e0ff745802",
+      "bytes": 1037875,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1256_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1256/swissalti3d_2021_2660-1256_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:10+00:00",
+      "sha256": "3cd996e625e757a656985960805e9dfef93b7f88b21d42689b4d6dc6e6a35778",
+      "bytes": 1062300,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1257_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1257/swissalti3d_2021_2660-1257_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:10+00:00",
+      "sha256": "7a0ad3117464109c96dcbdd2b1887883044dab1cd4bdf07db47a5b23bb95df31",
+      "bytes": 1127514,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1258_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1258/swissalti3d_2021_2660-1258_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:11+00:00",
+      "sha256": "a482e634ae9dbd10890f171fc043d2aadd4ae1916f4ec165e93041fb5b8012c7",
+      "bytes": 1213111,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1259_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1259/swissalti3d_2021_2660-1259_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:11+00:00",
+      "sha256": "b47b8b292029927e28faf321fe973d99c1bd9288f21f96e9502f933f45115edf",
+      "bytes": 1145797,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1260_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1260/swissalti3d_2021_2660-1260_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:12+00:00",
+      "sha256": "b94f4885862d1c67f7d684f6ec7af889274fae06cfdf923d221e649c971bad09",
+      "bytes": 1017834,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1261_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1261/swissalti3d_2021_2660-1261_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:12+00:00",
+      "sha256": "c2dba58c4ad3a00e192f1a04388a4372f5dd6f77a5228f83acb9d23feb963809",
+      "bytes": 1027304,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissalti3d/swissalti3d_2021_2660-1262_2_2056_5728.tif": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissalti3d/swissalti3d_2021_2660-1262/swissalti3d_2021_2660-1262_2_2056_5728.tif",
+      "fetched_at": "2026-09-24T23:17:12+00:00",
+      "sha256": "7e272abe27feb3eb4cb51ebbbd208b46b92fd62754014c5494974a8fe12d64e4",
+      "bytes": 1134864,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissboundaries3d/brugg.geojson": {
+      "url": "https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill&searchText=Brugg",
+      "fetched_at": "2026-09-24T22:51:01+00:00",
+      "sha256": "c79435179a15624dc68d445d151495d073117b069bfee07244d810ea178f9b98",
+      "bytes": 1133409,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1069-24_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1069-24/swissbuildings3d_3_0_2024_1069-24_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:21+00:00",
+      "sha256": "bab612847c80bdfdd699765c4d10334630b51d9250c5dcd1dad41764bf7de848",
+      "bytes": 31151,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1069-24_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1069-24_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1069-24/swissbuildings3d_3_0_2024_1069-24_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:19+00:00",
+      "sha256": "5b9c619d5772ee29819455f46deea7c7f2cc1aa42c43f53a4c4a4714759273b2",
+      "bytes": 4809857,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1069-42_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1069-42/swissbuildings3d_3_0_2024_1069-42_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:22+00:00",
+      "sha256": "5c8a5683e1486d74d68365156c90e3020a47d6b9e5599956f1e5e553e44f6432",
+      "bytes": 59949,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1069-42_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1069-42_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1069-42/swissbuildings3d_3_0_2024_1069-42_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:21+00:00",
+      "sha256": "3405133a3fbaa9abf472b5b90c68e61db1b1d3d0f94eb4bb8ce6e0ca1a6622de",
+      "bytes": 10344038,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1069-44_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1069-44/swissbuildings3d_3_0_2024_1069-44_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:25+00:00",
+      "sha256": "76509f4ba7e1162905eaca0dcbbcbef36c0097a3ce6e96f8043b9a37288f3aad",
+      "bytes": 99469,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1069-44_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1069-44_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1069-44/swissbuildings3d_3_0_2024_1069-44_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:23+00:00",
+      "sha256": "6643d3f91dbde73c7f8334d56cc19a7f0e4d54cbc51615bc07f3ba2a4482f3c7",
+      "bytes": 18986549,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-13_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-13/swissbuildings3d_3_0_2024_1070-13_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:28+00:00",
+      "sha256": "5ec96db0fdb726cb3b330630e96d8a801d5c6865b4457f7197e6c44d308ae9d8",
+      "bytes": 87633,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1070-13_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-13_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-13/swissbuildings3d_3_0_2024_1070-13_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:26+00:00",
+      "sha256": "f87a8442a989ee21feeba189453f3d1ac0830ac98878921cae1212cff2dae739",
+      "bytes": 16337522,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-14_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-14/swissbuildings3d_3_0_2024_1070-14_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:33+00:00",
+      "sha256": "8a263f6a987add996615e1eba2a7a9f643d2529192196d48f2d4ccb9d6ed7e92",
+      "bytes": 190473,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1070-14_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-14_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-14/swissbuildings3d_3_0_2024_1070-14_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:29+00:00",
+      "sha256": "a19419537cef598f63e5f457c74d147aa64c453fa254da906a6f6e3b06dd740b",
+      "bytes": 37311211,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-31_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-31/swissbuildings3d_3_0_2024_1070-31_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:39+00:00",
+      "sha256": "50faaf80afd7e711f8b201c49d1c608ed89dc83375615397f8e7fce15674c4e4",
+      "bytes": 230412,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1070-31_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-32_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-32/swissbuildings3d_3_0_2024_1070-32_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:42+00:00",
+      "sha256": "959e88eb449412c148a488309758425cefcbc8128d22214b3d98bd22d71d51f3",
+      "bytes": 130471,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1070-32_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-32_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-32/swissbuildings3d_3_0_2024_1070-32_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:40+00:00",
+      "sha256": "630dda2479172da3b35687f7039d4ff316227c39689a40ce7cec6ad836c65674",
+      "bytes": 23630534,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-33_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-33/swissbuildings3d_3_0_2024_1070-33_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:46+00:00",
+      "sha256": "0f04790b75b5138b58b513762036a3bbf263dbdd3c1eb96546d42c381449bde1",
+      "bytes": 122983,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1070-33_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-33_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-33/swissbuildings3d_3_0_2024_1070-33_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:43+00:00",
+      "sha256": "00b17c907ccf2ad45967f3ca0c5fc3ab877b1a1f663ec4ddd76c38c0edbb20f0",
+      "bytes": 23205859,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-34_2056_5728.citygml.heights.parquet": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-34/swissbuildings3d_3_0_2024_1070-34_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:49+00:00",
+      "sha256": "cfeef01fe38e3fea07a69914c69cb126463c8b611284d93e2c404c7f597e6efa",
+      "bytes": 110258,
+      "licence": "swisstopo open data (OGD), attribution required",
+      "derived_from": "swissbuildings3d_3_0_2024_1070-34_2056_5728.citygml.zip"
+    },
+    "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1070-34_2056_5728.citygml.zip": {
+      "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1070-34/swissbuildings3d_3_0_2024_1070-34_2056_5728.citygml.zip",
+      "fetched_at": "2026-09-24T22:59:46+00:00",
+      "sha256": "cf0ef85df0ed681d2d5081b81442fc807f948c8e8dcb9cbc28b3a552d1c8ce3e",
+      "bytes": 19892096,
+      "licence": "swisstopo open data (OGD), attribution required"
+    }
+  }
+}
