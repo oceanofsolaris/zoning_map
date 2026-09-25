@@ -168,9 +168,12 @@ def compute_parcel(parcel: dict[str, Any], rules: dict[str, Any], cfg: dict[str,
     gf_allowed = total(headline)
     gf_opt, gf_con = total(res_opt), total(res_con)
 
-    # Dominant part: the largest by area. Its rules drive binding and 'allowed today?'.
-    dom = 0
-    for i in range(1, len(parts)):
+    # Dominant part: the largest buildable part (residential or discretionary), else the largest overall.
+    # Its rules drive binding and 'allowed today?' (a large green-zone part must not hide the building zone).
+    buildable = [i for i, r in enumerate(headline) if r["kind"] in ("residential", "discretionary")]
+    candidates = buildable or list(range(len(parts)))
+    dom = candidates[0] if candidates else 0
+    for i in candidates:
         if parts[i]["area_m2"] > parts[dom]["area_m2"]:
             dom = i
     binding = headline[dom]["binding"] if parts else "none"

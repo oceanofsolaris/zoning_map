@@ -619,6 +619,7 @@ def engine_inputs(b: Build) -> list[dict[str, Any]]:
         if g is not None:
             for p in g.itertuples():
                 parts.append({
+                    **({} if isinstance(p.zone, str) else {"label": p.typ_kommunal_bezeichnung}),
                     "zone": p.zone if p.zone else None,
                     "area_m2": round(p.area_m2, 2), "agsf_m2": round(p.agsf_m2, 2),
                     "fp": [round(getattr(p, f"fp_{s}"), 2) for s in steps],

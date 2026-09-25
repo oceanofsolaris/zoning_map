@@ -103,6 +103,9 @@ drafts it (`make rules-extract PDF=… OUT=…`, needs API credentials and costs
   special zones). National main-use codes: 11–15, 17 = buildable → must be mapped; 16 (green/water in
   building zone) and 18 (traffic) need no entry.
 - Codes may carry misleading labels ("Strasse" coded as 1211 in Windisch). Map by code, note the oddity.
+- Optional but helpful: add non-buildable zones inside the building area (16xx Grünzone/Freihaltezone) as
+  non-residential entries with a note quoting their rule (e.g. Windisch § 31: Familiengärten allowed). The
+  inspector then explains parcels that are partly green zone.
 - Everything starts `verified: false`. Only `pp rules verify` sets it.
 - `uv run pp rules validate` must pass.
 

@@ -52,7 +52,7 @@ export function renderInspector(el: HTMLElement, territory: Territory, p: Parcel
   const total = parts.reduce((a, q) => a + q.area_m2, 0) || 1;
   const zoneList = parts.map((q) => {
     const z = zoneOf(territory, q.zone);
-    return `<li>${esc(z?.zone.label_de ?? "Kein Bauland / nicht erfasst")} <span class="num muted">${pct(q.area_m2 / total)}</span></li>`;
+    return `<li>${esc(z?.zone.label_de ?? q.label ?? "Kein Bauland / nicht erfasst")} <span class="num muted">${pct(q.area_m2 / total)}</span></li>`;
   }).join("");
 
   let html = `<header class="insp-head"><h2>${title}</h2>

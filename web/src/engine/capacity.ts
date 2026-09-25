@@ -13,7 +13,7 @@ export interface Rules {
   vg_min?: number | null; // set by applyScenario: the zone's own storey count
 }
 export type RuleSet = Record<string, Rules>;
-export interface Part { zone: string | null; area_m2: number; agsf_m2: number; fp: number[] }
+export interface Part { zone: string | null; area_m2: number; agsf_m2: number; fp: number[]; label?: string }
 export interface Existing { gf_m2: number; gf_fixed_m2?: number; existing_to_agf?: number | null; storeys_max: number | null; height_max_m: number | null; n_buildings: number }
 export interface ParcelFacts { area_m2: number; flags: string[]; parts: Part[]; existing: Existing }
 export interface ZoneDelta { d_az?: number; d_vg?: number }
@@ -161,8 +161,12 @@ export function computeParcel(parcel: ParcelFacts, rules0: RuleSet, cfg: EngineC
   const gfOpt = total(resOpt);
   const gfCon = total(resCon);
 
-  let dom = 0;
-  for (let i = 1; i < parts.length; i++) if (parts[i].area_m2 > parts[dom].area_m2) dom = i;
+  // Dominant part: the largest buildable part (residential or discretionary), else the largest overall.
+  // Its rules drive binding and 'allowed today?' (a large green-zone part must not hide the building zone).
+  const buildable = headline.map((r, i) => (r.kind === "residential" || r.kind === "discretionary" ? i : -1)).filter((i) => i >= 0);
+  const candidates = buildable.length ? buildable : parts.map((_, i) => i);
+  let dom = candidates.length ? candidates[0] : 0;
+  for (const i of candidates) if (parts[i].area_m2 > parts[dom].area_m2) dom = i;
   const binding: Binding = parts.length ? headline[dom].binding : "none";
   const envHeight = parts.length ? headline[dom].env_height : null;
   const domRules = parts.length && !infra ? rules[parts[dom].zone ?? ""] ?? null : null;

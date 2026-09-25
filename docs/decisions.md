@@ -161,3 +161,11 @@ Newest first within each section. Date: 2026-09-25 unless noted.
     (`center`, `z`) was checked by URL round-trip only (hidden tab renders no map).
 33. **Playbook and helper commands** (`pp boundaries`, `pp zones`, `pp qa`, `pp oereb-docs`) codify the manual
     steps; `docs/playbook-new-municipality.md` records data quirks and the checks that caught real bugs.
+34. **Spot check Windisch parcel 928 (allotment gardens, feedback).** 2,141 m²: 783 m² W2 (with
+    Gestaltungsplanpflicht "Vorder Chilefeld", likely) and 1,358 m² Grünzone (§ 31 BNO Windisch: kept free of
+    buildings; Abs. 3 explicitly allows Familiengärten in "Vorder Chilefeld"). No forest on the parcel; 25% lies
+    in the 18 m forest band. Neighbours 929–933 share the pattern. Capacity was right (W2 part only); two
+    presentation bugs were fixed: (a) the dominant part for binding / "allowed today?" is now the largest
+    *buildable* part (golden case 27; before, a large green-zone part made the parcel read "Kein Bauland"),
+    (b) parts without a rulebook zone carry their zoning label. Windisch rulebook gains a GR (Grünzone) entry
+    quoting § 31.
