@@ -1,0 +1,13 @@
+# Canton-level rules and settings (merged over config/default.yaml, under the territory's own config).
+# Values with legal effect carry their source like rulebook values.
+pipeline:
+  forest:
+    enabled: true
+    # Waldabstand for buildings; municipalities may set Waldabstandslinien (none published as data for AG).
+    waldabstand_m: 18.0
+    source: "BauG AG (SAR 713.100) § 48 Abs. 1 lit. c"
+    # Small structures, extensions, underground parts: 8 m (§ 48 Abs. 1). Not modelled separately.
+    waldabstand_klein_m: 8.0
+    # Forest geometry: static forest boundaries (in force since 2019, next to building zones),
+    # forest zones of the zoning plan, and AV land cover "geschlossener_Wald".
+    av_landcover: [geschlossener_Wald]

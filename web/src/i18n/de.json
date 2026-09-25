@@ -103,5 +103,7 @@
   "project.title": "Bauprojekt (GWR)",
   "project.im_bau": "im Bau",
   "project.bewilligt": "bewilligt",
-  "project.projektiert": "projektiert"
+  "project.projektiert": "projektiert",
+  "flag.waldabstand": "Waldabstand (18 m, § 48 BauG) schränkt die bebaubare Fläche ein",
+  "flag.bestand_im_waldabstand": "Bestehendes Gebäude im Waldabstand – Besitzstand; Ersatzneubau nur mit Ausnahmebewilligung"
 }

@@ -72,6 +72,7 @@ class Build:
     zones: gpd.GeoDataFrame | None = None
     overlays: gpd.GeoDataFrame | None = None
     projects: gpd.GeoDataFrame | None = None
+    forest_band: Any = None
     qa: dict[str, Any] = field(default_factory=dict)
 
 
@@ -177,6 +178,7 @@ def load_zoning(b: Build) -> None:
         for _, r in sel.iterrows():
             rows.append({"flag": spec["flag"], "label": r.typ_kommunal_bezeichnung, "geometry": r.geometry})
     b.overlays = gpd.GeoDataFrame(rows, geometry="geometry", crs=2056)
+    b.forest_band = _forest_band(b, z_all=geodienste.read_layer("npl_nutzungsplanung", canton, "grundnutzung", bbox=b.muni.bounds))
     log.info("zoning: %d base polygons, %d flagged overlays", len(b.zones), len(b.overlays))
 
 
@@ -290,12 +292,15 @@ def geometry_facts(b: Build) -> None:
     pg = par.set_index("id").geometry.loc[parts.id].values
     sl = setback_lines.loc[parts.id].values
     steps = ecfg["setback_steps_m"]
+    part_geoms = parts.geometry.values
+    if b.forest_band is not None:  # nothing may be built within the forest distance
+        part_geoms = shapely.difference(part_geoms, b.forest_band)
     for s in steps:
-        parts[f"fp_{s}"] = shapely.area(shapely.intersection(_inner(pg, sl, s), parts.geometry.values))
+        parts[f"fp_{s}"] = shapely.area(shapely.intersection(_inner(pg, sl, s), part_geoms))
     # envelope polygon for display at each zone's small boundary distance
     ga = parts.zone.map(lambda z: (b.rules.get(z) or {}).get("ga_klein_m") if isinstance(z, str) else None)
     ga = ga.fillna(ecfg["default_grenzabstand_m"]).astype(float).values
-    parts["envelope_geom"] = shapely.intersection(_inner(pg, sl, ga), parts.geometry.values)
+    parts["envelope_geom"] = shapely.intersection(_inner(pg, sl, ga), part_geoms)
     b.parts = parts
 
 
@@ -360,6 +365,16 @@ def geometry_facts(b: Build) -> None:
     par["slope_pct"] = _parcel_slope(b, par)
     for i in par.id[par.slope_pct > pcfg["slope_flag_pct"]]:
         flags[i].append("slope")
+    if b.forest_band is not None:
+        fb = b.forest_band
+        share = shapely.area(shapely.intersection(par.geometry.values, fb)) / par.area_m2.values
+        for i in par.id[share >= MIN_OVERLAY_SHARE]:
+            flags[i].append("waldabstand")
+        near = bl[bl.counts & shapely.intersects(bl.geometry.values, fb)]
+        if len(near):
+            hit = gpd.sjoin(par[["id", "geometry"]], near[["geometry"]], predicate="intersects").id.unique()
+            for i in hit:
+                flags[i].append("bestand_im_waldabstand")
     lcv = b.qa.pop("landcover")
     if len(lcv):
         li = gpd.overlay(par[["id", "area_m2", "geometry"]], lcv, how="intersection")
@@ -441,6 +456,31 @@ def _allocate_projects(b: Build, par: gpd.GeoDataFrame, pcfg: dict) -> gpd.GeoDa
     par["project_status"] = par.id.map(rows)
     b.qa["parcels_with_projects"] = {k: int(v) for k, v in par.project_status.value_counts().items()}
     return par
+
+
+def _forest_band(b: Build, z_all: gpd.GeoDataFrame):
+    """Area within the cantonal forest distance (Waldabstand) of any forest; None if disabled."""
+    fcfg = b.cfg["pipeline"].get("forest") or {}
+    if not fcfg.get("enabled"):
+        return None
+    canton = b.territory.canton
+    geoms = []
+    try:
+        wl = geodienste.read_layer("npl_waldgrenzen", canton, "waldgrenzen", bbox=b.muni.buffer(200).bounds)
+        geoms += list(wl[wl.rechtsstatus == "inKraft"].geometry)
+    except Exception as e:  # dataset missing for a canton: fall back to zoning and land cover
+        log.warning("static forest boundaries unavailable: %s", e)
+    geoms += list(z_all[z_all.hauptnutzung_code == 44].geometry)
+    lc = fcfg.get("av_landcover") or []
+    if lc:
+        arts = ",".join(f"'{a}'" for a in lc)
+        av = geodienste.read_layer("av", canton, "lcsf", bbox=b.muni.buffer(200).bounds, where=f"Art IN ({arts})")
+        geoms += list(av.geometry)
+    if not geoms:
+        return None
+    band = shapely.union_all(shapely.buffer(np.array(geoms, dtype=object), fcfg["waldabstand_m"]))
+    b.qa["forest_distance_m"] = fcfg["waldabstand_m"]
+    return shapely.make_valid(band)
 
 
 def _parcel_slope(b: Build, par: gpd.GeoDataFrame) -> pd.Series:

@@ -61,6 +61,10 @@ def all_territories() -> list[Territory]:
 
 def load_config(territory: Territory | None = None) -> dict[str, Any]:
     cfg = yaml.safe_load((CONFIG_DIR / "default.yaml").read_text())
+    if territory:
+        canton_file = CONFIG_DIR / "cantons" / f"{territory.canton}.yaml"
+        if canton_file.exists():
+            cfg = _deep_merge(cfg, yaml.safe_load(canton_file.read_text()) or {})
     if territory and territory.config:
         cfg = _deep_merge(cfg, territory.config)
     return cfg

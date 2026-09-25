@@ -99,3 +99,15 @@ Newest first within each section. Date: 2026-09-25 unless noted.
     Untergeschosse and Attika from the AZ, and under BauV § 23 a storey counts as an Untergeschoss if the floor
     above protrudes on average ≤ 0.8 m above the façade line. On steep slopes several terrace levels can
     qualify, so only a fraction of the built area counts. Not verified against the permit (not public). Not modelled yet (see improvements.md).
+24. **Forest distance (Waldabstand), from feedback on Sandbock parcels 5041/5042/5408.** Aargau: 18 m for
+    buildings (BauG § 48 Abs. 1 lit. c); 8 m for small structures/extensions/underground parts (not modelled).
+    The Brugg BNO sets no own value. Canton-level settings now live in `etl/config/cantons/<canton>.yaml`
+    (merged between default and territory config). Forest = static forest boundaries (geodienste
+    `npl_waldgrenzen_v1_2`, open for AG) ∪ forest zones of the zoning plan (Hauptnutzung 44) ∪ AV land cover
+    `geschlossener_Wald`. Its 18 m buffer is removed from every buildable footprint and envelope. The land
+    still counts for aGSF, so AZ-bound parcels can keep their allowed floor area in a narrower footprint.
+    Flags: `waldabstand` (≥ 10% of the parcel in the band), `bestand_im_waldabstand` (existing main building
+    inside; grandfathered, replacement needs an exception). Brugg/Umiken: 426 and 155 parcels; reserve
+    523k → 513k m². Municipal Waldabstandslinien are "keine Daten" on geodienste for AG, and exceptions or
+    Rodung/Ersatzaufforstung are not modelled. Parcel 5042: the forest line in the building zone was fixed
+    in 2008; buildings from 2013/2018 stand 8 m from it.

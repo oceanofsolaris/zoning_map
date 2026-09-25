@@ -56,7 +56,8 @@ export function renderMethodology(dlg: HTMLDialogElement, territory: Territory):
     <h3>Grenzen und bekannte Lücken</h3>
     <ul>
       <li>Gestaltungspläne, Arealüberbauungen, Hochhausstandorte und Nachverdichtungsgebiete ändern die Grundregeln; sie werden markiert, nicht gerechnet.</li>
-      <li>Baulinien, Strassen- und Waldabstände sind nicht berücksichtigt; der Grenzabstand wird ringsum angesetzt.</li>
+      <li>Der Waldabstand (Aargau: 18 m ab statischer Waldgrenze bzw. Wald, § 48 BauG) wird von der bebaubaren Fläche abgezogen; bestehende Gebäude darin sind markiert (Besitzstand). Kommunale Waldabstandslinien und Ausnahmebewilligungen sind nicht berücksichtigt.</li>
+      <li>Baulinien und Strassenabstände sind nicht berücksichtigt; der Grenzabstand wird ringsum angesetzt.</li>
       <li>Höhen werden nicht ab massgebendem Terrain gemessen; am Hang ist die Hülle ungenau.</li>
       <li>Stockwerkeigentum ist in offenen Daten nicht sichtbar, verhindert in der Praxis aber oft Erneuerungen.</li>
       <li>Kapazität ist kein Angebot: Die Reserve ist ein theoretisches Maximum nach heutigen Regeln.</li>

@@ -24,6 +24,10 @@ GPKG_URL = {
         "https://geodienste.ch/downloads/geopackage/npl_nutzungsplanung/{canton}/deu/"
         "npl_nutzungsplanung_v1_2_{canton}_gpkg_lv95.zip"
     ),
+    "npl_waldgrenzen": (
+        "https://geodienste.ch/downloads/geopackage/npl_waldgrenzen/{canton}/deu/"
+        "npl_waldgrenzen_v1_2_{canton}_gpkg_lv95.zip"
+    ),
 }
 LICENCE = "geodienste.ch / Kanton {canton}: freie Nutzung, Quellenangabe ist Pflicht"
 

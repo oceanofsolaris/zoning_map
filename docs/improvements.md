@@ -45,7 +45,13 @@ utilisation 1.16). Options:
 - For existing terraced buildings, count only levels above the Untergeschoss threshold towards utilisation.
 - Validate on permits (Aarestrasse 37, Herrenmatt 3, "Bruggblick" terraces) before switching it on.
 
-## 5. Other open items
+## 5. Forest distance refinements
+
+- Municipal Waldabstandslinien (from ÖREB extracts or Nutzungsplan PDFs where not published as data).
+- Distinguish 8 m (Anbauten, Kleinbauten, unterirdische Bauten) from 18 m.
+- Show the forest band on the map (layer) and "Reserve verloren durch Waldabstand" in the municipality panel.
+
+## 6. Other open items
 
 - Grünflächenziffer as an envelope constraint (footprint ≤ (1 − GZ) × aGSF − access/parking).
 - Baulinien (AGIS Erschliessungspläne), Planungszonen flag, ISOS overlay.
