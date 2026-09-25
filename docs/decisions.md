@@ -36,9 +36,7 @@ Newest first within each section. Date: 2026-09-25 unless noted.
 2. **AZ excludes attic storeys (BNO § 74).** Spec §7.2 multiplies the envelope by `vg + attika`
    and caps with AZ. When the rulebook says `az_counts_attika_dg: false`, the engine caps only
    the full storeys with AZ and adds the attic *in proportion to the built footprint*:
-   `gf = min(AZ·aGSF, fp·VG·k) · (1 + attika/VG)`. Consequence (golden case 16): in AZ-bound
-   zones, +1 full storey slightly *reduces* total capacity, because the same aGF spreads over more
-   storeys and the attic shrinks. This is intended.
+   `gf = min(AZ·aGSF, fp·VG·k) · (1 + attika/VG)`. See decision 22 for scenarios that add storeys.
 3. **Party walls.** BNO § 13 Abs. 5 allows closed construction. Where buildings on both sides of
    a boundary are ≤ 0.6 m apart, that stretch of boundary gets no setback. Without this, row
    houses got ~2 m² allowed and were flagged "not allowed today" en masse.
@@ -89,3 +87,15 @@ Newest first within each section. Date: 2026-09-25 unless noted.
     density bonus.
 21. **Report link bug fixed.** The "Fehler melden" link used `location.href` before the URL had been
     updated, so it pointed to the previously selected parcel.
+22. **Storey count is chosen, not forced (feedback: W2 AZ max, +2 storeys was lower than +1).** Because the
+    attic scales with the built footprint, forcing all permitted storeys made more storeys *reduce* capacity
+    once the AZ binds. The engine now takes the best storey count between the zone's own count and the scenario
+    maximum. Current-rule results are unchanged; scenarios are monotone (golden cases 07, 16, 18 updated,
+    23 added). Fewer storeys than the zone's own count are deliberately not considered: that would add a
+    "one storey + large attic" loophole to the baseline.
+23. **Terraced houses on slopes exceed the AZ as estimated (parcel 5180, Aarestrasse 37a–d, 45% slope).**
+    The approved project has 4 flats, 519 m² living area over 5 levels; the estimate of ≈ 649 m² aGF vs. 559 m²
+    allowed gives utilisation 1.16. The most likely explanation is legal accounting: BNO § 74 excludes
+    Untergeschosse and Attika from the AZ, and under BauV § 23 a storey counts as an Untergeschoss if the floor
+    above protrudes on average ≤ 0.8 m above the façade line. On steep slopes several terrace levels can
+    qualify, so only a fraction of the built area counts. Not verified against the permit (not public). Not modelled yet (see improvements.md).

@@ -34,7 +34,18 @@ to be used within ~20 years:
 Aufstockung / Anbau / Einliegerwohnung / Ersatzneubau per single-family parcel. This makes visible that
 most reserve on single-family parcels needs a replacement building.
 
-## 4. Other open items
+## 4. Slope effect: Untergeschosse and terraces
+
+On steep parcels, terraced buildings can place several levels as Untergeschosse (BauV AG § 23: floor above
+protrudes on average ≤ 0.8 m). BNO Brugg § 74 excludes these from the AZ. So the legal capacity on slopes is
+higher than AZ × area suggests, and the "existing" estimate overstates utilisation (example: parcel 5180,
+utilisation 1.16). Options:
+- Estimate the number of levels that could qualify as Untergeschoss from the terrain drop across the buildable
+  footprint (swissALTI3D), and add them as a slope-dependent extra (a config switch, off by default).
+- For existing terraced buildings, count only levels above the Untergeschoss threshold towards utilisation.
+- Validate on permits (Aarestrasse 37, Herrenmatt 3, "Bruggblick" terraces) before switching it on.
+
+## 5. Other open items
 
 - Grünflächenziffer as an envelope constraint (footprint ≤ (1 − GZ) × aGSF − access/parking).
 - Baulinien (AGIS Erschliessungspläne), Planungszonen flag, ISOS overlay.

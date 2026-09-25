@@ -10,6 +10,7 @@ export interface Rules {
   attika_allowed: boolean; attika_factor: number | null; gh_max_m: number | null;
   ga_klein_m: number | null; ga_gross_m: number | null; az_counts_attika: boolean;
   bonuses: Bonus[]; confidence_cap: Conf | null;
+  vg_min?: number | null; // set by applyScenario: the zone's own storey count
 }
 export type RuleSet = Record<string, Rules>;
 export interface Part { zone: string | null; area_m2: number; agsf_m2: number; fp: number[] }
@@ -70,6 +71,8 @@ export function applyScenario(rules: RuleSet, scenario: Scenario | null | undefi
       }
       if (r.az_max !== null && dAz) r.az_max = Math.max(0, r.az_max + dAz);
       if (r.vg_max !== null && dVg) {
+        // Extra storeys are an option, not an obligation: remember the zone's own count.
+        r.vg_min = r.vg_max;
         r.vg_max = Math.max(0, r.vg_max + dVg);
         if (r.gh_max_m !== null && cfg.scenario_storey_raises_height) r.gh_max_m = r.gh_max_m + dVg * cfg.storey_height_m;
       }
@@ -117,11 +120,17 @@ export function computePart(part: Part, r: Rules | null | undefined, cfg: Engine
     gf = Math.min(gfAz, gfEnv);
     binding = gfAz <= gfEnv ? "az" : "envelope";
   } else {
-    // AZ counts full storeys only (e.g. BNO Brugg § 74); the attic adds area in proportion to the built footprint.
-    const gfEnvVg = fp * vg * k;
-    const gfVg = Math.min(gfAz, gfEnvVg);
-    binding = gfAz <= gfEnvVg ? "az" : "envelope";
-    gf = vg > 0 ? gfVg * (1 + attic / vg) : 0;
+    // AZ counts full storeys only (e.g. BNO Brugg § 74); the attic adds area in proportion to the built
+    // footprint. A builder chooses the storey count between the zone's own and the (scenario) maximum.
+    gf = 0;
+    binding = "envelope";
+    const nMin = r.vg_min ?? vg;
+    for (let n = Math.trunc(nMin); n <= Math.trunc(vg); n++) {
+      if (n <= 0) continue;
+      const gfEnvN = fp * n * k;
+      const gfN = Math.min(gfAz, gfEnvN) * (1 + attic / n);
+      if (gfN > gf) { gf = gfN; binding = gfAz <= gfEnvN ? "az" : "envelope"; }
+    }
   }
   return { kind: "residential", gf, binding, env_height: envHeight };
 }

@@ -1,6 +1,6 @@
 {
   "name": "18_bonus_arealueberbauung",
-  "description": "W2 with the Arealüberbauung bonus (+1 storey, height +3 m): AZ 400 < env 1188 → 400·1.2=480. Conservative 486 > 400 → 480.",
+  "description": "W2 with the Arealüberbauung bonus (+1 storey allowed, height +3 m). AZ 400 binds: 2 storeys 400·1.3=520 vs 3 storeys 400·1.2=480 → 520 (the bonus adds nothing where the AZ binds). Conservative: 2 storeys 324·1.3=421.2; 3 storeys min(400,486)·1.2=480 → 480.",
   "parcel": {
     "area_m2": 800,
     "flags": [],
@@ -33,10 +33,10 @@
     }
   },
   "expected": {
-    "gf_allowed_m2": 480,
+    "gf_allowed_m2": 520,
     "gf_allowed_con_m2": 480,
-    "headroom_gf_m2": 330,
+    "headroom_gf_m2": 370,
     "headroom_units": 3,
-    "utilisation": 0.3125
+    "utilisation": 0.288462
   }
 }

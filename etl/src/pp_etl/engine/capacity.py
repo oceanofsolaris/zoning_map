@@ -68,6 +68,8 @@ def apply_scenario(rules: dict[str, Any], scenario: dict[str, Any] | None, cfg: 
             if r["az_max"] is not None and d_az:
                 r["az_max"] = max(0.0, r["az_max"] + d_az)
             if r["vg_max"] is not None and d_vg:
+                # Extra storeys are an option, not an obligation: remember the zone's own count.
+                r["vg_min"] = r["vg_max"]
                 r["vg_max"] = max(0, r["vg_max"] + d_vg)
                 if r["gh_max_m"] is not None and cfg["scenario_storey_raises_height"]:
                     r["gh_max_m"] = r["gh_max_m"] + d_vg * cfg["storey_height_m"]
@@ -123,12 +125,19 @@ def compute_part(part: dict[str, Any], r: dict[str, Any] | None, cfg: dict[str, 
         gf = min(gf_az, gf_env)
         binding = "az" if gf_az <= gf_env else "envelope"
     else:
-        # AZ counts full storeys only (e.g. BNO Brugg § 74). The attic adds floor
-        # area in proportion to the footprint actually built.
-        gf_env_vg = fp * vg * k
-        gf_vg = min(gf_az, gf_env_vg)
-        binding = "az" if gf_az <= gf_env_vg else "envelope"
-        gf = gf_vg * (1.0 + attic / vg) if vg > 0 else 0.0
+        # AZ counts full storeys only (e.g. BNO Brugg § 74). The attic adds floor area in
+        # proportion to the footprint actually built, so with the AZ binding, more storeys mean
+        # a smaller footprint and a smaller attic. A builder chooses the storey count between the
+        # zone's own count and the (scenario) maximum that yields the most floor area.
+        gf, binding = 0.0, "envelope"
+        n_min = r.get("vg_min") if r.get("vg_min") is not None else vg
+        for n in range(int(n_min), int(vg) + 1):
+            if n <= 0:
+                continue
+            gf_env_n = fp * n * k
+            gf_n = min(gf_az, gf_env_n) * (1.0 + attic / n)
+            if gf_n > gf:
+                gf, binding = gf_n, ("az" if gf_az <= gf_env_n else "envelope")
     return {"kind": "residential", "gf": gf, "binding": binding, "env_height": env_height}
 
 

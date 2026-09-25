@@ -1,6 +1,6 @@
 {
   "name": "07_scenario_daz_dvg",
-  "description": "Case 01 with W2 ΔAZ +0.2 and +1 storey (height +3 m). AZ 0.7·800=560 < env 440·3·0.9=1188 → 560·(1+0.6/3)=672. Conservative 180·3·0.9=486 → 486·1.2=583.2.",
+  "description": "Case 01 with W2 ΔAZ +0.2 and +1 storey (height +3 m). AZ 0.7·800=560 binds. 2 storeys: 560·1.3=728; 3 storeys: 560·1.2=672 → builder keeps 2 storeys: 728. Conservative (fp 180): 2 storeys 324·1.3=421.2; 3 storeys 486·1.2=583.2 → 583.2.",
   "parcel": {
     "area_m2": 800,
     "flags": [],
@@ -36,14 +36,14 @@
     }
   },
   "expected": {
-    "gf_allowed_m2": 672,
+    "gf_allowed_m2": 728,
     "gf_allowed_con_m2": 583.2,
     "binding_constraint": "az",
     "envelope_height_m": 10.8,
-    "headroom_gf_m2": 522,
+    "headroom_gf_m2": 578,
     "headroom_units": 5,
-    "headroom_residents": 9.490909,
-    "utilisation": 0.223214,
+    "headroom_residents": 10.509091,
+    "utilisation": 0.206044,
     "allowed_today": true,
     "confidence": "high"
   }
