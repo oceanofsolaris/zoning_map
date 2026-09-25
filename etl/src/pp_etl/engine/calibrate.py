@@ -23,6 +23,9 @@ def calibrate_existing_to_agf(parcels, inputs: list[dict[str, Any]], rules: dict
             continue
         if len(inp["parts"]) != 1 or inp["existing"]["n_buildings"] == 0:
             continue
+        # only footprint × storeys estimates depend on the factor; dwelling-based ones (gf_fixed) would bias it
+        if inp["existing"].get("gf_fixed_m2"):
+            continue
         res = capacity.compute_parcel(inp, rules, cfg1)
         if res["binding_constraint"] != "az" or not res["gf_allowed_m2"]:
             continue

@@ -40,6 +40,9 @@ pipeline:
   # Use GWR dwelling area × net_to_gross instead of footprint × storeys for residential buildings
   # where the latter is more than this factor larger (terraced houses, podiums, farmhouses with barns).
   existing_alt_ratio_max: 2.0
+  # GWR buildings completed within this many years of the newest construction year but missing from the AV
+  # (survey lag) are counted from their dwelling areas at the GWR location.
+  recent_years: 6
   # Zone parts smaller than this (m²) are treated as slivers from digitising
   # differences between the zoning and cadastral datasets.
   min_zone_part_m2: 5.0

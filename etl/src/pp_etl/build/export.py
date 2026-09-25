@@ -121,7 +121,7 @@ def write_all(b, inputs: list[dict[str, Any]], results: list[dict[str, Any]], ou
     sh = b.cfg["engine"]["storey_height_m"]
     bl["h"] = bl.height_m.fillna(bl.storeys.astype(float) * sh).fillna(4.0)
     bl = bl.rename(columns={"GKLAS": "gklas", "GBAUJ": "year_built", "GASTW": "gastw"})
-    keep = ["bid", "pid", "egid", "h", "height_source", "storeys", "gklas", "year_built", "dwellings", "counts", "geometry"]
+    keep = ["bid", "pid", "egid", "av_status", "h", "height_source", "storeys", "gklas", "year_built", "dwellings", "counts", "geometry"]
     bl = bl[keep].copy()
     for c in ["pid", "egid", "gklas", "year_built", "dwellings"]:
         bl[c] = bl[c].astype("float").astype("Int64")

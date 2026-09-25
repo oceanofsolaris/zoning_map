@@ -127,6 +127,7 @@ Then look at the map. The checks that caught real bugs so far:
 | Construction site shows as empty | GWR GSTAT 1001–1003 were ignored | projects counted/flagged |
 | Huge reserve on a recent Gestaltungsplan development | envelope-only zone + GP | **not fixed** (improvements §6) — inspect top parcels |
 | Height exceedances on slopes | heights not measured from relevant terrain | no height check on slope-flagged parcels |
+| New building missing / parcel "empty" although built | AV survey lags GWR (new buildings only as projected footprints) | AV/GWR reconciliation (`lcsfproj`, GWR status) |
 | Terraced houses on steep slopes > AZ | Untergeschosse excluded from AZ | **not modelled** (improvements §4) |
 
 Also do a spot check with local knowledge where possible; Stephan knows parts of Brugg and Windisch well.

@@ -172,3 +172,16 @@ Newest first within each section. Date: 2026-09-25 unless noted.
 35. **Translucent buildings on the selected parcel** (feedback): buildings carry the id of the parcel holding the
     largest share of their footprint (`pid`); a second 3D layer draws them at 35 % opacity so the ghost envelope
     and its outline stay visible.
+36. **AV/GWR reconciliation (feedback, parcel 5405).** The survey lags construction: canton-wide, 790 residential
+    buildings that GWR lists as existing (2,955 dwellings, mostly completed 2023–2026) had no AV footprint,
+    and 196 AV footprints belong to buildings GWR lists as demolished. Parcel 5405 (2026 MFH, 12 dwellings)
+    showed as empty. Now: projected AV footprints (`lcsfproj`) of GWR-existing buildings are used as buildings
+    ("unsurveyed"); projected footprints of GWR projects are shown pale on the map but counted only via the
+    project channel; current footprints of demolished buildings are dropped; EGID-less footprints are linked to
+    unmatched GWR buildings located inside them; recent GWR buildings without any footprint are counted from
+    their dwelling areas ("neu_ohne_grundriss"). QA counts in `territory.json` (`av_gwr_reconciliation`).
+37. **Calibration excludes dwelling-based existing floor area.** Only footprint × storeys estimates depend on
+    `existing_to_agf`; including dwelling-based parcels (terraced houses, recovered new buildings) biased the
+    fit. Brugg moved 0.825 → 0.94. The per-municipality factor is very uncertain: Brugg alone has an 80 %
+    bootstrap interval of 0.74–1.09 (n = 21); Brugg + Windisch pooled: 0.80 (0.72–0.94, n = 39).
+    **Recommendation (not implemented): pool calibration across municipalities** (see improvements §7).

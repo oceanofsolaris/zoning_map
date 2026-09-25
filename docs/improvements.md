@@ -61,8 +61,10 @@ report them separately from the headline; add ÜZ/GZ-based footprint caps for en
 
 ## 7. Scaling to more municipalities
 
-- Calibration per territory (Brugg 0.796, Windisch 0.74) is noisy with < 20 samples; pool at canton level
-  or by region.
+- Calibration per territory is too noisy: Brugg alone 0.94 with an 80 % bootstrap interval of 0.74–1.09 (n = 21);
+  pooled with Windisch 0.80 (0.72–0.94). The factor scales all existing floor area, so this moves headline
+  reserves by tens of percent. Pool across municipalities (canton-wide once built), report the interval,
+  and consider a hierarchical fit (municipality deviations shrunk to the pooled value).
 - Rulebook extraction: most Aargau BNOs share the § 13 table layout → the LLM extractor plus a
   table-specific prompt should get most values; matching dataset codes is the manual step.
 - Frontend: > ~10 municipalities as GeoJSON gets heavy → PMTiles.

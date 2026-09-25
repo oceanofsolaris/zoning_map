@@ -128,12 +128,19 @@ def load_av(b: Build) -> None:
     lcall = _clean(geodienste.read_layer("av", canton, "lcsf", where=where))
     b.qa["landcover"] = lcall[lcall.Art.isin(INFRA_LANDCOVER)][["Art", "geometry"]]
     lc = lcall[lcall.Art == "Gebaeude"].copy()
+    lc["av_status"] = "current"
+    # Projected footprints (AV "ProjBodenbedeckung"): new buildings the survey has not yet recorded as built.
+    # Kept here; load_gwr_and_heights decides from the GWR status which of them are real.
+    lp = _clean(geodienste.read_layer("av", canton, "lcsfproj", where=f"{where} AND Art = 'Gebaeude'"))
+    lp["av_status"] = "projected"
+    lc = pd.concat([lc, lp], ignore_index=True)
     lc["egid"] = pd.to_numeric(lc["GWR_EGID"].replace("", None), errors="coerce").astype("Int64")
-    lc = lc[["egid", "geometry"]].reset_index(drop=True)
+    lc = gpd.GeoDataFrame(lc[["egid", "av_status", "geometry"]].reset_index(drop=True), geometry="geometry", crs=2056)
     lc["bid"] = np.arange(len(lc), dtype=int)
     lc["footprint_m2"] = lc.area
     b.buildings = lc
-    log.info("AV: %d parcels, %d SDR, %d building footprints", len(par), len(sdr), len(lc))
+    log.info("AV: %d parcels, %d SDR, %d building footprints (+%d projected)", len(par), len(sdr),
+             (lc.av_status == "current").sum(), (lc.av_status == "projected").sum())
 
 
 def load_zoning(b: Build) -> None:
@@ -204,6 +211,7 @@ def load_gwr_and_heights(b: Build) -> None:
     # Buildings in the pipeline (projected / approved / under construction), located by GWR coordinates
     ntg = b.cfg["engine"]["net_to_gross"]
     pr = g_all[g_all.GSTAT.isin(GSTAT_PROJECT) & ~g_all.GKLAS.isin(pcfg["existing_exclude_gklas"])].copy()
+    pr["pstatus"] = pr.GSTAT.map(GSTAT_PROJECT)
     pagg = dw_all.groupby("EGID").agg(p_dwellings=("EWID", "count"), p_warea=("WAREA", "sum")).reset_index()
     pr = pr.merge(pagg, on="EGID", how="left")
     pr["gf_est_m2"] = np.where(pr.p_warea.fillna(0) > 0, pr.p_warea * ntg,
@@ -218,7 +226,8 @@ def load_gwr_and_heights(b: Build) -> None:
     b.qa["gwr_n_existing"] = int(len(g))
     b.qa["gwr_n_residential"] = int(g.GKAT.isin(GKAT_RESIDENTIAL).sum())
 
-    bl = b.buildings.merge(g.rename(columns={"EGID": "egid"}), on="egid", how="left")
+    bl = _reconcile_av_gwr(b, g_all)
+    bl = bl.merge(g.rename(columns={"EGID": "egid"}), on="egid", how="left")
 
     # heights: swissBUILDINGS3D by EGID, else the tallest 3D building whose centroid falls in the footprint
     to_wgs = Transformer.from_crs(2056, 4326, always_xy=True)
@@ -250,7 +259,8 @@ def load_gwr_and_heights(b: Build) -> None:
     # Which footprints count towards existing floor area (auxiliary buildings do not count as aGF)
     excl = set(pcfg["existing_exclude_gklas"])
     bl["counts"] = (
-        ~bl.GKLAS.isin(excl)
+        (bl.av_status != "projected")
+        & ~bl.GKLAS.isin(excl)
         & ((bl.egid.notna() & bl.GKLAS.notna()) | (bl.footprint_m2 >= pcfg["existing_min_footprint_no_egid_m2"]))
         & (bl.footprint_m2 >= pcfg["existing_min_footprint_m2"])
     )
@@ -363,7 +373,7 @@ def geometry_facts(b: Build) -> None:
     for i, n in parts.groupby("id").size().items():
         if n > 1:
             flags[i].append("multi_zone")
-    firm = par.project_status.isin(["bewilligt", "im_bau"])
+    firm = par.project_status.isin(["bewilligt", "im_bau", "neu_ohne_grundriss"])
     for i in par.id[(par.missing_storeys | (par.n_buildings > 0) & par.height_max_m.isna()) & ~firm]:
         flags[i].append("missing_height")
     for i in par.id[~par.covered]:
@@ -453,6 +463,75 @@ def geometry_facts(b: Build) -> None:
     b.parcels = par
 
 
+def _reconcile_av_gwr(b: Build, g_all: pd.DataFrame) -> gpd.GeoDataFrame:
+    """Align AV footprints with the GWR building status.
+
+    The official survey (AV) lags construction by months to years, so the two registers disagree for
+    recent changes: (1) buildings GWR lists as demolished may still be in the current AV; (2) new buildings
+    GWR lists as existing may only exist as projected AV footprints, or not at all. Rules:
+    - current footprint whose EGID is demolished in GWR → dropped;
+    - current footprint without EGID containing the location of an otherwise unmatched GWR building → linked;
+    - projected footprint of a GWR building that is existing (1004) → used as a normal building ("unsurveyed");
+    - projected footprint of a GWR project (1001–1003) → kept for display only (counted via the project channel);
+    - GWR existing building completed in the last `recent_years` years without any footprint → appended to
+      the project channel (status "neu_ohne_grundriss", counted from its dwelling areas).
+    """
+    pcfg = b.cfg["pipeline"]
+    bl = b.buildings.copy()
+    st = g_all.drop_duplicates("EGID").set_index("EGID").GSTAT
+    status_of = lambda e: e.map(lambda x: st.get(int(x)) if pd.notna(x) else None)  # noqa: E731
+    pts = g_all[g_all.GSTAT.isin([1001, 1002, 1003, 1004]) & g_all.GKODE.notna() & g_all.GKODN.notna()]
+    pts = gpd.GeoDataFrame(pts[["EGID", "GSTAT"]], geometry=gpd.points_from_xy(pts.GKODE, pts.GKODN), crs=2056)
+
+    cur = bl[bl.av_status == "current"].copy()
+    proj = bl[bl.av_status == "projected"].copy()
+    demolished = status_of(cur.egid).eq(1007)
+    cur = cur[~demolished]
+
+    # link EGID-less current footprints to unmatched GWR existing buildings located inside them
+    linked = set(cur.egid.dropna().astype(int))
+    free = pts[(pts.GSTAT == 1004) & ~pts.EGID.isin(linked)]
+    sj_link = gpd.sjoin(free, cur[cur.egid.isna()][["bid", "geometry"]], predicate="within").drop_duplicates("bid")
+    n_linked = int(cur.bid.isin(sj_link.bid).sum())
+    cur.loc[cur.bid.isin(sj_link.bid), "egid"] = cur.bid.map(sj_link.set_index("bid").EGID).astype("Int64")
+
+    # projected footprints: EGID from the attribute or from a GWR location inside (prefer existing ones)
+    sj = gpd.sjoin(pts, proj[["bid", "geometry"]], predicate="within").sort_values("GSTAT", ascending=False)
+    by_bid = sj.drop_duplicates("bid").set_index("bid").EGID
+    proj["egid"] = proj.egid.fillna(proj.bid.map(by_bid)).astype("Int64")
+    have_current = set(cur.egid.dropna().astype(int))
+    s_proj = status_of(proj.egid)
+    fresh = ~proj.egid.isin(have_current)
+    existing_new = (s_proj == 1004) & fresh
+    planned = s_proj.isin([1001, 1002, 1003]) & fresh
+    proj.loc[existing_new, "av_status"] = "unsurveyed"
+    out = pd.concat([cur, proj[existing_new | planned]], ignore_index=True)
+
+    # GWR existing, recently completed, no footprint anywhere → project channel
+    have = set(out.egid.dropna().astype(int))
+    newest = int(g_all.GBAUJ.max()) if g_all.GBAUJ.notna().any() else 0
+    miss = g_all[(g_all.GSTAT == 1004) & ~g_all.EGID.isin(have) & (g_all.GBAUJ >= newest - pcfg["recent_years"])
+                 & ~g_all.GKLAS.isin(pcfg["existing_exclude_gklas"]) & g_all.GKODE.notna()].copy()
+    if len(miss) and b.projects is not None:
+        miss["pstatus"] = "neu_ohne_grundriss"
+        dw = gwr.read_dwellings(b.territory.sources["gwr"]["canton"], b.territory.bfs)
+        agg = dw.groupby("EGID").agg(p_dwellings=("EWID", "count"), p_warea=("WAREA", "sum")).reset_index()
+        miss = miss.merge(agg, on="EGID", how="left")
+        ntg = b.cfg["engine"]["net_to_gross"]
+        miss["gf_est_m2"] = np.where(miss.p_warea.fillna(0) > 0, miss.p_warea * ntg,
+                                     np.where(miss.GEBF.notna(), miss.GEBF, miss.GAREA * miss.GASTW.fillna(2) * b.cfg["engine"]["envelope_to_agf"]))
+        add = gpd.GeoDataFrame(miss, geometry=gpd.points_from_xy(miss.GKODE, miss.GKODN), crs=2056)
+        b.projects = pd.concat([b.projects, add], ignore_index=True)
+    b.qa["av_gwr_reconciliation"] = {
+        "current_dropped_demolished": int(demolished.sum()), "current_linked_by_location": n_linked,
+        "projected_used_as_existing": int(existing_new.sum()), "projected_projects_shown": int(planned.sum()),
+        "existing_without_footprint": int(len(miss)),
+    }
+    out["bid"] = np.arange(len(out), dtype=int)
+    out["footprint_m2"] = out.area
+    return gpd.GeoDataFrame(out, geometry="geometry", crs=2056)
+
+
 def _allocate_projects(b: Build, par: gpd.GeoDataFrame, pcfg: dict) -> gpd.GeoDataFrame:
     """Attach GWR buildings in the pipeline to parcels.
 
@@ -466,14 +545,14 @@ def _allocate_projects(b: Build, par: gpd.GeoDataFrame, pcfg: dict) -> gpd.GeoDa
     if pr is None or pr.empty:
         return par
     sj = gpd.sjoin(pr, par[["id", "geometry"]], how="inner", predicate="within")
-    order = {"projektiert": 0, "bewilligt": 1, "im_bau": 2}
+    order = {"projektiert": 0, "bewilligt": 1, "im_bau": 2, "neu_ohne_grundriss": 3}
     idx = par.set_index("id")
     rows = {}
     for pid, grp in sj.groupby("id"):
-        status = max((GSTAT_PROJECT[int(x)] for x in grp.GSTAT), key=order.get)
+        status = max(grp.pstatus, key=order.get)
         rows[pid] = status
-        firm = grp[grp.GSTAT.isin([1002, 1003])]
-        items = [{"egid": int(r.EGID), "status": GSTAT_PROJECT[int(r.GSTAT)], "dwellings": None if r.p_dwellings != r.p_dwellings else int(r.p_dwellings),
+        firm = grp[grp.pstatus.isin(["bewilligt", "im_bau", "neu_ohne_grundriss"])]
+        items = [{"egid": int(r.EGID), "status": r.pstatus, "dwellings": None if r.p_dwellings != r.p_dwellings else int(r.p_dwellings),
                   "gf_est_m2": round(float(r.gf_est_m2), 1), "footprint_m2": None if r.GAREA != r.GAREA else float(r.GAREA)} for r in grp.itertuples()]
         par.at[par.index[par.id == pid][0], "projects"] = items
         if firm.empty:

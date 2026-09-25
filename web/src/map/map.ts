@@ -146,7 +146,9 @@ export class ParcelMap {
     m.addLayer({
       id: "buildings-3d", type: "fill-extrusion", source: "buildings", minzoom: 14.5,
       paint: {
-        "fill-extrusion-color": ["case", ["==", ["get", "counts"], true], "#8d8a83", "#b9b5ac"] as never,
+        // planned buildings (AV projected footprint of a GWR project) are drawn pale
+        "fill-extrusion-color": ["case", ["==", ["get", "av_status"], "projected"], "#e2ddd2",
+          ["==", ["get", "counts"], true], "#8d8a83", "#b9b5ac"] as never,
         "fill-extrusion-height": ["get", "h"] as never,
         "fill-extrusion-opacity": 0.92,
         "fill-extrusion-vertical-gradient": true,
