@@ -1,0 +1,966 @@
+# Rulebook: Windisch (whole municipality).
+# Every value carries provenance (source, PDF page, section, verbatim quote).
+# `verified: true` may only be set by `pp rules verify` after human review.
+rulebook_id: AG-4123-windisch
+territory: AG-4123-windisch
+perimeter: windisch
+municipality:
+  bfs: 4123
+  name: Windisch
+  canton: AG
+scope_de: Gemeinde Windisch
+version: 0.1.0
+compiled_at: '2026-09-25'
+compiled_by: LLM-assisted extraction (Claude, in-session); every value awaits human verification via `pp rules verify`
+zone_match_field: typ_kommunal_code
+sources:
+- id: bno_2022
+  title: Bau- und Nutzungsordnung Gemeinde Windisch gemäss § 15 BauG, Stand Juni 2022
+  url: https://www.windisch.ch/public/upload/assets/918/Bau-%20und%20Nutzungsordnung%20(BNO).pdf?fp=4
+  effective_from: '2020-05-06'
+  local_path: data/raw/documents/AG-4123/bno_2022.pdf
+  note: Vom Regierungsrat genehmigt am 18.12.2019 und 6.5.2020; Teiländerung Rütene in Kraft seit 4.2.2018.
+- id: bauv_ag
+  title: Bauverordnung Kanton Aargau (BauV), SAR 713.121
+  url: https://gesetzessammlungen.ag.ch/data/713.121/de
+definitions:
+  az_counts_attika_dg:
+    value: false
+    source: bno_2022
+    page: 50
+    section: § 74 Abs. 1
+    quote: Dach-, Attika- und Untergeschosse werden bei der Ausnützungsziffer nicht angerechnet.
+    verified: false
+  geschlossene_bauweise_zulaessig:
+    value: true
+    source: bno_2022
+    page: 16
+    section: § 13 Abs. 5
+    quote: Wo die BNO nichts anderes bestimmt, sind sowohl die offene wie auch die geschlossene Bauweise zulässig.
+    verified: false
+zones:
+- code: W2
+  label_de: Wohnzone 2
+  match:
+    typ_kommunal_code:
+    - '112101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.5
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.4
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Windisch regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 11.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+      note: Gemessen vom massgebenden Terrain bis OK Unterdach (Fussnote 1 zu § 13)
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 2 2 0.5 0.4 11 m 4 m 8 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 51
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify)
+  notes: []
+- code: W3
+  label_de: Wohnzone 3
+  match:
+    typ_kommunal_code:
+    - '113101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 3
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.6
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.4
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Windisch regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 14.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+      note: Gemessen vom massgebenden Terrain bis OK Unterdach (Fussnote 1 zu § 13)
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 10.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 3 3 0.6 0.4 14 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 51
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify)
+  notes: []
+- code: W4
+  label_de: Wohnzone 4
+  match:
+    typ_kommunal_code:
+    - '114101'
+  category: residential
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 4
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.8
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.3
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Windisch regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 17.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+      note: Gemessen vom massgebenden Terrain bis OK Unterdach (Fussnote 1 zu § 13)
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 10.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: II
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohnzone 4 4 0.8 0.3 17 m 4 m 10 m II 18  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe | Grenzabstand
+        klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 51
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify)
+  notes: []
+- code: WA2
+  label_de: Wohn- und Arbeitszone 2
+  match:
+    typ_kommunal_code:
+    - '132101'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 2
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 2 2 0.5 0.3 11 m 4 m 8 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.5
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 2 2 0.5 0.3 11 m 4 m 8 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.3
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 2 2 0.5 0.3 11 m 4 m 8 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Windisch regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 11.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 2 2 0.5 0.3 11 m 4 m 8 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Gemessen vom massgebenden Terrain bis OK Unterdach (Fussnote 1 zu § 13)
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 2 2 0.5 0.3 11 m 4 m 8 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 8.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 2 2 0.5 0.3 11 m 4 m 8 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 2 2 0.5 0.3 11 m 4 m 8 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 16
+    section: § 13 Abs. 4
+    quote: Der Gemeinderat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1
+      zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 51
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify)
+  notes: []
+- code: WA3
+  label_de: Wohn- und Arbeitszone 3
+  match:
+    typ_kommunal_code:
+    - '133101'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 3
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 3 3 0.6 0.3 14 m 4 m 10 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 0.6
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 3 3 0.6 0.3 14 m 4 m 10 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.3
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 3 3 0.6 0.3 14 m 4 m 10 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Windisch regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 14.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 3 3 0.6 0.3 14 m 4 m 10 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Gemessen vom massgebenden Terrain bis OK Unterdach (Fussnote 1 zu § 13)
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 3 3 0.6 0.3 14 m 4 m 10 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: 10.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 3 3 0.6 0.3 14 m 4 m 10 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 3 3 0.6 0.3 14 m 4 m 10 m III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 16
+    section: § 13 Abs. 4
+    quote: Der Gemeinderat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1
+      zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 51
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify)
+  notes: []
+- code: WA4
+  label_de: Wohn- und Arbeitszone 4
+  match:
+    typ_kommunal_code:
+    - '134101'
+  category: mixed
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 4
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 4 4 1.1 0.2 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: 1.1
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 4 4 1.1 0.2 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: 0.2
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 4 4 1.1 0.2 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Windisch regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 17.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 4 4 1.1 0.2 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Gemessen vom massgebenden Terrain bis OK Unterdach (Fussnote 1 zu § 13)
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 4 4 1.1 0.2 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: null
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 4 4 1.1 0.2 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Mit "*" bezeichnete Masse legt der Gemeinderat im Einzelfall fest (§ 13 Abs. 2); Engine nutzt den kleinen Grenzabstand
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Wohn- und Arbeitszone 4 4 1.1 0.2 17 m 4 m * III 17  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses:
+  - id: eg_publikumsorientiert
+    label_de: AZ-Bonus publikumsorientiertes Erdgeschoss
+    az_delta: 0.1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 16
+    section: § 13 Abs. 4
+    quote: Der Gemeinderat kann in den Wohn- und Arbeitszonen für publikumsorientierte Nutzungen im Erdgeschoss einen Ausnützungsbonus von 0.1
+      zulassen.
+    verified: false
+  - id: arealueberbauung
+    label_de: 'Arealüberbauung: ein zusätzliches Geschoss'
+    vg_delta: 1
+    discretionary: true
+    default_on: false
+    source: bno_2022
+    page: 51
+    section: § 81 Abs. 1
+    quote: Bei Arealüberbauungen ist ein zusätzliches Geschoss zulässig.
+    verified: false
+    note: Mindestfläche und Qualitätsanforderungen nach BauV AG (verify)
+  notes: []
+- code: Z
+  label_de: Zentrumszone Windisch
+  match:
+    typ_kommunal_code:
+    - '143101'
+  category: centre
+  residential: true
+  discretionary: false
+  params:
+    vollgeschosse_max:
+      value: 3
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone Windisch 3 - - 14 m 4 m * III 15  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    az_max:
+      value: null
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone Windisch 3 - - 14 m 4 m * III 15  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: '"-": keine Nutzungsziffern einzuhalten (§ 13 Abs. 3)'
+    ueberbauungsziffer_max:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    gruenflaechenziffer_min:
+      value: null
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone Windisch 3 - - 14 m 4 m * III 15  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: '"-": keine Nutzungsziffern einzuhalten (§ 13 Abs. 3)'
+    attika_or_dg_allowed:
+      value: true
+      source: bauv_ag
+      section: (verify)
+      quote: null
+      verified: false
+      note: 'Annahme: ein Dach- oder Attikageschoss über den Vollgeschossen ist kantonal zulässig (IVHB/BauV AG); BNO § 74 nimmt sie von der AZ
+        aus. Quelle prüfen.'
+    attika_factor:
+      value: null
+      note: BNO regelt die Attikafläche nicht; Config-Default attika_factor
+    fassadenhoehe_max_m:
+      value: null
+      note: BNO Windisch regelt nur die Gesamthöhe
+    gesamthoehe_max_m:
+      value: 14.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone Windisch 3 - - 14 m 4 m * III 15  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Gemessen vom massgebenden Terrain bis OK Unterdach (Fussnote 1 zu § 13)
+    grenzabstand_klein_m:
+      value: 4.0
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone Windisch 3 - - 14 m 4 m * III 15  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+    grenzabstand_gross_m:
+      value: null
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone Windisch 3 - - 14 m 4 m * III 15  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+      note: Mit "*" bezeichnete Masse legt der Gemeinderat im Einzelfall fest (§ 13 Abs. 2); Engine nutzt den kleinen Grenzabstand
+    gebaeudelaenge_max_m:
+      value: null
+      note: Nicht in der BNO-Zonentabelle
+    empfindlichkeitsstufe:
+      value: III
+      source: bno_2022
+      page: 15
+      section: § 13 Abs. 1
+      quote: 'Zentrumszone Windisch 3 - - 14 m 4 m * III 15  [Spalten: Bauzonen | Vollgeschosse | Ausnutzung | Grünflächenziffer | Gesamthöhe
+        | Grenzabstand klein | gross | ES | BNO §]'
+      verified: false
+  bonuses: []
+  notes:
+  - 'Keine Ausnützungsziffer ("-"): nur die Hülle (Geschosse, Höhe, Abstände) begrenzt.'
+  confidence_cap:
+    value: medium
+    reason: 'Zentrumszone: Sonderregeln in § 15 BNO (verify Gestaltungsplanpflicht)'
+- code: K
+  label_de: Kernzone
+  match:
+    typ_kommunal_code:
+    - '141101'
+  category: core
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2022
+    page: 15
+    section: § 13 Abs. 1–2
+    quote: Kernzone * - - * * * III 16
+    verified: false
+  bonuses: []
+  notes:
+  - Alle Masse legt der Gemeinderat im Einzelfall fest ("*").
+- code: ZC
+  label_de: Zone Campus
+  match:
+    typ_kommunal_code:
+    - '148101'
+  category: special
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2022
+    page: 15
+    section: § 13 Abs. 1; § 14
+    quote: Zone Campus Festlegung mittels Reglement Sondernutzungsvorschriften III 14
+    verified: false
+  bonuses: []
+  notes:
+  - Hochhausstandort im schraffierten Bereich (§ 14 Abs. 6); Gestaltungspläne erforderlich.
+- code: E
+  label_de: Erneuerungszone
+  match:
+    typ_kommunal_code:
+    - '116101'
+    - '118101'
+  category: renewal
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2022
+    page: 15
+    section: § 13 Abs. 1; § 19
+    quote: Erneuerungszone Baumasse der bestehenden Bauten als Richtwerte II 19
+    verified: false
+  bonuses: []
+  notes:
+  - Baumasse der bestehenden Bauten gelten als Richtwerte.
+- code: RZ
+  label_de: Zone Reisezentrum
+  match:
+    typ_kommunal_code:
+    - '135101'
+  category: special
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2022
+    page: 15
+    section: § 13 Abs. 1; § 26
+    quote: Zone Reisezentrum Festlegung mittels Reglement Sondernutzungsvorschriften III 26
+    verified: false
+  bonuses: []
+  notes: []
+- code: SP
+  label_de: Zone alte Spinnerei
+  match:
+    typ_kommunal_code:
+    - '135102'
+  category: special
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2022
+    page: 15
+    section: § 13 Abs. 1; § 28
+    quote: Zone alte Spinnerei Festlegung mittels Reglement Sondernutzungsvorschriften III 28
+    verified: false
+  bonuses: []
+  notes: []
+- code: KU
+  label_de: Zone Kunzareal
+  match:
+    typ_kommunal_code:
+    - '133102'
+    - '138101'
+  category: special
+  residential: true
+  discretionary: true
+  params: {}
+  basis:
+    source: bno_2022
+    page: 15
+    section: § 13 Abs. 1; § 29
+    quote: Zone Kunzareal Festlegung mittels Reglement Sondernutzungsvorschriften III 29
+    verified: false
+  bonuses: []
+  notes: []
+- code: AI
+  label_de: Arbeitszone I
+  match:
+    typ_kommunal_code:
+    - '121101'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Wohnungen nur für standortgebundenes Personal; nicht als Wohnkapazität gezählt.
+- code: AK
+  label_de: Arbeitszone Kabelwerke
+  match:
+    typ_kommunal_code:
+    - '122101'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []
+- code: AR
+  label_de: Arbeitszone Rütene
+  match:
+    typ_kommunal_code:
+    - '122102'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []
+- code: STR
+  label_de: Strasse (als Arbeitszone codiert)
+  match:
+    typ_kommunal_code:
+    - '121102'
+  category: work
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Im Datensatz als Arbeitszone codiert, Bezeichnung 'Strasse'.
+- code: OeBA
+  label_de: Zone für öffentliche Bauten und Anlagen
+  match:
+    typ_kommunal_code:
+    - '151101'
+    - '151102'
+    - '151103'
+    - '151104'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []
+- code: KF
+  label_de: Zone Königsfelden
+  match:
+    typ_kommunal_code:
+    - '151105'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Baumasse gemäss Zonenbestimmungen (§ 27); Klinikareal, nicht als Wohnkapazität gezählt.
+- code: FG
+  label_de: Familiengartenzone
+  match:
+    typ_kommunal_code:
+    - '171401'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes:
+  - Nicht als Wohnkapazität gezählt.
+- code: WP
+  label_de: Zone Waffenplatz
+  match:
+    typ_kommunal_code:
+    - '152101'
+  category: public
+  residential: false
+  discretionary: false
+  params: {}
+  bonuses: []
+  notes: []

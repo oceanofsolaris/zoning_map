@@ -14,7 +14,7 @@ export interface Rules {
 }
 export type RuleSet = Record<string, Rules>;
 export interface Part { zone: string | null; area_m2: number; agsf_m2: number; fp: number[] }
-export interface Existing { gf_m2: number; gf_fixed_m2?: number; storeys_max: number | null; height_max_m: number | null; n_buildings: number }
+export interface Existing { gf_m2: number; gf_fixed_m2?: number; existing_to_agf?: number | null; storeys_max: number | null; height_max_m: number | null; n_buildings: number }
 export interface ParcelFacts { area_m2: number; flags: string[]; parts: Part[]; existing: Existing }
 export interface ZoneDelta { d_az?: number; d_vg?: number }
 export interface Scenario { zones?: Record<string, ZoneDelta>; bonuses?: Record<string, boolean> }
@@ -66,8 +66,11 @@ export function applyScenario(rules: RuleSet, scenario: Scenario | null | undefi
         const z = zones[key];
         if (z) { dAz += z.d_az ?? 0; dVg += z.d_vg ?? 0; }
       }
+      // Bonus switches are global ("<id>") or scoped to a planning perimeter ("<perimeter>/<id>").
+      const slash = code.lastIndexOf("/");
+      const prefix = slash >= 0 ? code.slice(0, slash + 1) : "";
       for (const b of r.bonuses ?? []) {
-        if (bonusesOn[b.id]) { dAz += b.az_delta ?? 0; dVg += b.vg_delta ?? 0; }
+        if (bonusesOn[b.id] || (prefix && bonusesOn[prefix + b.id])) { dAz += b.az_delta ?? 0; dVg += b.vg_delta ?? 0; }
       }
       if (r.az_max !== null && dAz) r.az_max = Math.max(0, r.az_max + dAz);
       if (r.vg_max !== null && dVg) {
@@ -165,7 +168,9 @@ export function computeParcel(parcel: ParcelFacts, rules0: RuleSet, cfg: EngineC
   const domRules = parts.length && !infra ? rules[parts[dom].zone ?? ""] ?? null : null;
 
   const ex = parcel.existing;
-  const agfExisting = ex.gf_m2 * cfg.existing_to_agf + (ex.gf_fixed_m2 ?? 0);
+  // existing_to_agf is calibrated per territory; parcels may carry their own value
+  const kEx = ex.existing_to_agf ?? cfg.existing_to_agf;
+  const agfExisting = ex.gf_m2 * kEx + (ex.gf_fixed_m2 ?? 0);
   const utilisation = gfAllowed ? agfExisting / gfAllowed : null;
   const headroom = gfAllowed !== null ? Math.max(0, gfAllowed - agfExisting) : null;
   const units = headroom !== null ? Math.floor(headroom / cfg.gf_per_dwelling_m2 + 1e-9) : null;

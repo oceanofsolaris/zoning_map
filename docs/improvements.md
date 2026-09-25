@@ -51,7 +51,23 @@ utilisation 1.16). Options:
 - Distinguish 8 m (Anbauten, Kleinbauten, unterirdische Bauten) from 18 m.
 - Show the forest band on the map (layer) and "Reserve verloren durch Waldabstand" in the municipality panel.
 
-## 6. Other open items
+## 6. Gestaltungsplan parcels and envelope-only zones
+
+Parcels inside a legally valid Gestaltungsplan currently get base-zone capacity plus a flag. Where the
+Gestaltungsplan has been realised (buildings newer than the plan), the plan fixed the development and the
+remaining "reserve" is mostly an artefact. This is worst in zones without an AZ (Zentrumszone), where only
+the simplified envelope limits capacity. Options: treat realised-GP parcels as used (capacity = existing), or
+report them separately from the headline; add ÜZ/GZ-based footprint caps for envelope-only zones.
+
+## 7. Scaling to more municipalities
+
+- Calibration per territory (Brugg 0.796, Windisch 0.74) is noisy with < 20 samples; pool at canton level
+  or by region.
+- Rulebook extraction: most Aargau BNOs share the § 13 table layout → the LLM extractor plus a
+  table-specific prompt should get most values; matching dataset codes is the manual step.
+- Frontend: > ~10 municipalities as GeoJSON gets heavy → PMTiles.
+
+## 8. Other open items
 
 - Grünflächenziffer as an envelope constraint (footprint ≤ (1 − GZ) × aGSF − access/parking).
 - Baulinien (AGIS Erschliessungspläne), Planungszonen flag, ISOS overlay.

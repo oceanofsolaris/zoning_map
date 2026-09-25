@@ -63,7 +63,8 @@ def _write_geojson(gdf: gpd.GeoDataFrame, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():
         path.unlink()
-    gdf = gdf[~gdf.geometry.is_empty & gdf.geometry.notna()].to_crs(4326)
+    gdf = gdf[~gdf.geometry.isna()]
+    gdf = gdf[~gdf.geometry.is_empty].to_crs(4326)
     pyogrio.write_dataframe(gdf, path, driver="GeoJSON", layer_options=GEOJSON_OPTS)
 
 
@@ -87,6 +88,7 @@ def write_all(b, inputs: list[dict[str, Any]], results: list[dict[str, Any]], ou
     flat["flags"] = [json.dumps(x) for x in res["flags"]]
     flat["zones"] = [json.dumps([{"zone": p["zone"], "area_m2": p["area_m2"]} for p in i["parts"]]) for i in inputs]
     flat["projects"] = [json.dumps(x) for x in flat["projects"]]
+    flat["constraints"] = [json.dumps(_clean_json(x)) for x in flat["constraints"]]
     for c in ["egids", "addresses"]:
         flat[c] = [json.dumps(_clean_json(x)) if isinstance(x, list) else "[]" for x in flat[c]]
     flat["bfs"] = t.bfs
@@ -106,6 +108,7 @@ def write_all(b, inputs: list[dict[str, Any]], results: list[dict[str, Any]], ou
             "dwellings": _none(r.dwellings_existing), "slope_pct": _none(round(r.slope_pct, 1)) if r.slope_pct == r.slope_pct else None, "gf_existing_alt_m2": _none(r.gf_existing_alt_m2),
             "footprint_existing_m2": _none(r.footprint_existing_m2),
             "existing_from_dwellings": bool(r.existing_from_dwellings), "projects": r.projects,
+            "constraints": r.constraints,
             "facts": inp,
             "py": {k: rs[k] for k in ("gf_allowed_m2", "headroom_gf_m2", "binding_constraint", "allowed_today", "confidence")},
         })
@@ -140,6 +143,8 @@ def write_all(b, inputs: list[dict[str, Any]], results: list[dict[str, Any]], ou
     _write_geojson(z[["zone", "label", "category", "perimeter", "typ_kantonal_code", "building_zone", "geometry"]], web / "zones.geojson")
     if len(b.overlays):
         _write_geojson(b.overlays, web / "overlays.geojson")
+    _write_geojson(gpd.GeoDataFrame({"territory_id": [t.territory_id], "name": [t.name]}, geometry=[b.muni], crs=2056),
+                   web / "boundary.geojson")
     per = b.perimeters.copy()
     per["covered"] = per.rulebook.notna()
     _write_geojson(per[["perimeter", "label", "covered", "geometry"]], web / "perimeters.geojson")
@@ -167,7 +172,7 @@ def write_all(b, inputs: list[dict[str, Any]], results: list[dict[str, Any]], ou
         "qa": b.qa,
         "attribution": ATTRIBUTION,
         "files": ["parcels.geojson", "parcels.json", "buildings.geojson", "envelopes.geojson", "zones.geojson",
-                  "overlays.geojson", "perimeters.geojson"],
+                  "overlays.geojson", "perimeters.geojson", "boundary.geojson"],
     }
     (web / "territory.json").write_text(json.dumps(_clean_json(meta), ensure_ascii=False, indent=1))
     (outdir / "territory.json").write_text((web / "territory.json").read_text())

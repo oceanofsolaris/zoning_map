@@ -1,6 +1,7 @@
 import type { Result } from "../engine/capacity";
 import type { ParcelRecord, RuleValue, Rulebook, Territory } from "../data/source";
 import { t } from "../i18n";
+import { FLAGS_SHOWN_ELSEWHERE, renderConstraints } from "./constraints";
 import { esc, fmt0, fmt1, fmt2, m2, pct, signed0 } from "./format";
 
 const PARAM_ROWS: [string, string, (v: unknown) => string][] = [
@@ -111,6 +112,12 @@ export function renderInspector(el: HTMLElement, territory: Territory, p: Parcel
     html += `</section>`;
   }
 
+  // parcel-specific constraints beyond the zone rules (forest distance, Gestaltungsplan, …)
+  const member = territory.members?.find((m) => m.territory_id === p.territory_id) ?? territory;
+  const domPart = [...parts].sort((a, b) => b.area_m2 - a.area_m2)[0];
+  const rb = domPart?.zone ? territory.rulebooks[domPart.zone.split("/")[0]] ?? null : null;
+  html += renderConstraints(p.constraints, { member, rulebook: rb });
+
   // existing building facts
   const bits = [
     p.gklas_main ? GKLAS[p.gklas_main] ?? `GKLAS ${p.gklas_main}` : null,
@@ -129,14 +136,15 @@ export function renderInspector(el: HTMLElement, territory: Territory, p: Parcel
   }
 
   // flags & confidence
-  const flags = [...base.flags, ...(p.facts.area_m2 < cfg.small_parcel_m2 ? ["small_parcel"] : [])];
+  // notes about the estimate itself (constraints are listed above)
+  const flags = [...base.flags, ...(p.facts.area_m2 < cfg.small_parcel_m2 ? ["small_parcel"] : [])].filter((f) => !FLAGS_SHOWN_ELSEWHERE.has(f));
   html += `<section><h3>${t("parcel.flags")}</h3>
     <p class="small">${t("parcel.confidence")}: <strong class="conf conf-${base.confidence}">${t(`conf.${base.confidence}`)}</strong></p>
     <ul class="flags">${flags.map((f) => `<li>${esc(t(`flag.${f}`))}</li>`).join("")}</ul></section>`;
 
   const subject = encodeURIComponent(`Fehler Parzelle ${p.nr} (${p.egrid})`);
   // Build the link from the parcel itself: location.href is updated only after rendering.
-  const link = `${location.origin}${location.pathname}#t=${territory.territory_id}&p=${p.egrid}`;
+  const link = `${location.origin}${location.pathname}#t=${p.territory_id ?? territory.territory_id}&p=${p.egrid}`;
   const body = encodeURIComponent(`Parzelle ${p.nr}, EGRID ${p.egrid}\nLink: ${link}\n\nWas stimmt nicht?\n`);
   html += `<p class="report"><a href="https://github.com/oceanofsolaris/upzone_me/issues/new?title=${subject}&body=${body}" target="_blank" rel="noopener">${t("parcel.report")}</a>
     · <span class="small muted">${t("parcel.envelope")}</span></p>`;

@@ -1,0 +1,38 @@
+{
+  "name": "24_parcel_calibration_override",
+  "description": "Case 01 with a parcel-level existing_to_agf of 0.5 (territory calibration) overriding cfg 1.0: existing 150·0.5=75 → headroom 445, utilisation 0.144231.",
+  "parcel": {
+    "area_m2": 800,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "W2",
+        "area_m2": 800,
+        "agsf_m2": 800,
+        "fp": [
+          800,
+          600,
+          520,
+          440,
+          370,
+          300,
+          180
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 150,
+      "storeys_max": 2,
+      "height_max_m": 7.0,
+      "n_buildings": 1,
+      "existing_to_agf": 0.5
+    }
+  },
+  "scenario": null,
+  "expected": {
+    "agf_existing_m2": 75,
+    "headroom_gf_m2": 445,
+    "headroom_units": 4,
+    "utilisation": 0.144231
+  }
+}

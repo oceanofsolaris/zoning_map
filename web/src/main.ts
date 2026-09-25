@@ -5,8 +5,8 @@ if (new URLSearchParams(location.search).get("raf") === "timeout") {
   window.requestAnimationFrame = (cb) => window.setTimeout(() => cb(performance.now()), 16);
   window.cancelAnimationFrame = (id) => window.clearTimeout(id);
 }
-import { blockerRanking, computeAll, computeParcel, summarise, type Result, type Scenario } from "./engine/capacity";
-import { loadIndex, loadTerritory, type TerritoryData } from "./data/source";
+import { blockerRanking, computeAll, computeParcel, summarise, type BlockerRow, type Result, type Scenario } from "./engine/capacity";
+import { loadIndex, loadTerritories, type TerritoryData } from "./data/source";
 import { applyI18n, t } from "./i18n";
 import { cssGradient, HEADROOM_STOPS, SCENARIO_STOPS, UTIL_STOPS, ALLOWED_COLORS, NEUTRAL } from "./map/colors";
 import { ParcelMap, VIEWS, type ParcelStyle, type View } from "./map/map";
@@ -17,7 +17,8 @@ import { mountMunicipality } from "./ui/municipality";
 import { mountSearch } from "./ui/search";
 import { readUrl, writeUrl } from "./url";
 
-interface State { view: View; selected: number | null; scenario: Scenario; tab: "parcel" | "muni" }
+type Panel = "closed" | "parcel" | "muni";
+interface State { view: View; selected: number | null; scenario: Scenario; panel: Panel; gemeinde: string }
 
 const isEmpty = (s: Scenario) => !Object.values(s.zones ?? {}).some((d) => d.d_az || d.d_vg) && !Object.values(s.bonuses ?? {}).some(Boolean);
 
@@ -25,8 +26,10 @@ async function main() {
   applyI18n();
   const url = readUrl();
   const index = await loadIndex();
-  const entry = index.find((e) => e.territory_id === url.t) ?? index[0];
-  const data: TerritoryData = await loadTerritory(entry);
+  // t=<id>[,<id>…]; default: every territory in the index
+  const wanted = (url.t ?? "").split(",").filter(Boolean);
+  const entries = wanted.length ? index.filter((e) => wanted.includes(e.territory_id)) : index;
+  const data: TerritoryData = await loadTerritories(entries.length ? entries : index);
   const { territory, parcels } = data;
   document.getElementById("territory-name")!.textContent = `${territory.name} ${territory.canton}`;
   document.getElementById("attribution")!.textContent = "Quellen: Kanton Aargau (AGIS, ÖREB-Kataster), swisstopo, Bundesamt für Statistik (GWR)";
@@ -34,15 +37,31 @@ async function main() {
   const cfg = territory.engine_config;
   const facts = parcels.map((p) => p.facts);
   const base: Result[] = computeAll(facts, territory.rules, cfg);
-  const baseTotals = summarise(base);
-  const blockers = blockerRanking(facts, territory.rules, cfg);
+  // Gemeinde scope for the municipality panel ("all" or a territory id)
+  const members = territory.members ?? [territory];
+  const scopes = members.map((m) => ({ id: m.territory_id, label: m.name }));
+  const inScope = (scope: string) => (i: number) => parcels[i].territory_id === scope;
+  const pick = <T,>(arr: T[], scope: string) => arr.filter((_, i) => inScope(scope)(i));
+  const blockerCache = new Map<string, BlockerRow[]>();
+  const blockersFor = (scope: string) => {
+    if (!blockerCache.has(scope)) {
+      const f = pick(facts, scope);
+      const pids = new Set(pick(parcels, scope).map((p) => p.perimeter));
+      const rules = Object.fromEntries(Object.entries(territory.rules).filter(([k]) => pids.has(k.split("/")[0])));
+      blockerCache.set(scope, blockerRanking(f, rules, cfg));
+    }
+    return blockerCache.get(scope)!;
+  };
   let scen: Result[] | null = null;
 
+  const selected0 = url.p ? parcels.find((p) => p.egrid === url.p)?.id ?? null : null;
   const store = createStore<State>({
     view: VIEWS.includes(url.v as View) ? (url.v as View) : "headroom",
-    selected: url.p ? parcels.find((p) => p.egrid === url.p)?.id ?? null : null,
+    selected: selected0,
     scenario: url.scenario ?? {},
-    tab: url.p ? "parcel" : "muni",
+    // closed by default; a selected parcel opens the parcel tab, a Gemeinde in the URL the Gemeinde tab
+    panel: selected0 !== null ? "parcel" : url.g && scopes.some((x) => x.id === url.g) ? "muni" : "closed",
+    gemeinde: (selected0 !== null ? parcels[selected0].territory_id : url.g) ?? scopes[0].id,
   });
 
   const pmap = new ParcelMap(document.getElementById("map")!, data, url.m);
@@ -99,21 +118,41 @@ async function main() {
 
   // ---------- panels
   const panel = document.getElementById("panel")!;
+  const app = document.getElementById("app")!;
   const paneParcel = document.getElementById("pane-parcel")!;
   const paneMuni = document.getElementById("pane-muni")!;
-  document.querySelectorAll<HTMLButtonElement>(".tabs button").forEach((b) =>
-    b.addEventListener("click", () => store.set({ tab: b.dataset.tab as State["tab"] })));
-  const renderTabs = (tab: State["tab"]) => {
-    document.querySelectorAll<HTMLButtonElement>(".tabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
-    paneParcel.hidden = tab !== "parcel";
-    paneMuni.hidden = tab !== "muni";
+  document.querySelectorAll<HTMLButtonElement>(".tabs button[data-tab]").forEach((b) =>
+    b.addEventListener("click", () => store.set({ panel: b.dataset.tab as Panel })));
+  document.getElementById("panel-close")!.addEventListener("click", () => store.set({ panel: "closed", selected: null }));
+  document.getElementById("open-muni")!.addEventListener("click", async () => {
+    const [lng, lat] = pmap.center();
+    store.set({ panel: "muni", gemeinde: (await pmap.territoryAt(lng, lat)) ?? store.get().gemeinde });
+  });
+  const renderPanel = (s: State) => {
+    app.classList.toggle("panel-closed", s.panel === "closed");
+    panel.hidden = s.panel === "closed";
+    document.querySelectorAll<HTMLButtonElement>(".tabs button[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === s.panel)));
+    paneParcel.hidden = s.panel !== "parcel";
+    paneMuni.hidden = s.panel !== "muni";
+    pmap.setGemeinde(s.panel === "muni" ? s.gemeinde : null);
+    pmap.map.resize(); // the map container changed width; MapLibre only tracks window resizes
   };
 
-  const muniProps = () => ({
-    territory, parcels, base, baseTotals, scen, scenTotals: scen ? summarise(scen) : null,
-    scenario: store.get().scenario, blockers, onScenario: (s: Scenario) => store.set({ scenario: s }),
-  });
-  const updateMuni = mountMunicipality(paneMuni, muniProps());
+  const muniProps = () => {
+    const scope = store.get().gemeinde;
+    const idx = parcels.map((_, i) => i).filter(inScope(scope));
+    const sBase = idx.map((i) => base[i]);
+    const sScen = scen ? idx.map((i) => scen![i]) : null;
+    return {
+      territory, parcels: idx.map((i) => parcels[i]), base: sBase, baseTotals: summarise(sBase),
+      scen: sScen, scenTotals: sScen ? summarise(sScen) : null,
+      scenario: store.get().scenario, blockers: blockersFor(scope), onScenario: (s: Scenario) => store.set({ scenario: s }),
+      scopes, scope, onScope: (sc: string) => store.set({ gemeinde: sc }),
+      getScenario: () => store.get().scenario,
+    };
+  };
+  // The panel shows one Gemeinde at a time; it is rebuilt when the Gemeinde changes (settings stay in the scenario).
+  let updateMuni = mountMunicipality(paneMuni, muniProps());
 
   const ghostFor = async (id: number): Promise<GeoJSON.FeatureCollection> => {
     const s = store.get();
@@ -142,7 +181,10 @@ async function main() {
     if (b) { const [lon, lat] = b.dataset.fly!.split(",").map(Number); pickAt(lon, lat); }
   });
 
-  pmap.onSelect = (id) => store.set({ selected: id, tab: id === null ? store.get().tab : "parcel" });
+  pmap.onSelect = (id) => {
+    if (id === null) return;
+    store.set({ selected: id, panel: "parcel", gemeinde: parcels[id].territory_id ?? store.get().gemeinde });
+  };
   pmap.onMove = (m) => { mapPos = m; syncUrl(); };
   let mapPos: [number, number, number] | undefined = url.m;
 
@@ -151,7 +193,7 @@ async function main() {
     pmap.map.once("moveend", () => {
       const pt = pmap.map.project([lon, lat]);
       const f = pmap.map.queryRenderedFeatures(pt, { layers: ["parcels-fill"] })[0];
-      if (f) store.set({ selected: Number(f.id), tab: "parcel" });
+      if (f) pmap.onSelect(Number(f.id));
     });
   };
   mountSearch(document.getElementById("search-form") as HTMLFormElement, document.getElementById("search") as HTMLInputElement,
@@ -167,7 +209,8 @@ async function main() {
 
   const syncUrl = () => {
     const s = store.get();
-    writeUrl({ t: territory.territory_id, p: s.selected === null ? undefined : parcels[s.selected].egrid, v: s.view, scenario: s.scenario, m: mapPos });
+    writeUrl({ t: territory.territory_id, p: s.selected === null ? undefined : parcels[s.selected].egrid,
+      g: s.panel === "muni" ? s.gemeinde : undefined, v: s.view, scenario: s.scenario, m: mapPos });
   };
 
   // mobile bottom sheet: tap the grip to expand/collapse
@@ -189,7 +232,8 @@ async function main() {
     }
     if (changed.has("view")) { pmap.setView(s.view); restyle(); renderLegend(s.view); }
     if (changed.has("selected")) renderParcel(true);
-    if (changed.has("tab")) renderTabs(s.tab);
+    if (changed.has("gemeinde")) updateMuni = mountMunicipality(paneMuni, muniProps());
+    if (changed.has("panel") || changed.has("gemeinde")) renderPanel(s);
     syncUrl();
   });
 
@@ -199,7 +243,7 @@ async function main() {
   pmap.setView(store.get().view);
   restyle();
   renderLegend(store.get().view);
-  renderTabs(store.get().tab);
+  renderPanel(store.get());
   renderParcel(store.get().selected !== null && !url.m);
   (window as unknown as Record<string, unknown>).__pp = { store, territory, parcels, base, pmap };
 }

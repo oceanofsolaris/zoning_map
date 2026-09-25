@@ -11,7 +11,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='10' width='24' height='18' fill='none' stroke='%23d7263d' stroke-width='2.5' stroke-dasharray='4 2'/%3E%3Crect x='8' y='18' width='10' height='10' fill='%23555'/%3E%3C/svg%3E" />
 </head>
 <body>
-  <div id="app">
+  <div id="app" class="panel-closed">
     <header class="topbar">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true"></span>
@@ -22,6 +22,7 @@
         <ul id="search-results" class="search-results" role="listbox" hidden></ul>
       </form>
       <nav class="views" id="views" aria-label="Kartenebene"></nav>
+      <button class="btn" id="open-muni" type="button" data-i18n="nav.muni"></button>
       <button class="link-btn" id="open-methodology" type="button" data-i18n="nav.methodology"></button>
     </header>
     <main class="stage">
@@ -29,11 +30,12 @@
       <div id="legend" class="legend"></div>
       <div id="loading" class="loading" data-i18n="app.loading"></div>
     </main>
-    <aside class="panel" id="panel">
+    <aside class="panel" id="panel" hidden>
       <div class="panel-grip" id="panel-grip" aria-hidden="true"></div>
       <div class="tabs" role="tablist">
         <button role="tab" id="tab-parcel" data-tab="parcel" data-i18n="tabs.parcel"></button>
         <button role="tab" id="tab-muni" data-tab="muni" data-i18n="tabs.muni"></button>
+        <button class="close panel-close" id="panel-close" type="button" aria-label="Seitenleiste schliessen">×</button>
       </div>
       <section class="tabpanel" id="pane-parcel" role="tabpanel"></section>
       <section class="tabpanel" id="pane-muni" role="tabpanel"></section>

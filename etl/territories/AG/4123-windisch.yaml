@@ -1,0 +1,27 @@
+territory_id: AG-4123-windisch
+bfs: 4123
+name: Windisch
+canton: AG
+
+boundary:
+  source: swissboundaries3d
+  feature_id: "4123"
+
+sources:
+  av:  { provider: geodienste, topic: av, canton: AG }
+  npl: { provider: geodienste, topic: npl_nutzungsplanung, canton: AG }
+  gwr: { provider: bfs_madd, canton: ag }
+  buildings3d: { provider: swisstopo_stac, collection: ch.swisstopo.swissbuildings3d_3_0 }
+  alti: { provider: swisstopo_stac, collection: ch.swisstopo.swissalti3d }
+
+planning_perimeters:
+  - id: windisch
+    label: Windisch
+    boundary_feature: "4123"
+    rulebook: AG/4123-windisch.yaml
+
+qa_locations:
+  - { id: fhnw, label: Campus FHNW, lon: 8.2129, lat: 47.4809 }
+  - { id: kloster, label: Klosterzelg / Königsfelden, lon: 8.2178, lat: 47.4798 }
+
+config: {}

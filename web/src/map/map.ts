@@ -1,7 +1,6 @@
 import maplibregl, { type Map as MLMap, type GeoJSONSource } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { TerritoryData } from "../data/source";
-import { layerUrl } from "../data/source";
 import { ALLOWED_COLORS, GHOST, HEADROOM_STOPS, INK, NEUTRAL, SCENARIO_STOPS, UTIL_STOPS, stepsToExpr, zoneColor } from "./colors";
 
 export type View = "headroom" | "utilisation" | "allowed" | "scenario" | "zones";
@@ -52,6 +51,7 @@ export class ParcelMap {
   map: MLMap;
   private selected: number | null = null;
   private ready: Promise<void>;
+  private loads: Promise<unknown>[] = [];
   onSelect: (id: number | null, lngLat?: [number, number]) => void = () => {};
   onMove: (m: [number, number, number]) => void = () => {};
 
@@ -71,7 +71,10 @@ export class ParcelMap {
     this.map.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-right");
     this.map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution: "© swisstopo, Kanton Aargau (AGIS), BFS (GWR)" }), "bottom-right");
     // style.load (not load): does not wait for a rendered frame, so hidden tabs initialise too
-    this.ready = new Promise((res) => this.map.once("style.load", () => { this.addLayers(); res(); }));
+    this.ready = new Promise((res) => this.map.once("style.load", () => {
+      this.addLayers();
+      Promise.all(this.loads).then(() => res());
+    }));
     this.map.on("moveend", () => {
       const c = this.map.getCenter();
       this.onMove([c.lat, c.lng, this.map.getZoom()]);
@@ -88,12 +91,13 @@ export class ParcelMap {
     // Put our layers below the basemap labels
     const firstSymbol = m.getStyle().layers.find((l) => l.type === "symbol")?.id;
 
-    m.addSource("zones", { type: "geojson", data: layerUrl(d, "zones") });
-    m.addSource("parcels", { type: "geojson", data: layerUrl(d, "parcels"), promoteId: "id" });
-    m.addSource("buildings", { type: "geojson", data: layerUrl(d, "buildings") });
-    m.addSource("envelopes", { type: "geojson", data: layerUrl(d, "envelopes") });
-    m.addSource("perimeters", { type: "geojson", data: layerUrl(d, "perimeters") });
+    const empty: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
+    for (const name of ["zones", "parcels", "buildings", "envelopes", "perimeters", "boundary"]) {
+      m.addSource(name, { type: "geojson", data: empty, ...(name === "parcels" ? { promoteId: "id" } : {}) });
+      this.loads.push(d.layer(name).then((fc) => (m.getSource(name) as GeoJSONSource).setData(fc)));
+    }
     m.addSource("ghost", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    m.addSource("mask", { type: "geojson", data: empty });
 
     const zoneColorExpr: unknown[] = ["match", ["get", "category"]];
     zoneColorExpr.push("centre", zoneColor("centre", null), "core", zoneColor("core", null), "oldtown", zoneColor("oldtown", null),
@@ -140,6 +144,12 @@ export class ParcelMap {
       id: "perimeters-line", type: "line", source: "perimeters",
       paint: { "line-color": INK, "line-width": 1.4, "line-dasharray": [4, 2, 1, 2], "line-opacity": 0.7 },
     }, firstSymbol);
+    // Everything outside the selected Gemeinde is greyed out (mask = world minus its boundary)
+    m.addLayer({ id: "mask", type: "fill", source: "mask", paint: { "fill-color": "#f1efe8", "fill-opacity": 0.72 } });
+    m.addLayer({
+      id: "gemeinde-line", type: "line", source: "boundary", filter: ["==", ["get", "territory_id"], ""],
+      paint: { "line-color": INK, "line-width": 2.2, "line-opacity": 0.85 },
+    });
     m.addLayer({
       id: "parcel-selected", type: "line", source: "parcels", filter: ["==", ["id"], -1],
       paint: { "line-color": GHOST, "line-width": 2.5 },
@@ -210,14 +220,51 @@ export class ParcelMap {
     }
   }
 
+  /** Grey out everything outside the given territory (null: no mask). */
+  async setGemeinde(territoryId: string | null): Promise<void> {
+    const src = this.map.getSource("mask") as GeoJSONSource;
+    this.map.setFilter("gemeinde-line", ["==", ["get", "territory_id"], territoryId ?? ""]);
+    if (!territoryId) { src.setData({ type: "FeatureCollection", features: [] }); return; }
+    const b = await this.data.layer("boundary");
+    const holes: GeoJSON.Position[][] = [];
+    for (const f of b.features) {
+      if (f.properties?.territory_id !== territoryId || !f.geometry) continue;
+      const g = f.geometry as GeoJSON.Polygon | GeoJSON.MultiPolygon;
+      const polys = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
+      for (const poly of polys) holes.push(poly[0]);
+    }
+    const world: GeoJSON.Position[] = [[4, 44], [12, 44], [12, 49], [4, 49], [4, 44]];
+    src.setData({ type: "FeatureCollection", features: [{ type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [world, ...holes] } }] });
+  }
+
+  /** The territory whose boundary contains the point (bbox test first, then ray casting). */
+  async territoryAt(lng: number, lat: number): Promise<string | null> {
+    const b = await this.data.layer("boundary");
+    const inRing = (ring: GeoJSON.Position[]) => {
+      let inside = false;
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const [xi, yi] = ring[i], [xj, yj] = ring[j];
+        if ((yi > lat) !== (yj > lat) && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+      }
+      return inside;
+    };
+    for (const f of b.features) {
+      const g = f.geometry as GeoJSON.Polygon | GeoJSON.MultiPolygon;
+      const polys = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
+      if (polys.some((p) => inRing(p[0]))) return f.properties!.territory_id as string;
+    }
+    return null;
+  }
+
+  center(): [number, number] { const c = this.map.getCenter(); return [c.lng, c.lat]; }
+
   flyTo(lng: number, lat: number, zoom = 17.5): void {
     this.map.easeTo({ center: [lng, lat], zoom, duration: REDUCED_MOTION ? 0 : 800 });
   }
 
   // Envelope polygons of one parcel (read from the loaded source, keyed by parcel id)
   async envelopeFeatures(id: number): Promise<GeoJSON.Feature[]> {
-    const src = this.map.getSource("envelopes") as GeoJSONSource;
-    const all = (await src.getData()) as GeoJSON.FeatureCollection;
+    const all = await this.data.layer("envelopes");
     return all.features.filter((f) => f.properties?.id === id);
   }
 

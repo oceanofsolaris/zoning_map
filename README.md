@@ -3,8 +3,8 @@
 How much floor area do the current zoning rules allow on each parcel, how much is
 built, and which rule is the binding one? A transparent, parcel-by-parcel estimate
 from open Swiss data. The prototype covers **Brugg AG** (Ortsteile Brugg, Umiken
-and Lauffohr). It is built to extend to all of Aargau and, through the national
-data models, to other cantons.
+and Lauffohr) and **Windisch AG**. It is built to extend to all of Aargau and,
+through the national data models, to other cantons.
 
 ![Overview](docs/screenshots/m4-overview-headroom.jpg)
 
@@ -13,7 +13,8 @@ data models, to other cantons.
 ## Quick start
 
 ```bash
-make build        # downloads ~1 GB of raw data on first run (cached), then builds in ~10 s
+make build                             # Brugg; downloads ~1 GB raw data on first run (cached)
+make build TERRITORY=AG-4123-windisch  # Windisch (reuses the canton downloads)
 make test         # Python + TypeScript golden tests, and Python↔TS parity on the real data
 make web          # http://localhost:5173
 ```

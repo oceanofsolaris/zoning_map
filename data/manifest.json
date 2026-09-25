@@ -574,6 +574,13 @@
       "bytes": 1133409,
       "licence": "swisstopo open data (OGD), attribution required"
     },
+    "data/raw/swissboundaries3d/windisch.geojson": {
+      "url": "https://api3.geo.admin.ch/rest/services/api/MapServer/find?layer=ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill&searchText=Windisch",
+      "fetched_at": "2026-09-25T08:47:25+00:00",
+      "sha256": "ca9e8842e6f66eb3502664ecb4b4c118671702160703fc45964f4b90cf501816",
+      "bytes": 867178,
+      "licence": "swisstopo open data (OGD), attribution required"
+    },
     "data/raw/swissbuildings3d/swissbuildings3d_3_0_2024_1069-24_2056_5728.citygml.heights.parquet": {
       "url": "https://data.geo.admin.ch/ch.swisstopo.swissbuildings3d_3_0/swissbuildings3d_3_0_2024_1069-24/swissbuildings3d_3_0_2024_1069-24_2056_5728.citygml.zip",
       "fetched_at": "2026-09-24T22:59:21+00:00",

@@ -1,0 +1,84 @@
+{
+  "name": "25_bonus_scoped_to_perimeter",
+  "description": "Two perimeters with the same zone code: the EG bonus switched on for 'a/' only. Parcel in b/WA3 (1000 m², unbuilt) keeps AZ 0.6 → 600·1.2 = 720 (a parcel in a/WA3 would get 840).",
+  "rules": {
+    "a/WA3": {
+      "code": "a/WA3",
+      "residential": true,
+      "discretionary": false,
+      "az_max": 0.6,
+      "uez_max": null,
+      "vg_max": 3,
+      "attika_allowed": true,
+      "attika_factor": null,
+      "gh_max_m": 14.0,
+      "ga_klein_m": 4.0,
+      "ga_gross_m": 10.0,
+      "az_counts_attika": false,
+      "bonuses": [
+        {
+          "id": "eg_publikumsorientiert",
+          "az_delta": 0.1,
+          "vg_delta": 0
+        }
+      ],
+      "confidence_cap": null
+    },
+    "b/WA3": {
+      "code": "b/WA3",
+      "residential": true,
+      "discretionary": false,
+      "az_max": 0.6,
+      "uez_max": null,
+      "vg_max": 3,
+      "attika_allowed": true,
+      "attika_factor": null,
+      "gh_max_m": 14.0,
+      "ga_klein_m": 4.0,
+      "ga_gross_m": 10.0,
+      "az_counts_attika": false,
+      "bonuses": [
+        {
+          "id": "eg_publikumsorientiert",
+          "az_delta": 0.1,
+          "vg_delta": 0
+        }
+      ],
+      "confidence_cap": null
+    }
+  },
+  "parcel": {
+    "area_m2": 1000,
+    "flags": [],
+    "parts": [
+      {
+        "zone": "b/WA3",
+        "area_m2": 1000,
+        "agsf_m2": 1000,
+        "fp": [
+          1000,
+          800,
+          720,
+          640,
+          560,
+          480,
+          340
+        ]
+      }
+    ],
+    "existing": {
+      "gf_m2": 0,
+      "storeys_max": null,
+      "height_max_m": null,
+      "n_buildings": 0
+    }
+  },
+  "scenario": {
+    "bonuses": {
+      "a/eg_publikumsorientiert": true
+    }
+  },
+  "expected": {
+    "gf_allowed_m2": 720
+  }
+}

@@ -111,3 +111,36 @@ Newest first within each section. Date: 2026-09-25 unless noted.
     523k → 513k m². Municipal Waldabstandslinien are "keine Daten" on geodienste for AG, and exceptions or
     Rodung/Ersatzaufforstung are not modelled. Parcel 5042: the forest line in the building zone was fixed
     in 2008; buildings from 2013/2018 stand 8 m from it.
+25. **Second municipality: Windisch (BFS 4123), 2026-09-25.** BNO "Stand Juni 2022" (RR 18.12.2019 / 6.5.2020),
+    structurally a twin of Brugg's (joint "Raum Brugg Windisch" planning): the same § 74, EG bonus and closed
+    construction. Differences: Zentrumszone 3 VG / 14 m, and Gesamthöhe measured to the top of the roof
+    substructure. Added with a territory YAML + rulebook only. **No pipeline code changes were needed**, apart
+    from one missing rulebook entry (Familiengartenzone). Result: 1,839 parcels, 99.2% GWR residential matched,
+    calibration 0.74 (17 samples), reserve ≈ 361k m².
+26. **Multi-territory frontend.** The browser loads any set of territories (`#t=id1,id2`; default all in
+    `index.json`) and merges them into one dataset with global parcel ids. Zone keys are
+    `<perimeter>/<code>` and must be unique across territories; the loader checks this. The calibrated
+    `existing_to_agf` now travels per parcel (`existing.existing_to_agf`, golden case 24), so one engine config
+    serves all territories. The municipality panel has a Gemeinde selector; blocker rankings are computed
+    per scope. The parity test runs for every built territory.
+27. **Observation (not changed): envelope-only zones inside realised Gestaltungspläne look rosy.** Example:
+    Windisch, Hauserstrasse 2a ff. (Zentrumszone, built 2014 under a Gestaltungsplan) shows ≈ 19k m² reserve
+    because the Zentrumszone has no AZ and the simplified envelope covers the whole parcel. See
+    improvements.md.
+28. **Panel and Gemeinde UX for many municipalities (feedback).** The side panel is closed by default. It opens
+    on a parcel click (parcel tab; the Gemeinde follows the parcel) or via the "Gemeinde" button (Gemeinde under
+    the map centre). Closing it clears the selection. There is no "all Gemeinden" view: the Gemeinde tab shows
+    one Gemeinde at a time, and the map outside it is greyed out (mask = world minus the exported
+    `boundary.geojson`). Scenario settings live in one global scenario keyed by `<perimeter>/<zone>`, so each
+    Gemeinde keeps its settings when switching. The map shows all Gemeinden's changes; "Zurücksetzen" resets only
+    the current Gemeinde. Bonus switches are now scoped per perimeter (`<perimeter>/<bonus id>`; a bare id still
+    means "everywhere"), mirrored in both engines (golden cases 25/26). URL: `g=<territory>` when the Gemeinde
+    tab is open.
+29. **Parcel constraints shown separately from estimate notes (feedback).** The pipeline exports per-parcel
+    `constraints` ({id, share?, labels?, length_m?}). The inspector shows them under "Regeln" as
+    "Weitere Einschränkungen auf dieser Parzelle", each with its effect ("in der Hülle berücksichtigt" /
+    "nur markiert, nicht gerechnet" / "Hinweis") and legal basis. Texts live in one catalog
+    (`web/src/ui/constraints.ts`); a new constraint type needs one catalog entry plus the pipeline emitting it.
+    "Hinweise zur Schätzung" keeps only notes on the estimate itself (verification, missing data, slope, …).
+    The **Gewässerraum** (NPL 5231/5239) is now a no-build area like the forest distance (GSchV Art. 41c;
+    config `gewaesserraum_no_build`). Party-wall stretches are shown as a modelled constraint with their length.

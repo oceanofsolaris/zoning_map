@@ -73,6 +73,8 @@ class Build:
     overlays: gpd.GeoDataFrame | None = None
     projects: gpd.GeoDataFrame | None = None
     forest_band: Any = None
+    nobuild: dict[str, Any] = field(default_factory=dict)   # constraint id -> area where no building is allowed
+    party_wall_m: Any = None
     qa: dict[str, Any] = field(default_factory=dict)
 
 
@@ -179,6 +181,13 @@ def load_zoning(b: Build) -> None:
             rows.append({"flag": spec["flag"], "label": r.typ_kommunal_bezeichnung, "geometry": r.geometry})
     b.overlays = gpd.GeoDataFrame(rows, geometry="geometry", crs=2056)
     b.forest_band = _forest_band(b, z_all=geodienste.read_layer("npl_nutzungsplanung", canton, "grundnutzung", bbox=b.muni.bounds))
+    # Areas where no building is allowed, subtracted from the buildable footprint (each shown as a constraint)
+    if b.forest_band is not None:
+        b.nobuild["waldabstand"] = b.forest_band
+    if b.cfg["pipeline"].get("gewaesserraum_no_build") and len(b.overlays):
+        gr = b.overlays[b.overlays.flag == "gewaesserraum"]
+        if len(gr):
+            b.nobuild["gewaesserraum"] = shapely.make_valid(shapely.union_all(gr.geometry.values))
     log.info("zoning: %d base polygons, %d flagged overlays", len(b.zones), len(b.overlays))
 
 
@@ -293,8 +302,8 @@ def geometry_facts(b: Build) -> None:
     sl = setback_lines.loc[parts.id].values
     steps = ecfg["setback_steps_m"]
     part_geoms = parts.geometry.values
-    if b.forest_band is not None:  # nothing may be built within the forest distance
-        part_geoms = shapely.difference(part_geoms, b.forest_band)
+    if b.nobuild:  # nothing may be built within the forest distance or the watercourse space
+        part_geoms = shapely.difference(part_geoms, shapely.union_all(list(b.nobuild.values())))
     for s in steps:
         parts[f"fp_{s}"] = shapely.area(shapely.intersection(_inner(pg, sl, s), part_geoms))
     # envelope polygon for display at each zone's small boundary distance
@@ -365,22 +374,33 @@ def geometry_facts(b: Build) -> None:
     par["slope_pct"] = _parcel_slope(b, par)
     for i in par.id[par.slope_pct > pcfg["slope_flag_pct"]]:
         flags[i].append("slope")
-    if b.forest_band is not None:
-        fb = b.forest_band
-        share = shapely.area(shapely.intersection(par.geometry.values, fb)) / par.area_m2.values
-        for i in par.id[share >= MIN_OVERLAY_SHARE]:
-            flags[i].append("waldabstand")
-        near = bl[bl.counts & shapely.intersects(bl.geometry.values, fb)]
+    # Per-parcel constraint details for the inspector: {id, share?, labels?, length_m?}
+    cons: dict[int, list[dict]] = {i: [] for i in par.id}
+    for cid, geom in b.nobuild.items():
+        share = shapely.area(shapely.intersection(par.geometry.values, geom)) / par.area_m2.values
+        for i, sh in zip(par.id, share):
+            if sh >= 0.01:
+                cons[i].append({"id": cid, "share": round(float(sh), 3)})
+                if sh >= MIN_OVERLAY_SHARE and cid not in flags[i]:
+                    flags[i].append(cid)
+    if "waldabstand" in b.nobuild:
+        near = bl[bl.counts & shapely.intersects(bl.geometry.values, b.nobuild["waldabstand"])]
         if len(near):
             hit = gpd.sjoin(par[["id", "geometry"]], near[["geometry"]], predicate="intersects").id.unique()
             for i in hit:
                 flags[i].append("bestand_im_waldabstand")
+                cons[i].append({"id": "bestand_im_waldabstand"})
+    if b.party_wall_m is not None:
+        for i, m in b.party_wall_m.items():
+            if m >= 1.0:
+                cons[i].append({"id": "brandmauer", "length_m": round(float(m), 1)})
     lcv = b.qa.pop("landcover")
     if len(lcv):
         li = gpd.overlay(par[["id", "area_m2", "geometry"]], lcv, how="intersection")
         share = (li.area / li.area_m2).groupby(li.id).sum()
         for i in share[share >= pcfg["infrastructure_share"]].index:
             flags[i].append("infrastructure")
+            cons[i].append({"id": "infrastructure", "share": round(float(share[i]), 3)})
     nonres_dom = parts.sort_values("area_m2").groupby("id").last()
     for i, z in nonres_dom.zone.items():
         if not z or not b.rules[z]["residential"]:
@@ -390,15 +410,21 @@ def geometry_facts(b: Build) -> None:
     if len(sdr):
         so = gpd.overlay(par[["id", "area_m2", "geometry"]], sdr[["geometry"]], how="intersection")
         so["share"] = so.area / so.area_m2
-        for i in so[so.share >= pcfg["sdr_overlap_share"]].id.unique():
+        sshare = so.groupby("id").share.sum()
+        for i in sshare[sshare >= pcfg["sdr_overlap_share"]].index:
             flags[i].append("sdr_overlap")
+            cons[i].append({"id": "sdr_overlap", "share": round(float(sshare[i]), 3)})
     # overlays
     if len(b.overlays):
         oo = gpd.overlay(par[["id", "area_m2", "geometry"]], b.overlays, how="intersection")
         oo["share"] = oo.area / oo.area_m2
-        for (i, f), s in oo.groupby(["id", "flag"]).share.sum().items():
-            if s >= MIN_OVERLAY_SHARE and f not in flags[i]:
-                flags[i].append(f)
+        grp = oo.groupby(["id", "flag"]).agg(share=("share", "sum"), labels=("label", lambda x: sorted(set(x))))
+        for (i, f), row in grp.iterrows():
+            if row.share >= MIN_OVERLAY_SHARE:
+                if f not in flags[i]:
+                    flags[i].append(f)
+                if not any(c["id"] == f for c in cons[i]):  # no-build constraints already carry their share
+                    cons[i].append({"id": f, "share": round(float(min(row.share, 1.0)), 3), "labels": row.labels})
     # rulebook verification: unverified if any engine-relevant value of a residential zone on the parcel is unverified
     unverified_zones = set()
     for pid, rb in b.rulebooks.items():
@@ -412,6 +438,7 @@ def geometry_facts(b: Build) -> None:
         if set(zs) & unverified_zones:
             flags[i].append("rulebook_unverified")
     par["flags"] = par.id.map(flags)
+    par["constraints"] = par.id.map(cons)
     par["parcel_small"] = par.area_m2 < ecfg["small_parcel_m2"]
     b.parcels = par
 
@@ -539,7 +566,9 @@ def _setback_lines(b: Build) -> pd.Series:
     region = contact.groupby(level=0).agg(lambda g: shapely.union_all(g.values))
     ids = region.index.values
     exempt = shapely.buffer(region.values, 0.5)
+    before = shapely.length(boundary.loc[ids].values)
     boundary.loc[ids] = shapely.difference(boundary.loc[ids].values, exempt)
+    b.party_wall_m = pd.Series(before - shapely.length(boundary.loc[ids].values), index=ids)
     b.qa["parcels_with_party_walls"] = int(len(ids))
     return boundary
 
@@ -587,6 +616,8 @@ def run(territory_ref: str) -> Build:
     b.qa["calibration"] = fit
     if fit.get("factor"):
         ecfg["existing_to_agf"] = fit["factor"]
+    for inp in inputs:  # carried per parcel so several territories can share one engine config
+        inp["existing"]["existing_to_agf"] = ecfg["existing_to_agf"]
     results = capacity.compute_all(inputs, b.rules, ecfg)
     b.qa["totals"] = capacity.summarise(inputs, results)
     b.qa["blocker_ranking"] = capacity.blocker_ranking(inputs, b.rules, ecfg)

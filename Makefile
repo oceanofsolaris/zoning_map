@@ -2,13 +2,16 @@
 TERRITORY ?= AG-4095-brugg
 UV := cd etl && uv run
 
-.PHONY: data build rules-validate rules-verify rules-extract test test-py test-web web web-build clean-web
+.PHONY: data build build-all rules-validate rules-verify rules-extract test test-py test-web web web-build clean-web
 
 data:            ## download all raw data for the territory (idempotent, cached in data/raw)
 	$(UV) pp fetch $(TERRITORY)
 
 build:           ## fetch (if needed) → join → geometry facts → metrics → export (GeoParquet + web data)
 	$(UV) pp build $(TERRITORY)
+
+build-all:       ## build every territory in etl/territories
+	@for f in etl/territories/*/*.yaml; do id=$$(grep '^territory_id:' $$f | awk '{print $$2}'); echo "== $$id"; (cd etl && uv run pp build $$id > /dev/null) || exit 1; done
 
 rules-validate:  ## validate all rulebooks against the JSON schema
 	$(UV) pp rules validate

@@ -1,7 +1,7 @@
 // Shareable URL state in the hash: t (territory), p (EGRID), v (view), s (scenario), b (bonuses), m (map).
 import type { Scenario } from "./engine/capacity";
 
-export interface UrlState { t?: string; p?: string; v?: string; scenario?: Scenario; m?: [number, number, number] }
+export interface UrlState { t?: string; p?: string; g?: string; v?: string; scenario?: Scenario; m?: [number, number, number] }
 
 export function readUrl(): UrlState {
   const h = new URLSearchParams(location.hash.slice(1));
@@ -9,6 +9,7 @@ export function readUrl(): UrlState {
   if (h.get("t")) out.t = h.get("t")!;
   if (h.get("p")) out.p = h.get("p")!;
   if (h.get("v")) out.v = h.get("v")!;
+  if (h.get("g")) out.g = h.get("g")!;
   const s = h.get("s"), b = h.get("b");
   if (s || b) {
     out.scenario = { zones: {}, bonuses: {} };
@@ -27,6 +28,7 @@ export function writeUrl(st: UrlState): void {
   const h = new URLSearchParams();
   if (st.t) h.set("t", st.t);
   if (st.p) h.set("p", st.p);
+  if (st.g) h.set("g", st.g);
   if (st.v && st.v !== "headroom") h.set("v", st.v);
   const z = Object.entries(st.scenario?.zones ?? {}).filter(([, d]) => d.d_az || d.d_vg);
   if (z.length) h.set("s", z.map(([k, d]) => `${k}:${+(d.d_az ?? 0).toFixed(2)}:${d.d_vg ?? 0}`).join(";"));

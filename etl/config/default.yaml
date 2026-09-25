@@ -48,6 +48,8 @@ pipeline:
   infrastructure_share: 0.5
   # Party walls: buildings on both sides of a boundary closer than this count as built together.
   party_wall_gap_m: 0.6
+  # Gewässerraum (watercourse space, overlay 5231/5239 in building zones): no new buildings (GSchV Art. 41c).
+  gewaesserraum_no_build: true
   # SDR overlap flag threshold (share of parcel area covered by a Baurecht)
   sdr_overlap_share: 0.10
   # Slope flag (§5 #9)

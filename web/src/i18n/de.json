@@ -32,7 +32,7 @@
   "parcel.units": "≈ {n} Wohnungen à {m} m²",
   "parcel.rules": "Regeln",
   "parcel.building": "Bestand",
-  "parcel.flags": "Hinweise",
+  "parcel.flags": "Hinweise zur Schätzung",
   "parcel.confidence": "Verlässlichkeit",
   "parcel.report": "Fehler melden",
   "parcel.envelope": "Rote Hülle: vereinfachte Hüllkurve des Erlaubten",
@@ -81,7 +81,7 @@
   "muni.binding": "Was begrenzt?",
   "muni.scenario": "Szenario: Regeln ändern",
   "muni.scenario_hint": "Verschieben Sie die Regler; Karte und Zahlen rechnen live nach.",
-  "muni.reset": "Zurücksetzen",
+  "muni.reset": "Zurücksetzen (diese Gemeinde)",
   "muni.bonuses": "Boni (Ermessen der Baubehörde)",
   "muni.delta": "Zusätzlich durch das Szenario",
   "muni.blockers": "Welche einzelne Regeländerung bringt am meisten Wohnraum?",
@@ -105,5 +105,6 @@
   "project.bewilligt": "bewilligt",
   "project.projektiert": "projektiert",
   "flag.waldabstand": "Waldabstand (18 m, § 48 BauG) schränkt die bebaubare Fläche ein",
-  "flag.bestand_im_waldabstand": "Bestehendes Gebäude im Waldabstand – Besitzstand; Ersatzneubau nur mit Ausnahmebewilligung"
+  "flag.bestand_im_waldabstand": "Bestehendes Gebäude im Waldabstand – Besitzstand; Ersatzneubau nur mit Ausnahmebewilligung",
+  "nav.muni": "Gemeinde"
 }

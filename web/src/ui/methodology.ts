@@ -21,9 +21,8 @@ const CFG_DOC: Record<string, string> = {
 
 export function renderMethodology(dlg: HTMLDialogElement, territory: Territory): void {
   const cfg = territory.engine_config as Record<string, unknown>;
-  const cal = territory.qa.calibration ?? {};
+  const members = territory.members ?? [territory];
   const rbs = Object.entries(territory.rulebooks);
-  const qa = territory.qa;
   dlg.innerHTML = `<form method="dialog" class="modal-inner">
     <header><h2>${t("method.title")}</h2><button class="close" aria-label="Schliessen">×</button></header>
     <div class="modal-body">
@@ -40,9 +39,13 @@ export function renderMethodology(dlg: HTMLDialogElement, territory: Territory):
       <li><b>Reserve</b> = Erlaubt − Gebaut (nie negativ). Wohnungen = Reserve ÷ ${cfg.gf_per_dwelling_m2} m².</li>
     </ol>
     <h3>Kalibrierung</h3>
-    <p>Neubauten ab ${esc(cal.min_year)} sollten ihr erlaubtes Mass ungefähr ausschöpfen. Aus ${esc(cal.n_samples)} solchen Parzellen
-    (Median der Rohausnützung ${esc(cal.raw_median_utilisation ?? "–")}) ergibt sich <b>existing_to_agf = ${esc(cal.factor ?? cfg.existing_to_agf)}</b>
-    (Ziel-Median ${esc(cal.target_median_utilisation)}).</p>
+    <p>Neubauten der letzten Jahre sollten ihr erlaubtes Mass ungefähr ausschöpfen. Pro Gemeinde wird daraus der Faktor
+    <code>existing_to_agf</code> geschätzt (Grundfläche × Geschosse → anrechenbare Geschossfläche):</p>
+    <ul>${members.map((m) => {
+      const c = m.qa.calibration ?? {};
+      return `<li>${esc(m.name)}: <b>${esc(c.factor ?? m.engine_config.existing_to_agf)}</b> aus ${esc(c.n_samples)} Parzellen mit Neubau ab ${esc(c.min_year)}
+        (Median der Rohausnützung ${esc(c.raw_median_utilisation ?? "–")}, Ziel ${esc(c.target_median_utilisation)})</li>`;
+    }).join("")}</ul>
     <h3>Annahmen (Parameter)</h3>
     <table class="cfg"><tbody>${Object.entries(CFG_DOC).map(([k, d]) => `<tr><th><code>${k}</code></th><td>${esc(d)}</td><td class="num">${esc(cfg[k])}</td></tr>`).join("")}</tbody></table>
     <h3>Regelwerke</h3>
@@ -64,11 +67,8 @@ export function renderMethodology(dlg: HTMLDialogElement, territory: Territory):
       <li>Keine Angaben zu Eigentümerinnen und Eigentümern oder Bewohnerinnen und Bewohnern.</li>
     </ul>
     <h3>Datenqualität</h3>
-    <ul>
-      <li>GWR-Wohngebäude mit Gebäudegrundriss: ${esc(Math.round((qa.gwr_residential_matched_to_footprint ?? 0) * 1000) / 10)} %</li>
-      <li>Gebäudegrundrisse mit Höhe aus swissBUILDINGS3D: ${esc(Math.round((qa.footprints_with_height ?? 0) * 1000) / 10)} %</li>
-      <li>Stand der Berechnung: ${esc(territory.built_at)}</li>
-    </ul>
+    <ul>${members.map((m) => `<li>${esc(m.name)}: GWR-Wohngebäude mit Gebäudegrundriss ${esc(Math.round((m.qa.gwr_residential_matched_to_footprint ?? 0) * 1000) / 10)} %,
+      Grundrisse mit Höhe aus swissBUILDINGS3D ${esc(Math.round((m.qa.footprints_with_height ?? 0) * 1000) / 10)} %, Stand ${esc(m.built_at)}</li>`).join("")}</ul>
     <h3>Quellen</h3>
     <ul>${territory.attribution.map((a) => `<li>${esc(a.text)} <span class="muted">(${esc(a.licence)})</span></li>`).join("")}</ul>
     <p class="disclaimer">${t("footer.disclaimer")}</p>

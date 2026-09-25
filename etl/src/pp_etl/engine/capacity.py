@@ -61,8 +61,10 @@ def apply_scenario(rules: dict[str, Any], scenario: dict[str, Any] | None, cfg: 
                 if z:
                     d_az += z.get("d_az") or 0.0
                     d_vg += z.get("d_vg") or 0
+            # Bonus switches are global ("<id>") or scoped to a planning perimeter ("<perimeter>/<id>").
+            prefix = code.rsplit("/", 1)[0] + "/" if "/" in code else ""
             for b in r.get("bonuses") or []:
-                if bonuses_on.get(b["id"]):
+                if bonuses_on.get(b["id"]) or (prefix and bonuses_on.get(prefix + b["id"])):
                     d_az += b.get("az_delta") or 0.0
                     d_vg += b.get("vg_delta") or 0
             if r["az_max"] is not None and d_az:
@@ -176,7 +178,9 @@ def compute_parcel(parcel: dict[str, Any], rules: dict[str, Any], cfg: dict[str,
     dom_rules = rules.get(parts[dom]["zone"]) if parts and not infra else None
 
     ex = parcel["existing"]
-    agf_existing = ex["gf_m2"] * cfg["existing_to_agf"] + (ex.get("gf_fixed_m2") or 0.0)
+    # existing_to_agf is calibrated per territory; parcels may carry their own value
+    k_ex = ex.get("existing_to_agf") if ex.get("existing_to_agf") is not None else cfg["existing_to_agf"]
+    agf_existing = ex["gf_m2"] * k_ex + (ex.get("gf_fixed_m2") or 0.0)
     utilisation = agf_existing / gf_allowed if gf_allowed else None
     headroom = max(0.0, gf_allowed - agf_existing) if gf_allowed is not None else None
     units = math.floor(headroom / cfg["gf_per_dwelling_m2"] + 1e-9) if headroom is not None else None
