@@ -1,3 +1,5 @@
+INFO: Warning, this is 100% vibe coded and I don't endorse any technical choices made by this project :P (though I iterated on the output quite a bit and it should be roughly accurate for Brugg).
+
 # Spielraum
 
 *Wie viel Spielraum lässt die Bauordnung?*
